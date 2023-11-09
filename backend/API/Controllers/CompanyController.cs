@@ -45,7 +45,7 @@ namespace API.Controllers
             var company = await _unitOfWork.Company.GetByIdAsync(id);
             if (company == null)
             {
-                return NotFound("Company you are lookind for not found");
+                return NotFound("Company you are looking for not found");
             }
 
             var convertedCompany = _mapper.Map<CompanyGetDto>(company);
@@ -99,9 +99,9 @@ namespace API.Controllers
                 return NotFound("Company to be deleted not found");
             }
 
-            //Checking if company id exists in job table or not.
-            var companyInJob = await _unitOfWork.Product.AnyAsync(jobs => jobs.CompanyId == id);
-            if (companyInJob)
+            //Checking if company id exists in product table or not.
+            var companyInProduct = await _unitOfWork.Product.AnyAsync(p => p.CompanyId == id);
+            if (companyInProduct)
             {
                 return BadRequest("Can not delete company as it is associated with product table");
             }

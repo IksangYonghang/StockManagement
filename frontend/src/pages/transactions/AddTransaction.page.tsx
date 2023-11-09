@@ -74,37 +74,29 @@ const AddTransaction = () => {
   }, []);
 
   const handleClickSaveBtn = () => {
-    if (
-      transaction.date === "" ||
-      transaction.credit === "" ||
-      transaction.debit === "" ||
-      transaction.narration === "" ||
-      transaction.ledgerId === "" ||
-      transaction.productId === "" ||
-      transaction.transactionMethod === "" ||
-      transaction.transactionType === ""
-    )
-      alert("All fields are required");
-    else {
-      if (!selectedDate) {
-        alert("Please select a date (YYYY-MM-DD)");
-        return;
-      }
-
-      // Format the selected date to match the expected "YYYY-MM-DD" format
-      const formattedDate = selectedDate; // Ensure it's already in the right format
-
-      // Create the transaction object to send to the server
-      const transactionToSend = {
-        ...transaction,
-        date: formattedDate, // Set the date field with the formatted date
-      };
-
-      httpModule
-        .post("/Transaction/Create", transactionToSend)
-        .then((response) => redirect("/transactions"))
-        .catch((error) => console.log(error));
+    if (!selectedDate) {
+      alert("Please select a date (YYYY-MM-DD)");
+      return;
     }
+
+    if (transaction.debit !== transaction.credit) {
+      alert("Invalid transaction. Debit and credit amounts are not equal.");
+      return;
+    }
+
+    // Format the selected date to match the expected "YYYY-MM-DD" format
+    const formattedDate = selectedDate; // Ensure it's already in the right format
+
+    // Create the transaction object to send to the server
+    const transactionToSend = {
+      ...transaction,
+      date: formattedDate, // Set the date field with the formatted date
+    };
+
+    httpModule
+      .post("/Transaction/Create", transactionToSend)
+      .then((response) => redirect("/transactions"))
+      .catch((error) => console.log(error));
   };
 
   const handleClickBackBtn = () => {

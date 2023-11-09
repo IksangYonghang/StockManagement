@@ -103,9 +103,21 @@ const UpdateTransaction = () => {
       alert("All fields are required");
       return;
     }
+    // Convert debit and credit to numbers
+    const debit = Number(transaction.debit);
+    const credit = Number(transaction.credit);
+
+    // Check if debit and credit are equal
+    if (debit !== credit) {
+      alert("Invalid transaction. Debit and credit amounts are not equal.");
+      return;
+    }
+
     const updatedTransaction = {
       ...transaction,
       date: selectedDate,
+      debit: debit.toString(), // Convert back to string for consistency
+      credit: credit.toString(), // Convert back to string for consistency
     };
     httpModule
       .put(`/Transaction/Update?id=${id}`, updatedTransaction)

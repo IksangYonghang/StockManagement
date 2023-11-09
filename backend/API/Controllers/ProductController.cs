@@ -118,8 +118,9 @@ namespace API.Controllers
             }
 
             var nameConflict = await _unitOfWork.Product.AnyAsync(p => p.ProductName == productUpdateDto.ProductName && p.Id != id);
+            var sizeConflict = await _unitOfWork.Product.AnyAsync(p =>p.ProductSize == productUpdateDto.ProductSize && p.Id != id);
             
-            if (nameConflict)
+            if (nameConflict || sizeConflict)
             {
                 return Conflict("Product already exists");
             }
@@ -157,8 +158,7 @@ namespace API.Controllers
 
                 // Update the product's image URL.
                 existingProduct.ImageUrl = imageUrl;
-            }
-            
+            }           
 
             _mapper.Map(productUpdateDto, existingProduct);
             await _unitOfWork.SaveAsync();
@@ -189,12 +189,6 @@ namespace API.Controllers
 
             return Ok("Product and associated file deleted successfully");
         }
-
-
-
-
-
-
 
     }
 }

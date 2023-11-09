@@ -24,32 +24,32 @@ namespace API.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<ActionResult<CategoryGetDto>> CreateCategory([FromBody]CategoryCreateDto jobCreatedDto)
+        public async Task<ActionResult<CategoryGetDto>> CreateCategory([FromBody]CategoryCreateDto categoryCreatedDto)
         {
-            var existingJob =await _unitOfWork.Category.AnyAsync(j=>j.CategoryName == jobCreatedDto.CategoryName);
-            if (existingJob)
+            var existingCategory =await _unitOfWork.Category.AnyAsync(j=>j.CategoryName == categoryCreatedDto.CategoryName);
+            if (existingCategory)
             {
                 return Conflict("Category already exists");
             }
-            Category newJob = _mapper.Map<Category>(jobCreatedDto);
-            newJob.CreatedAt = DateTime.UtcNow;
-            await _unitOfWork.Category.AddAsync(newJob);
+            Category newCategory = _mapper.Map<Category>(categoryCreatedDto);
+            newCategory.CreatedAt = DateTime.UtcNow;
+            await _unitOfWork.Category.AddAsync(newCategory);
             await _unitOfWork.SaveAsync();
-            var convertedJob = _mapper.Map<CategoryGetDto>(newJob);
-            return Ok(convertedJob);
+            var convertedCategory = _mapper.Map<CategoryGetDto>(newCategory);
+            return Ok(convertedCategory);
 
         }
 
         [HttpGet("GetById")]
         public async Task<ActionResult<CategoryGetDto>> GetById(long id)
         {
-            var job = await _unitOfWork.Category.GetByIdAsync(id);
-            if (job == null)
+            var category = await _unitOfWork.Category.GetByIdAsync(id);
+            if (category == null)
             {
                 return NotFound("Category not found");
             }
-            var convertedJob = _mapper.Map<CategoryGetDto>(job);
-            return Ok(convertedJob);
+            var convertedCategory = _mapper.Map<CategoryGetDto>(category);
+            return Ok(convertedCategory);
         }
 
         [HttpGet("Get")]
@@ -82,22 +82,22 @@ namespace API.Controllers
             _mapper.Map(categoryUpdateDto, categoryToUpdate);
             categoryToUpdate.UpdatedAt = DateTime.UtcNow;
             await _unitOfWork.SaveAsync();            
-            var convertedJob= _mapper.Map<CategoryGetDto>(categoryToUpdate);
-            return Ok(convertedJob);
+            var convertedCategory= _mapper.Map<CategoryGetDto>(categoryToUpdate);
+            return Ok(convertedCategory);
         }
 
         [HttpDelete]
         public async Task<ActionResult> DeleteCategory(long id)
         {
-            var jobToDelete = await _unitOfWork.Category.GetByIdAsync(id);
-            if (jobToDelete == null)
+            var categoryToDelete = await _unitOfWork.Category.GetByIdAsync(id);
+            if (categoryToDelete == null)
             {
                 return NotFound("Category to delete not found");
             }
 
-            //Checking if job id esists in candidate table or not.
-            var jobInCandidate = await _unitOfWork.Product.AnyAsync(candidates => candidates.CategoryId == id);
-            if (jobInCandidate)
+            //Checking if category id esists in product table or not.
+            var categoryInProduct = await _unitOfWork.Product.AnyAsync(product => product.CategoryId == id);
+            if (categoryInProduct)
             {
                 return BadRequest("Can not delete category because it is associated to product table");
             }

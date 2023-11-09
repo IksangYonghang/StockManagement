@@ -28,8 +28,16 @@ namespace API.Controllers
         [HttpPost("Create")]
         public async Task<ActionResult<TransactionGetDto>> CreateTransaction(TransactionCreateDto transactionCreateDto)
         {
+            /* commented it as the validation logic is performed from front end
+            if (transactionCreateDto.Debit != transactionCreateDto.Credit)
+            {
+                return BadRequest("Invalid transaction. Debit and credit amounts are not equal.");
+            }
+            */
+
             int transactionId = await GenerateUniqueTransactionId();
 
+            
             Transaction newTransaction = _mapper.Map<Transaction>(transactionCreateDto);
             newTransaction.CreatedAt = DateTime.UtcNow;
             newTransaction.TransactionId = transactionId;
@@ -77,9 +85,6 @@ namespace API.Controllers
                 return 0; 
             }
         }
-
-
-
 
 
         [HttpGet("GetById")]
@@ -134,6 +139,15 @@ namespace API.Controllers
             if (transactionToDelete == null)
             {
                 return NotFound("Transaction to be deleted not found");
+            }
+
+            // Check if there are other transactions with the same productId and ID greater than the current transaction
+            var hasLaterTransactions = await _unitOfWork.Transaction.AnyAsync(t =>
+                t.ProductId == transactionToDelete.ProductId && t.Id > id);
+
+            if (hasLaterTransactions)
+            {
+                return BadRequest("Cannot delete the transaction as there are later transactions for the same product.");
             }
 
             await _unitOfWork.Transaction.DeleteAsync(id);
