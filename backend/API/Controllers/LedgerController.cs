@@ -70,20 +70,30 @@ namespace API.Controllers
         }
 
         [HttpPut("Update")]
-        public async Task<ActionResult<LedgerGetDto>> EditLedger(LedgerUpdateDto LedgerUpdateDto, long id)
+        public async Task<ActionResult<LedgerGetDto>> EditLedger(LedgerUpdateDto ledgerUpdateDto, long id)
         {
-            var LedgerToUpdate = await _unitOfWork.Ledger.GetByIdAsync(id);
-            if (LedgerToUpdate == null)
+            var ledgerToUpdate = await _unitOfWork.Ledger.GetByIdAsync(id);
+            if (ledgerToUpdate == null)
             {
                 return NotFound("Ledger to be updated not found");
             }
 
-            _mapper.Map(LedgerUpdateDto, LedgerToUpdate);
-            LedgerToUpdate.UpdatedAt = DateTime.UtcNow;
+            // Check if the updated ledger name is already used by other ledgers (excluding itself)
+            var nameConflict = await _unitOfWork.Ledger.AnyAsync(l =>l.LedgerName == ledgerUpdateDto.LedgerName && l.Id != id );
+
+            var codeConflict = await _unitOfWork.Ledger.AnyAsync(l => l.LedgerCode == ledgerUpdateDto.LedgerCode && l.Id != id );
+
+            if (nameConflict || codeConflict)
+            {
+                return Conflict("Ledger name or code already exists among other ledgers.");
+            }
+
+            _mapper.Map(ledgerUpdateDto, ledgerToUpdate);
+            ledgerToUpdate.UpdatedAt = DateTime.UtcNow;
             await _unitOfWork.SaveAsync();
             //var convertedLedger = _mapper.Map<LedgerGetDto>(LedgerToUpdate);
             var allLedgers = await _unitOfWork.Ledger.GetAllAsync();
-            var convertedLedger = _mapper.Map<LedgerGetDto>(LedgerToUpdate, opt => opt.Items["LedgerList"] = allLedgers);
+            var convertedLedger = _mapper.Map<LedgerGetDto>(ledgerToUpdate, opt => opt.Items["LedgerList"] = allLedgers);
             return Ok(convertedLedger);
         }
 

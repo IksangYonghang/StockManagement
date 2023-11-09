@@ -75,6 +75,14 @@ namespace API.Controllers
                 return NotFound("Company to be updated not found");
             }
 
+            var nameConlfict =await _unitOfWork.Company.AnyAsync(c => c.CompanyName == companyUpdateDto.CompanyName && c.Id != id);
+
+            if (nameConlfict)
+            {
+                return Conflict("Company name already exists");
+            }
+
+
             _mapper.Map(companyUpdateDto, companyToUpdate);
             companyToUpdate.UpdatedAt = DateTime.UtcNow;
             await _unitOfWork.SaveAsync();

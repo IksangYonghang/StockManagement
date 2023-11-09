@@ -15,14 +15,16 @@ import { ICreateLedgerDto, ILedger } from "../../types/global.typing";
 
 const AddLedger = () => {
   const { darkMode } = useContext(ThemeContext);
+
   const [ledger, setLedger] = useState<ICreateLedgerDto>({
     LedgerCode: "",
     LedgerName: "",
     contact: "",
     address: "",
     MasterAccount: "",
-    ParentId: undefined,
+    ParentId: "",
   });
+
   const [ledgerData, setLedgerData] = useState<ILedger[]>([]);
   const redirect = useNavigate();
 
@@ -77,7 +79,7 @@ const AddLedger = () => {
           InputProps={{ style: { color: darkMode ? "yellow" : "black" } }}
           InputLabelProps={{ style: { color: darkMode ? "#09ee70" : "black" } }}
         />
-         <TextField
+        <TextField
           fullWidth
           autoComplete="off"
           label="Contact"
@@ -87,7 +89,7 @@ const AddLedger = () => {
           InputProps={{ style: { color: darkMode ? "yellow" : "black" } }}
           InputLabelProps={{ style: { color: darkMode ? "#09ee70" : "black" } }}
         />
-         <TextField
+        <TextField
           fullWidth
           autoComplete="off"
           label="Address"

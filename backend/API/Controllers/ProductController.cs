@@ -117,6 +117,14 @@ namespace API.Controllers
                 return NotFound("Product you are looking for not found");
             }
 
+            var nameConflict = await _unitOfWork.Product.AnyAsync(p => p.ProductName == productUpdateDto.ProductName && p.Id != id);
+            
+            if (nameConflict)
+            {
+                return Conflict("Product already exists");
+            }
+
+
             // Check for file upload, validate it, and update the image URL if a file is provided.
             if (imageFile != null)
             {
@@ -150,6 +158,7 @@ namespace API.Controllers
                 // Update the product's image URL.
                 existingProduct.ImageUrl = imageUrl;
             }
+            
 
             _mapper.Map(productUpdateDto, existingProduct);
             await _unitOfWork.SaveAsync();

@@ -66,17 +66,23 @@ namespace API.Controllers
         }
 
         [HttpPut("Update")]
-        public async Task<ActionResult<CategoryGetDto>> UpdateCategory(CategoryUpdateDto jobUpdateDto, long id)
+        public async Task<ActionResult<CategoryGetDto>> UpdateCategory(CategoryUpdateDto categoryUpdateDto, long id)
         {
-            var jobToUpdate = await _unitOfWork.Category.GetByIdAsync(id);
-            if(jobToUpdate == null)
+            var categoryToUpdate = await _unitOfWork.Category.GetByIdAsync(id);
+            if(categoryToUpdate == null)
             {
                 return NotFound("Category to update not found");
             }
-            _mapper.Map(jobUpdateDto, jobToUpdate);
-            jobToUpdate.UpdatedAt = DateTime.UtcNow;
+
+            var nameConflict = await _unitOfWork.Category.AnyAsync(c=>c.CategoryName== categoryUpdateDto.CategoryName && c.Id !=id);
+            if (nameConflict)
+            {
+                return Conflict("Category already exists");
+            }
+            _mapper.Map(categoryUpdateDto, categoryToUpdate);
+            categoryToUpdate.UpdatedAt = DateTime.UtcNow;
             await _unitOfWork.SaveAsync();            
-            var convertedJob= _mapper.Map<CategoryGetDto>(jobToUpdate);
+            var convertedJob= _mapper.Map<CategoryGetDto>(categoryToUpdate);
             return Ok(convertedJob);
         }
 
