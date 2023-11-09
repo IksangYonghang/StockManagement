@@ -1,0 +1,26 @@
+@import "../../mixins";
+
+.transactions {
+  .heading {
+    @include d-flex(row, space-between, center);
+    width: 100%;
+  }
+}
+
+.add-transaction,
+.update-transaction {
+  width: 500px;
+  max-width: 100%;
+  margin: 0 auto; /* Center the element horizontally */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+
+  * {
+    color: var(--text-color1);
+  }
+}
+
+

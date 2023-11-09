@@ -1,0 +1,57 @@
+@import "../../mixins";
+
+.contact-page {
+  text-align: center;
+  margin: 20px;
+
+  .contact-header {
+    font-size: 30px;
+
+    font-weight: bold;
+    font-stretch: expanded;
+    margin-top: 60px;
+  }
+
+  .contact-details {
+    margin-top: 20px;
+  }
+
+  .email,
+  .phone,
+  .address {
+    font-size: 18px;
+    color: #666;
+    margin: 10px 0;
+  }
+
+  .icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+
+  .icon-size {
+    font-size: 20px;
+  }
+}
+
+.leaflet-container {
+  height: 550px;
+  width: 100%;
+}
+
+.leaflet-popup {
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.h3-dark {
+  color: goldenrod; 
+}
+
+.h3-light {
+  color: #8b0000; 
+}

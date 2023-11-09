@@ -1,0 +1,45 @@
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Module\bin\Debug\net7.0\Module.deps.json
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Module\bin\Debug\net7.0\Module.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Module\bin\Debug\net7.0\Module.pdb
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Module\bin\Debug\net7.0\Shared.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Module\bin\Debug\net7.0\Shared.pdb
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Module\obj\Debug\net7.0\Module.csproj.AssemblyReference.cache
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Module\obj\Debug\net7.0\Module.GeneratedMSBuildEditorConfig.editorconfig
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Module\obj\Debug\net7.0\Module.AssemblyInfoInputs.cache
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Module\obj\Debug\net7.0\Module.AssemblyInfo.cs
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Module\obj\Debug\net7.0\Module.csproj.CoreCompileInputs.cache
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Module\obj\Debug\net7.0\Module.csproj.CopyComplete
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Module\obj\Debug\net7.0\Module.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Module\obj\Debug\net7.0\refint\Module.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Module\obj\Debug\net7.0\Module.pdb
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Module\obj\Debug\net7.0\ref\Module.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Module\bin\Debug\net7.0\Module.deps.json
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Module\bin\Debug\net7.0\Module.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Module\bin\Debug\net7.0\Module.pdb
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Module\bin\Debug\net7.0\Shared.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Module\bin\Debug\net7.0\Shared.pdb
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Module\obj\Debug\net7.0\Module.csproj.AssemblyReference.cache
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Module\obj\Debug\net7.0\Module.GeneratedMSBuildEditorConfig.editorconfig
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Module\obj\Debug\net7.0\Module.AssemblyInfoInputs.cache
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Module\obj\Debug\net7.0\Module.AssemblyInfo.cs
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Module\obj\Debug\net7.0\Module.csproj.CoreCompileInputs.cache
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Module\obj\Debug\net7.0\Module.csproj.CopyComplete
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Module\obj\Debug\net7.0\Module.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Module\obj\Debug\net7.0\refint\Module.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Module\obj\Debug\net7.0\Module.pdb
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Module\obj\Debug\net7.0\ref\Module.dll
+E:\REPOS\Future Stock Management\backend\Module\bin\Debug\net7.0\Module.deps.json
+E:\REPOS\Future Stock Management\backend\Module\bin\Debug\net7.0\Module.dll
+E:\REPOS\Future Stock Management\backend\Module\bin\Debug\net7.0\Module.pdb
+E:\REPOS\Future Stock Management\backend\Module\bin\Debug\net7.0\Shared.dll
+E:\REPOS\Future Stock Management\backend\Module\bin\Debug\net7.0\Shared.pdb
+E:\REPOS\Future Stock Management\backend\Module\obj\Debug\net7.0\Module.csproj.AssemblyReference.cache
+E:\REPOS\Future Stock Management\backend\Module\obj\Debug\net7.0\Module.GeneratedMSBuildEditorConfig.editorconfig
+E:\REPOS\Future Stock Management\backend\Module\obj\Debug\net7.0\Module.AssemblyInfoInputs.cache
+E:\REPOS\Future Stock Management\backend\Module\obj\Debug\net7.0\Module.AssemblyInfo.cs
+E:\REPOS\Future Stock Management\backend\Module\obj\Debug\net7.0\Module.csproj.CoreCompileInputs.cache
+E:\REPOS\Future Stock Management\backend\Module\obj\Debug\net7.0\Module.csproj.CopyComplete
+E:\REPOS\Future Stock Management\backend\Module\obj\Debug\net7.0\Module.dll
+E:\REPOS\Future Stock Management\backend\Module\obj\Debug\net7.0\refint\Module.dll
+E:\REPOS\Future Stock Management\backend\Module\obj\Debug\net7.0\Module.pdb
+E:\REPOS\Future Stock Management\backend\Module\obj\Debug\net7.0\ref\Module.dll

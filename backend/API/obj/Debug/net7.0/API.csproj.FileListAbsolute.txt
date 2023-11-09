@@ -1,0 +1,154 @@
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\appsettings.Development.json
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\appsettings.json
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\API.exe
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\API.deps.json
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\API.runtimeconfig.json
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\API.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\API.pdb
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\Microsoft.AspNetCore.OpenApi.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\Microsoft.OpenApi.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\Swashbuckle.AspNetCore.Swagger.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\obj\Debug\net7.0\API.csproj.AssemblyReference.cache
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\obj\Debug\net7.0\API.GeneratedMSBuildEditorConfig.editorconfig
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\obj\Debug\net7.0\API.AssemblyInfoInputs.cache
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\obj\Debug\net7.0\API.AssemblyInfo.cs
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\obj\Debug\net7.0\API.csproj.CoreCompileInputs.cache
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\obj\Debug\net7.0\API.MvcApplicationPartsAssemblyInfo.cs
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\obj\Debug\net7.0\API.MvcApplicationPartsAssemblyInfo.cache
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\obj\Debug\net7.0\staticwebassets\msbuild.API.Microsoft.AspNetCore.StaticWebAssets.props
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\obj\Debug\net7.0\staticwebassets\msbuild.build.API.props
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.API.props
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.API.props
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\obj\Debug\net7.0\staticwebassets.pack.json
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\obj\Debug\net7.0\staticwebassets.build.json
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\obj\Debug\net7.0\staticwebassets.development.json
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\obj\Debug\net7.0\scopedcss\bundle\API.styles.css
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\obj\Debug\net7.0\API.csproj.CopyComplete
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\obj\Debug\net7.0\API.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\obj\Debug\net7.0\refint\API.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\obj\Debug\net7.0\API.pdb
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\obj\Debug\net7.0\API.genruntimeconfig.cache
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\obj\Debug\net7.0\ref\API.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\Humanizer.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Design.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Relational.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\Microsoft.Extensions.DependencyModel.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\Mono.TextTemplating.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\Npgsql.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\System.CodeDom.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\Data.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\Module.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\Shared.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\Data.pdb
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\Module.pdb
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\Shared.pdb
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\AutoMapper.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\API\bin\Debug\net7.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\appsettings.Development.json
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\appsettings.json
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\API.exe
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\API.deps.json
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\API.runtimeconfig.json
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\API.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\API.pdb
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\AutoMapper.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\Humanizer.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\Microsoft.AspNetCore.OpenApi.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Design.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Relational.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\Microsoft.Extensions.DependencyModel.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\Microsoft.OpenApi.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\Mono.TextTemplating.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\Npgsql.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\Swashbuckle.AspNetCore.Swagger.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\System.CodeDom.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\Data.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\Module.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\Shared.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\Data.pdb
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\Module.pdb
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\bin\Debug\net7.0\Shared.pdb
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\obj\Debug\net7.0\API.csproj.AssemblyReference.cache
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\obj\Debug\net7.0\API.GeneratedMSBuildEditorConfig.editorconfig
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\obj\Debug\net7.0\API.AssemblyInfoInputs.cache
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\obj\Debug\net7.0\API.AssemblyInfo.cs
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\obj\Debug\net7.0\API.csproj.CoreCompileInputs.cache
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\obj\Debug\net7.0\API.MvcApplicationPartsAssemblyInfo.cs
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\obj\Debug\net7.0\API.MvcApplicationPartsAssemblyInfo.cache
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\obj\Debug\net7.0\staticwebassets\msbuild.API.Microsoft.AspNetCore.StaticWebAssets.props
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\obj\Debug\net7.0\staticwebassets\msbuild.build.API.props
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.API.props
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.API.props
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\obj\Debug\net7.0\staticwebassets.pack.json
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\obj\Debug\net7.0\staticwebassets.build.json
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\obj\Debug\net7.0\staticwebassets.development.json
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\obj\Debug\net7.0\scopedcss\bundle\API.styles.css
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\obj\Debug\net7.0\API.csproj.CopyComplete
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\obj\Debug\net7.0\API.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\obj\Debug\net7.0\refint\API.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\obj\Debug\net7.0\API.pdb
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\obj\Debug\net7.0\API.genruntimeconfig.cache
+E:\REPOS\ResumeMgmtDRTs\BackEnd\API\obj\Debug\net7.0\ref\API.dll
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\appsettings.Development.json
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\appsettings.json
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\API.exe
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\API.deps.json
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\API.runtimeconfig.json
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\API.dll
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\API.pdb
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\AutoMapper.dll
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\Humanizer.dll
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\Microsoft.AspNetCore.OpenApi.dll
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.dll
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Design.dll
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Relational.dll
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\Microsoft.Extensions.DependencyModel.dll
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\Microsoft.OpenApi.dll
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\Mono.TextTemplating.dll
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\Npgsql.dll
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\Swashbuckle.AspNetCore.Swagger.dll
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\System.CodeDom.dll
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\Data.dll
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\Module.dll
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\Shared.dll
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\Data.pdb
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\Module.pdb
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\Shared.pdb
+E:\REPOS\Future Stock Management\backend\API\obj\Debug\net7.0\API.csproj.AssemblyReference.cache
+E:\REPOS\Future Stock Management\backend\API\obj\Debug\net7.0\API.GeneratedMSBuildEditorConfig.editorconfig
+E:\REPOS\Future Stock Management\backend\API\obj\Debug\net7.0\API.AssemblyInfoInputs.cache
+E:\REPOS\Future Stock Management\backend\API\obj\Debug\net7.0\API.AssemblyInfo.cs
+E:\REPOS\Future Stock Management\backend\API\obj\Debug\net7.0\API.csproj.CoreCompileInputs.cache
+E:\REPOS\Future Stock Management\backend\API\obj\Debug\net7.0\API.MvcApplicationPartsAssemblyInfo.cs
+E:\REPOS\Future Stock Management\backend\API\obj\Debug\net7.0\API.MvcApplicationPartsAssemblyInfo.cache
+E:\REPOS\Future Stock Management\backend\API\obj\Debug\net7.0\staticwebassets\msbuild.API.Microsoft.AspNetCore.StaticWebAssets.props
+E:\REPOS\Future Stock Management\backend\API\obj\Debug\net7.0\staticwebassets\msbuild.build.API.props
+E:\REPOS\Future Stock Management\backend\API\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.API.props
+E:\REPOS\Future Stock Management\backend\API\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.API.props
+E:\REPOS\Future Stock Management\backend\API\obj\Debug\net7.0\staticwebassets.pack.json
+E:\REPOS\Future Stock Management\backend\API\obj\Debug\net7.0\staticwebassets.build.json
+E:\REPOS\Future Stock Management\backend\API\obj\Debug\net7.0\staticwebassets.development.json
+E:\REPOS\Future Stock Management\backend\API\obj\Debug\net7.0\scopedcss\bundle\API.styles.css
+E:\REPOS\Future Stock Management\backend\API\obj\Debug\net7.0\API.csproj.CopyComplete
+E:\REPOS\Future Stock Management\backend\API\obj\Debug\net7.0\API.dll
+E:\REPOS\Future Stock Management\backend\API\obj\Debug\net7.0\refint\API.dll
+E:\REPOS\Future Stock Management\backend\API\obj\Debug\net7.0\API.pdb
+E:\REPOS\Future Stock Management\backend\API\obj\Debug\net7.0\API.genruntimeconfig.cache
+E:\REPOS\Future Stock Management\backend\API\obj\Debug\net7.0\ref\API.dll
+E:\REPOS\Future Stock Management\backend\API\bin\Debug\net7.0\NepaliDateConverter.dll

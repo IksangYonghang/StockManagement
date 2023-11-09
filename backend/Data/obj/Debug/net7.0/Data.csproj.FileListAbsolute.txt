@@ -1,0 +1,57 @@
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Data\bin\Debug\net7.0\Data.deps.json
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Data\bin\Debug\net7.0\Data.runtimeconfig.json
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Data\bin\Debug\net7.0\Data.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Data\bin\Debug\net7.0\Data.pdb
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Data\bin\Debug\net7.0\Module.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Data\bin\Debug\net7.0\Shared.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Data\bin\Debug\net7.0\Module.pdb
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Data\bin\Debug\net7.0\Shared.pdb
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Data\obj\Debug\net7.0\Data.csproj.AssemblyReference.cache
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Data\obj\Debug\net7.0\Data.GeneratedMSBuildEditorConfig.editorconfig
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Data\obj\Debug\net7.0\Data.AssemblyInfoInputs.cache
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Data\obj\Debug\net7.0\Data.AssemblyInfo.cs
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Data\obj\Debug\net7.0\Data.csproj.CoreCompileInputs.cache
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Data\obj\Debug\net7.0\Data.csproj.CopyComplete
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Data\obj\Debug\net7.0\Data.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Data\obj\Debug\net7.0\refint\Data.dll
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Data\obj\Debug\net7.0\Data.pdb
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Data\obj\Debug\net7.0\Data.genruntimeconfig.cache
+E:\REPOS\ResumeMgmtDRTs\ResumeMgmt\Data\obj\Debug\net7.0\ref\Data.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Data\bin\Debug\net7.0\Data.deps.json
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Data\bin\Debug\net7.0\Data.runtimeconfig.json
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Data\bin\Debug\net7.0\Data.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Data\bin\Debug\net7.0\Data.pdb
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Data\bin\Debug\net7.0\Module.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Data\bin\Debug\net7.0\Shared.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Data\bin\Debug\net7.0\Module.pdb
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Data\bin\Debug\net7.0\Shared.pdb
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Data\obj\Debug\net7.0\Data.csproj.AssemblyReference.cache
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Data\obj\Debug\net7.0\Data.GeneratedMSBuildEditorConfig.editorconfig
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Data\obj\Debug\net7.0\Data.AssemblyInfoInputs.cache
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Data\obj\Debug\net7.0\Data.AssemblyInfo.cs
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Data\obj\Debug\net7.0\Data.csproj.CoreCompileInputs.cache
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Data\obj\Debug\net7.0\Data.csproj.CopyComplete
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Data\obj\Debug\net7.0\Data.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Data\obj\Debug\net7.0\refint\Data.dll
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Data\obj\Debug\net7.0\Data.pdb
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Data\obj\Debug\net7.0\Data.genruntimeconfig.cache
+E:\REPOS\ResumeMgmtDRTs\BackEnd\Data\obj\Debug\net7.0\ref\Data.dll
+E:\REPOS\Future Stock Management\backend\Data\bin\Debug\net7.0\Data.deps.json
+E:\REPOS\Future Stock Management\backend\Data\bin\Debug\net7.0\Data.runtimeconfig.json
+E:\REPOS\Future Stock Management\backend\Data\bin\Debug\net7.0\Data.dll
+E:\REPOS\Future Stock Management\backend\Data\bin\Debug\net7.0\Data.pdb
+E:\REPOS\Future Stock Management\backend\Data\bin\Debug\net7.0\Module.dll
+E:\REPOS\Future Stock Management\backend\Data\bin\Debug\net7.0\Shared.dll
+E:\REPOS\Future Stock Management\backend\Data\bin\Debug\net7.0\Module.pdb
+E:\REPOS\Future Stock Management\backend\Data\bin\Debug\net7.0\Shared.pdb
+E:\REPOS\Future Stock Management\backend\Data\obj\Debug\net7.0\Data.csproj.AssemblyReference.cache
+E:\REPOS\Future Stock Management\backend\Data\obj\Debug\net7.0\Data.GeneratedMSBuildEditorConfig.editorconfig
+E:\REPOS\Future Stock Management\backend\Data\obj\Debug\net7.0\Data.AssemblyInfoInputs.cache
+E:\REPOS\Future Stock Management\backend\Data\obj\Debug\net7.0\Data.AssemblyInfo.cs
+E:\REPOS\Future Stock Management\backend\Data\obj\Debug\net7.0\Data.csproj.CoreCompileInputs.cache
+E:\REPOS\Future Stock Management\backend\Data\obj\Debug\net7.0\Data.csproj.CopyComplete
+E:\REPOS\Future Stock Management\backend\Data\obj\Debug\net7.0\Data.dll
+E:\REPOS\Future Stock Management\backend\Data\obj\Debug\net7.0\refint\Data.dll
+E:\REPOS\Future Stock Management\backend\Data\obj\Debug\net7.0\Data.pdb
+E:\REPOS\Future Stock Management\backend\Data\obj\Debug\net7.0\Data.genruntimeconfig.cache
+E:\REPOS\Future Stock Management\backend\Data\obj\Debug\net7.0\ref\Data.dll
