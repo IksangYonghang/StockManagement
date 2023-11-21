@@ -29,6 +29,7 @@ namespace API.Controllers
         public async Task<ActionResult<TransactionGetDto>> CreateTransaction(TransactionCreateDto transactionCreateDto)
         {
             /* commented it as the validation logic is performed from front end
+             
             if (transactionCreateDto.Debit != transactionCreateDto.Credit)
             {
                 return BadRequest("Invalid transaction. Debit and credit amounts are not equal.");

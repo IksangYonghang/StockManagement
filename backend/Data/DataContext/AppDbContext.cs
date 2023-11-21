@@ -16,6 +16,7 @@ namespace Data.DataContext
         public DbSet<Company> Companies { get; set; }
         public DbSet<Ledger> Ledgers { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,6 +24,7 @@ namespace Data.DataContext
             modelBuilder.Entity<Category>().ToTable("categories", schema: "stock");
             modelBuilder.Entity<Product>().ToTable("products", schema: "stock");
             modelBuilder.Entity<Ledger>().ToTable("ledgers", schema: "stock");
+            modelBuilder.Entity<User>().ToTable("users", schema: "stock");
             modelBuilder.Entity<Transaction>().ToTable("transactions", schema: "stock");
 
             modelBuilder.ApplyConfiguration(new CaseInsensitiveColumnNameConvention<Company>());
@@ -30,6 +32,7 @@ namespace Data.DataContext
             modelBuilder.ApplyConfiguration(new CaseInsensitiveColumnNameConvention<Product>());
             modelBuilder.ApplyConfiguration(new CaseInsensitiveColumnNameConvention<Ledger>());
             modelBuilder.ApplyConfiguration(new CaseInsensitiveColumnNameConvention<Transaction>());
+            modelBuilder.ApplyConfiguration(new CaseInsensitiveColumnNameConvention<User>());
 
             // Fluent API for relationships          
 

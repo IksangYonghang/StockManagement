@@ -147,3 +147,37 @@ export interface ITransactionUpdateDto {
   credit: string;
   narration: string;
 }
+
+export interface ILogin {
+  userName: string;
+  password: string;
+}
+export interface IUser {
+  id: string;
+  firstName: string;
+  middleName: string | null;
+  lastName: string;
+  address: string;
+  phone: string;
+  userType: string;
+  email: string;
+  userName: string | null;
+  passwordHash: string;
+}
+
+export interface ICreateUserDto {
+  firstName: string;
+  middleName: string | null;
+  lastName: string;
+  address: string;
+  phone: string;
+  userType: string;
+  email: string;
+  userName: string | null;
+  password: string;
+}
+
+export interface IResetPassword{
+  userName: string;
+  password: string;
+}

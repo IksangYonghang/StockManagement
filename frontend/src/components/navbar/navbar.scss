@@ -35,7 +35,9 @@
   }
 
   .toggle {
-    margin-left: 1rem;
+    margin-left: 0.5rem;
+    margin-right: -20px;
+   
     cursor: pointer;
     /*
     svg {
@@ -45,9 +47,25 @@
   }
 }
 
-/* Add margin to content to create space for the fixed navbar */
 .content {
-  margin-top: 60px; /* Adjust the value based on your navbar height */
+  margin-top: 60px;
+}
+.logout {
+  margin-left: 16px;
+  display: flex;
+  align-items: center;
+
+  button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: bold;
+  }
 }
 
 @media (max-width: 600px) {

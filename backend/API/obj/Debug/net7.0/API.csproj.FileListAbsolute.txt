@@ -204,3 +204,12 @@ E:\REPOS\Stock Management\backend\API\obj\Debug\net7.0\refint\API.dll
 E:\REPOS\Stock Management\backend\API\obj\Debug\net7.0\API.pdb
 E:\REPOS\Stock Management\backend\API\obj\Debug\net7.0\API.genruntimeconfig.cache
 E:\REPOS\Stock Management\backend\API\obj\Debug\net7.0\ref\API.dll
+E:\REPOS\Stock Management\backend\API\bin\Debug\net7.0\BCrypt.Net-Next.dll
+E:\REPOS\Stock Management\backend\API\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
+E:\REPOS\Stock Management\backend\API\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\REPOS\Stock Management\backend\API\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
+E:\REPOS\Stock Management\backend\API\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
+E:\REPOS\Stock Management\backend\API\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll
+E:\REPOS\Stock Management\backend\API\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\REPOS\Stock Management\backend\API\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.dll
+E:\REPOS\Stock Management\backend\API\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll

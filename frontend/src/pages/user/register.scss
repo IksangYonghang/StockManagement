@@ -1,0 +1,15 @@
+@import "../../mixins";
+
+
+
+.add-user,
+.update-user {
+  width: 500px;
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}

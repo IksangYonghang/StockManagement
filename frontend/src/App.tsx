@@ -1,7 +1,6 @@
-import { useContext } from "react";
-import { ThemeContext } from "./context/theme.context";
+import { useState, useEffect } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/navbar/Navbar.component";
-import { Routes, Route } from "react-router-dom";
 import Footer from "./components/footer/Footer";
 import Home from "./pages/home/Home.page";
 import Companies from "./pages/companies/Companies.page";
@@ -20,47 +19,74 @@ import UpdateProduct from "./pages/products/UpdateProduct.page";
 import Transaction from "./pages/transactions/Transaction.page";
 import AddTransaction from "./pages/transactions/AddTransaction.page";
 import UpdateTransaction from "./pages/transactions/UpdateTransaction.Page";
-
+import Login from "./pages/user/Login.page";
+import Registration from "./pages/user/Register.page";
+import ResetPassword from "./pages/user/ResetPassword.page";
 const App = () => {
-  const { darkMode } = useContext(ThemeContext);
+  const [isLoggedIn, setLoginStatus] = useState(false);
 
-  const appStyles = darkMode ? "app dark" : "app";
+  const handleLoginStatus = (status: boolean) => {
+    setLoginStatus(status);
+  };
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setLoginStatus(true);
+    }
+  }, []);
 
   return (
-    <div className={appStyles}>
-      <Navbar />
+    <div className="app">
+      <Navbar isLoggedIn={isLoggedIn} setLoginStatus={setLoginStatus} />
       <div className="wrapper">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/companies">
-            <Route index element={<Companies />} />
-            <Route path="add" element={<AddCompany />} />
-            <Route path="update/:id" element={<UpdateCompany />} />
-          </Route>
-          <Route path="/categories">
-            <Route index element={<Categories />} />
-            <Route path="add" element={<AddCategory />} />
-            <Route path="update/:id" element={<UpdateCategory />} />
-          </Route>
-          <Route path="/ledgers">
-            <Route index element={<Ledgers />} />
-            <Route path="add" element={<AddLedger />} />
-            <Route path="update/:id" element={<UpdateLedger />} />
-          </Route>
-          <Route path="/transactions">
-            <Route index element={<Transaction />} />
-            <Route path="add" element={<AddTransaction />} />
-            <Route path="update/:id" element={<UpdateTransaction />} />
-          </Route>
-          <Route path="/products">
-            <Route index element={<Products />} />
-            <Route path="add" element={<AddProduct />} />
-            <Route path="update/:id" element={<UpdateProduct />} />
-          </Route>
-          <Route path="/contact" element={<Contact />} />
+          <Route
+            path="/"
+            element={isLoggedIn ? <Home /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/login"
+            element={
+              <Login
+                handleLoginStatus={handleLoginStatus}
+                isLoggedIn={isLoggedIn}
+              />
+            }
+          />
+
+          <Route path="/register" element={<Registration />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          {isLoggedIn && (
+            <>
+              <Route path="/companies" element={<Companies />} />
+              <Route path="/companies/add" element={<AddCompany />} />
+              <Route path="/companies/update/:id" element={<UpdateCompany />} />
+              <Route path="/categories" element={<Categories />} />
+              <Route path="/categories/add" element={<AddCategory />} />
+              <Route
+                path="/categories/update/:id"
+                element={<UpdateCategory />}
+              />
+              <Route path="/ledgers" element={<Ledgers />} />
+              <Route path="/ledgers/add" element={<AddLedger />} />
+              <Route path="/ledgers/update/:id" element={<UpdateLedger />} />
+              <Route path="/transactions" element={<Transaction />} />
+              <Route path="/transactions/add" element={<AddTransaction />} />
+              <Route
+                path="/transactions/update/:id"
+                element={<UpdateTransaction />}
+              />
+              <Route path="/products" element={<Products />} />
+              <Route path="/products/add" element={<AddProduct />} />
+              <Route path="/products/update/:id" element={<UpdateProduct />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/" element={<Home />} />
+            </>
+          )}
         </Routes>
       </div>
-      <Footer />
+      {isLoggedIn && <Footer />} {/* Render footer only when logged in */}
     </div>
   );
 };

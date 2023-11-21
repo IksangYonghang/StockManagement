@@ -1,22 +1,31 @@
 import { ToggleButton } from "@mui/material";
 import "./navbar.scss";
-import { Link } from "react-router-dom";
-import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext, useState, useEffect } from "react";
 import { ThemeContext } from "../../context/theme.context";
-import { Menu, LightMode, DarkMode } from "@mui/icons-material";
+import { Menu, LightMode, DarkMode, Logout } from "@mui/icons-material";
 
-const links = [
+interface NavbarProps {
+  isLoggedIn: boolean;
+  setLoginStatus: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const links: { href: string; label: string }[] = [
   { href: "/companies", label: "Companies" },
   { href: "/categories", label: "Categories" },
   { href: "/products", label: "Products" },
   { href: "/ledgers", label: "Ledgers" },
-  {href: "/transactions", label: "Transaction"},
+  { href: "/transactions", label: "Transaction" },
   { href: "/contact", label: "Contact" },
 ];
 
-const Navbar = () => {
+const AuthenticatedNavbar: React.FC<{
+  darkMode: boolean;
+  toggleDarkMode: () => void;
+  handleLogout: () => void;
+  navigate: ReturnType<typeof useNavigate>;
+}> = ({ darkMode, toggleDarkMode, handleLogout }) => {
   const [open, setOpen] = useState<boolean>(false);
-  const { darkMode, toggleDarkMode } = useContext(ThemeContext);
 
   const ToggleOpenMenu = () => {
     setOpen((prevState) => !prevState);
@@ -54,10 +63,18 @@ const Navbar = () => {
           ))}
         </ul>
       </div>
-      <div className="hamburger">
-        <Menu onClick={ToggleOpenMenu} />
+      <div className="logout">
+        <button
+          onClick={handleLogout}
+          style={{ color: darkMode ? "white" : "goldenrod" }}
+        >
+          <Logout />
+          <span style={{ marginLeft: "-5px" }}>Logout</span>
+        </button>
       </div>
       <div className="toggle">
+        {" "}
+        {/* Moved the ToggleButton here */}
         <ToggleButton
           value={"check"}
           selected={darkMode}
@@ -67,8 +84,39 @@ const Navbar = () => {
           {darkMode ? <LightMode /> : <DarkMode />}
         </ToggleButton>
       </div>
+      <div className="hamburger">
+        <Menu onClick={ToggleOpenMenu} />
+      </div>
     </div>
   );
+};
+
+const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, setLoginStatus }) => {
+  const { darkMode, toggleDarkMode } = useContext(ThemeContext);
+  const navigate = useNavigate();
+  const [loggedOut, setLoggedOut] = useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setLoggedOut(true);
+  };
+
+  useEffect(() => {
+    if (loggedOut) {
+      setLoggedOut(false);
+      setLoginStatus(false);
+      navigate("/login");
+    }
+  }, [loggedOut, setLoginStatus, navigate]);
+
+  return isLoggedIn ? (
+    <AuthenticatedNavbar
+      darkMode={darkMode}
+      toggleDarkMode={toggleDarkMode}
+      handleLogout={handleLogout}
+      navigate={navigate}
+    />
+  ) : null;
 };
 
 export default Navbar;

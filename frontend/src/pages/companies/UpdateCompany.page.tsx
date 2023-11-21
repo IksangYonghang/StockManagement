@@ -15,21 +15,21 @@ import { ThemeContext } from "../../context/theme.context";
 
 const UpdateCompany = () => {
   const { darkMode } = useContext(ThemeContext);
-  const { id } = useParams(); // Get the company ID from the route
+  const { id } = useParams(); 
   const [company, setCompany] = useState<IUpdateCompanyDto>({
     companyName: "",
     companySize: "",
   });
   const redirect = useNavigate();
 
-  // Fetch the company data for the specified ID
+
   useEffect(() => {
-    // Make an HTTP request to fetch the company data
+    
     httpModule
       .get(`/Company/GetById?id=${id}`)
       .then((response) => {
         const companyData = response.data;
-        setCompany(companyData); // Set the retrieved data to the state
+        setCompany(companyData); 
       })
       .catch((error) => console.error(error));
   }, [id]);
@@ -40,7 +40,7 @@ const UpdateCompany = () => {
       return;
     }
 
-    // Make an HTTP request to update the company data
+    
     httpModule
       .put(`/Company/Update?id=${id}`, company)
       .then(() => redirect("/companies"))
