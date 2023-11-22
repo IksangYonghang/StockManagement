@@ -167,17 +167,29 @@ export interface IUser {
 
 export interface ICreateUserDto {
   firstName: string;
-  middleName: string | null;
+  middleName: string;
   lastName: string;
   address: string;
   phone: string;
   userType: string;
   email: string;
-  userName: string | null;
+  userName: string;
   password: string;
 }
 
-export interface IResetPassword{
+export interface IResetPassword {
+  userName: string;
+  password: string;
+}
+
+export interface IUpdateUserDto {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  address: string;
+  phone: string;
+  userType: string;
+  email: string;
   userName: string;
   password: string;
 }

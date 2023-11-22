@@ -5,6 +5,7 @@ using Module.Dtos.Company;
 using Module.Dtos.Job;
 using Module.Dtos.Ledger;
 using Module.Dtos.Transaction;
+using Module.Dtos.User;
 using Module.Entities;
 using System;
 using System.Collections.Generic;
@@ -55,7 +56,15 @@ namespace Module.AutoMapper
                 .ForMember(dest=>dest.LedgerName, opt => opt.MapFrom(src => src.Ledger.LedgerName))
                 .ForMember(dest=>dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName));
             CreateMap<TransactionUpdateDto, Transaction>();
-           
+
+
+            CreateMap<User, UserDto>();
+            CreateMap<User, UserGetDto>();
+            CreateMap<UserGetDto,UserDto>();
+            CreateMap<UserGetDto, UserDto>();
+            CreateMap<UpdateUserDto, UserGetDto>();
+            CreateMap<UpdateUserDto, UserDto>();
+            CreateMap<User, UpdateUserDto>();
            
         }
     }

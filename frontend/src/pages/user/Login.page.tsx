@@ -15,6 +15,7 @@ const Login: React.FC<LoginProps> = ({ handleLoginStatus, isLoggedIn }) => {
   const redirect = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState(false);
   const [token, setToken] = useState<string | null>(null);
   const [isFormHovered, setIsFormHovered] = useState(false);
   const [login, setLogin] = useState<ILogin>({
@@ -63,21 +64,36 @@ const Login: React.FC<LoginProps> = ({ handleLoginStatus, isLoggedIn }) => {
       setLoginAttempts(0);
       setShowError(false);
       redirect("/");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login failed:", error);
       setLoginAttempts(loginAttempts + 1);
       if (loginAttempts + 1 >= maxLoginAttempts) {
         setShowError(true);
         if (
           window.confirm(
-            "Too many wrong attempts, do you want to reset password?"
+            "Too many wrong attempts, do you want to reset the password?"
           )
         ) {
           redirect("/reset-password");
         }
+      } else if (
+        error.response &&
+        "status" in error.response &&
+        error.response.status === 404
+      ) {
+        setLoginError(true);
+        alert("User not found. Please check your username and try again.");
+      } else if (
+        error.response &&
+        "status" in error.response &&
+        error.response.status === 400
+      ) {
+        setLoginError(true);
+        alert("Incorrect password. Please check your password and try again.");
       }
     }
   };
+
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {

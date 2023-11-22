@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Navbar from "./components/navbar/Navbar.component";
 import Footer from "./components/footer/Footer";
 import Home from "./pages/home/Home.page";
@@ -22,19 +22,75 @@ import UpdateTransaction from "./pages/transactions/UpdateTransaction.Page";
 import Login from "./pages/user/Login.page";
 import Registration from "./pages/user/Register.page";
 import ResetPassword from "./pages/user/ResetPassword.page";
+import Users from "./pages/user/Users.page";
+import AddUser from "./pages/user/AddUser.page";
+import UpdateUser from "./pages/user/UpdateUser.page";
+
 const App = () => {
+  // State to manage login status
   const [isLoggedIn, setLoginStatus] = useState(false);
 
+  // Reference for the timer
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Navigation hook
+  const navigate = useNavigate();
+
+  // Function to update login status
   const handleLoginStatus = (status: boolean) => {
     setLoginStatus(status);
   };
 
+  // Function to handle user activity
+  const handleUserActivity = () => {
+    // Reset the timer when user activity is detected
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    // Set the timer for 5 minutes
+    timerRef.current = setTimeout(() => {
+      // Perform logout actions after 5 minutes of inactivity
+      localStorage.removeItem("token");
+      setLoginStatus(false);
+      navigate("/login");
+    }, 5 * 60 * 1000); // 5 minutes in milliseconds
+  };
+
+  // Effect for initial login status check and event listeners
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       setLoginStatus(true);
     }
-  }, []);
+
+    // List of events to track for user activity
+    const events = [
+      "mousemove",
+      "mousedown",
+      "keydown",
+      "touchstart",
+      "scroll",
+      "wheel",
+    ];
+
+    // Function to reset the timer
+    const resetTimer = () => {
+      handleUserActivity();
+    };
+
+    // Adding event listeners for each event
+    events.forEach((event) => {
+      window.addEventListener(event, resetTimer);
+    });
+
+    // Cleanup function to remove event listeners on unmount
+    return () => {
+      events.forEach((event) => {
+        window.removeEventListener(event, resetTimer);
+      });
+    };
+  }, [setLoginStatus, navigate]);
 
   return (
     <div className="app">
@@ -82,11 +138,14 @@ const App = () => {
               <Route path="/products/update/:id" element={<UpdateProduct />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/" element={<Home />} />
+              <Route path="/users" element={<Users />} />
+              <Route path="/users/add" element={<AddUser />} />
+              <Route path="users/update/:id" element={<UpdateUser />} />
             </>
           )}
         </Routes>
       </div>
-      {isLoggedIn && <Footer />} {/* Render footer only when logged in */}
+      {isLoggedIn && <Footer />}
     </div>
   );
 };
