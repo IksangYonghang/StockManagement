@@ -12,7 +12,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+   
     public class CompanyController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;

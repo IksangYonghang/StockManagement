@@ -1,5 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+  useLocation,
+  BrowserRouter,
+} from "react-router-dom";
 import Navbar from "./components/navbar/Navbar.component";
 import Footer from "./components/footer/Footer";
 import Home from "./pages/home/Home.page";
@@ -26,45 +33,109 @@ import Users from "./pages/user/Users.page";
 import AddUser from "./pages/user/AddUser.page";
 import UpdateUser from "./pages/user/UpdateUser.page";
 
+interface MainContentProps {
+  isLoggedIn: boolean;
+  handleLoginStatus: (status: boolean) => void;
+}
+
+const MainContent: React.FC<MainContentProps> = ({
+  isLoggedIn,
+  handleLoginStatus,
+}) => {
+  return (
+    <div className="wrapper">
+      <Routes>
+        <Route
+          path="/"
+          element={isLoggedIn ? <Home /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/login"
+          element={
+            <Login
+              handleLoginStatus={handleLoginStatus}
+              isLoggedIn={isLoggedIn}
+            />
+          }
+        />
+
+        <Route path="/register" element={<Registration />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        {isLoggedIn && (
+          <>
+            <Route path="/companies" element={<Companies />} />
+            <Route path="/companies/add" element={<AddCompany />} />
+            <Route path="/companies/update/:id" element={<UpdateCompany />} />
+            <Route path="/categories" element={<Categories />} />
+            <Route path="/categories/add" element={<AddCategory />} />
+            <Route path="/categories/update/:id" element={<UpdateCategory />} />
+            <Route path="/ledgers" element={<Ledgers />} />
+            <Route path="/ledgers/add" element={<AddLedger />} />
+            <Route path="/ledgers/update/:id" element={<UpdateLedger />} />
+            <Route path="/transactions" element={<Transaction />} />
+            <Route path="/transactions/add" element={<AddTransaction />} />
+            <Route
+              path="/transactions/update/:id"
+              element={<UpdateTransaction />}
+            />
+            <Route path="/products" element={<Products />} />
+            <Route path="/products/add" element={<AddProduct />} />
+            <Route path="/products/update/:id" element={<UpdateProduct />} />
+
+            <Route path="/users" element={<Users />} />
+            <Route path="/users/add" element={<AddUser />} />
+            <Route path="users/update/:id" element={<UpdateUser />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/" element={<Home />} />
+          </>
+        )}
+      </Routes>
+    </div>
+  );
+};
+
 const App = () => {
-  // State to manage login status
   const [isLoggedIn, setLoginStatus] = useState(false);
-
-  // Reference for the timer
+  const [remainingTime, setRemainingTime] = useState(5 * 60);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Navigation hook
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // Function to update login status
   const handleLoginStatus = (status: boolean) => {
     setLoginStatus(status);
   };
 
-  // Function to handle user activity
   const handleUserActivity = () => {
-    // Reset the timer when user activity is detected
+    setRemainingTime(5 * 60); //Setting  auto-logout time to 5 minutes
+
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }
 
-    // Set the timer for 5 minutes
-    timerRef.current = setTimeout(() => {
-      // Perform logout actions after 5 minutes of inactivity
-      localStorage.removeItem("token");
-      setLoginStatus(false);
-      navigate("/login");
-    }, 5 * 60 * 1000); // 5 minutes in milliseconds
+    const startTime = new Date(); // Log start time when timer resets
+    // console.log(`User activity detected at ${startTime.toLocaleTimeString()}`);
+
+    timerRef.current = setInterval(() => {
+      setRemainingTime((prevTime) => {
+        if (prevTime > 0) {
+          return prevTime - 1;
+        } else {
+          clearInterval(timerRef.current!);
+          localStorage.removeItem("token");
+          setLoginStatus(false);
+          navigate("/login");
+          return 0;
+        }
+      });
+    }, 1000);
   };
 
-  // Effect for initial login status check and event listeners
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       setLoginStatus(true);
     }
 
-    // List of events to track for user activity
     const events = [
       "mousemove",
       "mousedown",
@@ -74,80 +145,30 @@ const App = () => {
       "wheel",
     ];
 
-    // Function to reset the timer
     const resetTimer = () => {
       handleUserActivity();
     };
 
-    // Adding event listeners for each event
     events.forEach((event) => {
       window.addEventListener(event, resetTimer);
     });
 
-    // Cleanup function to remove event listeners on unmount
     return () => {
       events.forEach((event) => {
         window.removeEventListener(event, resetTimer);
       });
     };
-  }, [setLoginStatus, navigate]);
+  }, [setLoginStatus, navigate, location.pathname]);
 
   return (
     <div className="app">
       <Navbar isLoggedIn={isLoggedIn} setLoginStatus={setLoginStatus} />
-      <div className="wrapper">
-        <Routes>
-          <Route
-            path="/"
-            element={isLoggedIn ? <Home /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/login"
-            element={
-              <Login
-                handleLoginStatus={handleLoginStatus}
-                isLoggedIn={isLoggedIn}
-              />
-            }
-          />
-
-          <Route path="/register" element={<Registration />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          {isLoggedIn && (
-            <>
-              <Route path="/companies" element={<Companies />} />
-              <Route path="/companies/add" element={<AddCompany />} />
-              <Route path="/companies/update/:id" element={<UpdateCompany />} />
-              <Route path="/categories" element={<Categories />} />
-              <Route path="/categories/add" element={<AddCategory />} />
-              <Route
-                path="/categories/update/:id"
-                element={<UpdateCategory />}
-              />
-              <Route path="/ledgers" element={<Ledgers />} />
-              <Route path="/ledgers/add" element={<AddLedger />} />
-              <Route path="/ledgers/update/:id" element={<UpdateLedger />} />
-              <Route path="/transactions" element={<Transaction />} />
-              <Route path="/transactions/add" element={<AddTransaction />} />
-              <Route
-                path="/transactions/update/:id"
-                element={<UpdateTransaction />}
-              />
-              <Route path="/products" element={<Products />} />
-              <Route path="/products/add" element={<AddProduct />} />
-              <Route path="/products/update/:id" element={<UpdateProduct />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/" element={<Home />} />
-              <Route path="/users" element={<Users />} />
-              <Route path="/users/add" element={<AddUser />} />
-              <Route path="users/update/:id" element={<UpdateUser />} />
-            </>
-          )}
-        </Routes>
-      </div>
-      {isLoggedIn && <Footer />}
+      <MainContent
+        isLoggedIn={isLoggedIn}
+        handleLoginStatus={handleLoginStatus}
+      />
+      <Footer />
     </div>
   );
 };
-
 export default App;

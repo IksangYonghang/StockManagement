@@ -182,6 +182,7 @@ namespace API.Controllers
             {
                 userToUpdate.Email = updateUserDto.Email;
             }
+           
 
             // Check if a new password is provided and hash it
             if (!string.IsNullOrEmpty(updateUserDto.Password))

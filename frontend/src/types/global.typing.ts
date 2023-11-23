@@ -152,6 +152,7 @@ export interface ILogin {
   userName: string;
   password: string;
 }
+
 export interface IUser {
   id: string;
   firstName: string;

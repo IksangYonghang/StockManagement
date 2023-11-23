@@ -1,6 +1,6 @@
 import React, { useState, FormEvent, useEffect } from "react";
 import Background from "../../images/background.jpg";
-import LoginImg from "../../images/login.jpg";
+import LoginImg from "../../images/login.png";
 import { Link, useNavigate } from "react-router-dom";
 import { ILogin } from "../../types/global.typing";
 import httpModule from "../../helpers/http.module";
@@ -54,11 +54,10 @@ const Login: React.FC<LoginProps> = ({ handleLoginStatus, isLoggedIn }) => {
       });
 
       const token = response.data;
-
       localStorage.setItem("token", token);
       //window.alert("Login successful: " + JSON.stringify(response.data)); <<<<<<< to show toekn in window
       //window.alert("Login successful");
-      console.log("Login successful:", response.data);
+      //console.log("Login successful:", response.data);
       handleLoginStatus(true);
 
       setLoginAttempts(0);
@@ -194,11 +193,12 @@ const Login: React.FC<LoginProps> = ({ handleLoginStatus, isLoggedIn }) => {
           <div style={{ ...leftSectionStyle }}>
             <h2
               style={{
-                color: "#ccffcc",
+                color: "white",
                 textAlign: "center",
-                marginTop: "120px",
+                marginTop: "100px",
                 fontSize: "2rem",
                 fontFamily: "serif, Times New Roman",
+                textShadow: "0 0 10px #000, 0 0 20px #000, 0 0 30px #000",
               }}
             >
               Inventory Management System

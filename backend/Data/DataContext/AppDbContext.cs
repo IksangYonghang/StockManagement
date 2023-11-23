@@ -55,6 +55,7 @@ namespace Data.DataContext
             modelBuilder.Entity<Ledger>().Property(ledger => ledger.MasterAccount).HasConversion<string>();
             modelBuilder.Entity<Transaction>().Property(transaction => transaction.TransactionType).HasConversion<string>();
             modelBuilder.Entity<Transaction>().Property(transaction => transaction.TransactionMethod).HasConversion<string>();
+            modelBuilder.Entity<User>().Property(user => user.UserType).HasConversion<string>();
 
           
         }      
