@@ -1,16 +1,13 @@
 import "./home.scss";
 import wallpic from "../../images/wallpic.png";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { ThemeContext } from "../../context/theme.context";
-
-
 
 const Home = () => {
   const { darkMode } = useContext(ThemeContext);
 
   return (
     <div className="content home">
-   
       <h1
         style={{ textAlign: "center", color: darkMode ? "#09ee70" : "#062442" }}
       >

@@ -7,6 +7,7 @@ namespace Module.Dtos.Transaction
     {            
         public DateOnly Date { get; set; }
         public string InvoiceNumber { get; set; }= string.Empty;
+        public long UserId { get; set; }
         public long LedgerId { get; set; }        
         public long ProductId { get; set; }
         public int Piece { get; set; }

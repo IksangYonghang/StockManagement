@@ -5,11 +5,58 @@ import { Link, useNavigate } from "react-router-dom";
 import { ILogin } from "../../types/global.typing";
 import httpModule from "../../helpers/http.module";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import NepaliDateConverter from "nepali-date-converter";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface LoginProps {
   handleLoginStatus: (status: boolean) => void;
   isLoggedIn: boolean;
 }
+interface DateDisplayProps {
+  style?: React.CSSProperties;
+}
+
+const DateDisplay: React.FC<DateDisplayProps> = ({ style }) => {
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [nepaliDate, setNepaliDate] = useState("");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date();
+      setCurrentDate(now);
+
+      const convertedDate = new NepaliDateConverter(now);
+      const nepaliYear = convertedDate.getYear().toString();
+      const nepaliMonth = (convertedDate.getMonth() + 1)
+        .toString()
+        .padStart(2, "0");
+      const nepaliDay = convertedDate.getDate().toString().padStart(2, "0");
+
+      setNepaliDate(`${nepaliYear}/${nepaliMonth}/${nepaliDay}`);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const dateDisplayStyle: React.CSSProperties = {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: "16px",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    marginBottom: "-6rem",
+    marginRight: "650px",
+    ...(style || {}),
+  };
+
+  return (
+    <div style={dateDisplayStyle}>
+      <p>Date : {nepaliDate}</p>
+    </div>
+  );
+};
 
 const Login: React.FC<LoginProps> = ({ handleLoginStatus, isLoggedIn }) => {
   const redirect = useNavigate();
@@ -54,12 +101,25 @@ const Login: React.FC<LoginProps> = ({ handleLoginStatus, isLoggedIn }) => {
       });
 
       const token = response.data;
-      localStorage.setItem("token", token);
-      //window.alert("Login successful: " + JSON.stringify(response.data)); <<<<<<< to show toekn in window
-      //window.alert("Login successful");
-      //console.log("Login successful:", response.data);
-      handleLoginStatus(true);
+      const userData = await fetchUserData(username);
 
+      localStorage.setItem("token", token);
+      localStorage.setItem("userName", username);
+      localStorage.setItem("userId", userData.id);
+
+      const welcomeMessage = `Welcome, ${username}!`;
+
+      toast.success(welcomeMessage, {
+        position: "top-center",
+        autoClose: 600,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      handleLoginStatus(true);
       setLoginAttempts(0);
       setShowError(false);
       redirect("/");
@@ -90,6 +150,17 @@ const Login: React.FC<LoginProps> = ({ handleLoginStatus, isLoggedIn }) => {
         setLoginError(true);
         alert("Incorrect password. Please check your password and try again.");
       }
+    }
+  };
+  const fetchUserData = async (username: string) => {
+    try {
+      const userResponse = await httpModule.get(
+        `/User/GetByUsername?username=${username}`
+      );
+      return userResponse.data;
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      throw new Error("Failed to fetch user data");
     }
   };
 
@@ -180,6 +251,16 @@ const Login: React.FC<LoginProps> = ({ handleLoginStatus, isLoggedIn }) => {
 
   return (
     <div style={formContainerStyle}>
+      <DateDisplay
+        style={{
+          color: "purple",
+          fontWeight: "bold",
+          fontSize: "20px",
+          position: "absolute",
+          bottom: "20px",
+          right: "20px",
+        }}
+      />
       <form
         style={{ ...formStyle, ...formHoverStyle }}
         onMouseEnter={() => setIsFormHovered(true)}

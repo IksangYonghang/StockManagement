@@ -32,6 +32,7 @@ namespace API.Controllers
 
             Ledger newLedger = _mapper.Map<Ledger>(ledgerCreateDto);
             newLedger.CreatedAt = DateTime.UtcNow;
+            newLedger.UserId = ledgerCreateDto.UserId;
             await _unitOfWork.Ledger.AddAsync(newLedger);
             await _unitOfWork.SaveAsync();
             var allLedgers = await _unitOfWork.Ledger.GetAllAsync();

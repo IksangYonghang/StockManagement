@@ -8,6 +8,7 @@ namespace Module.Entities
         public int TransactionId { get; set; }
         public DateOnly Date { get; set; }
         public string InvoiceNumber { get; set; } = string.Empty;
+        public long UserId { get; set; }
         public long LedgerId { get; set; }
         public Ledger Ledger { get; set; }
         public long ProductId { get; set; }
@@ -17,10 +18,7 @@ namespace Module.Entities
         public TransactionMethod TransactionMethod { get; set; }
         public decimal? Debit { get; set; }
         public decimal? Credit { get; set; }
-        public string Narration { get; set; }
-
-
-       
+        public string Narration { get; set; }           
 
 
 

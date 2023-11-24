@@ -16,6 +16,7 @@ namespace Module.Dtos.Ledger
         public string Contact { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
         public long? ParentId { get; set; }
+        public long UserId { get; set; }
         public MasterAccount? MasterAccount { get; set; }
     }
 }

@@ -170,6 +170,7 @@ export interface ICreateUserDto {
   firstName: string;
   middleName: string;
   lastName: string;
+  gender: string;
   address: string;
   phone: string;
   userType: string;
@@ -187,6 +188,7 @@ export interface IUpdateUserDto {
   firstName: string;
   middleName: string;
   lastName: string;
+  gender: string;
   address: string;
   phone: string;
   userType: string;

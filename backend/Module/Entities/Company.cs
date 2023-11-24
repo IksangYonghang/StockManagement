@@ -6,9 +6,10 @@ namespace Module.Entities
     {
         public string CompanyName { get; set; }
         public CompanySize CompanySize { get; set; }
+        public long UserId { get; set; }
 
         //Relation
-        
+
         public List<Product> Products { get; set; }
 
     }

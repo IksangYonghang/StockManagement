@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useId } from "react";
 import "./products.scss";
 import {
   Button,
@@ -89,6 +89,15 @@ const AddProduct = () => {
       return;
     }
 
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      alert("User Id not found");
+      return;
+    }
+    const productToSend = {
+      ...product,
+      userId: parseInt(userId),
+    };
     const newProductFormData = new FormData();
     newProductFormData.append("productName", product.productName);
     newProductFormData.append("productDescription", product.productDescription);
@@ -108,7 +117,8 @@ const AddProduct = () => {
       categories.find((comp) => comp.id === product.categoryId)?.categoryName ??
         ""
     );
-
+    newProductFormData.append("userId", userId);
+    
     console.log(newProductFormData, product);
     if (imgFile) {
       newProductFormData.append("imageFile", imgFile);

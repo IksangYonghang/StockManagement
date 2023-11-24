@@ -17,6 +17,7 @@ namespace Data.DataContext
         public DbSet<Ledger> Ledgers { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserLogin> UsersLogin { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,6 +27,8 @@ namespace Data.DataContext
             modelBuilder.Entity<Ledger>().ToTable("ledgers", schema: "stock");
             modelBuilder.Entity<User>().ToTable("users", schema: "stock");
             modelBuilder.Entity<Transaction>().ToTable("transactions", schema: "stock");
+            modelBuilder.Entity<UserLogin>().ToTable("userslogin", schema: "stock");
+
 
             modelBuilder.ApplyConfiguration(new CaseInsensitiveColumnNameConvention<Company>());
             modelBuilder.ApplyConfiguration(new CaseInsensitiveColumnNameConvention<Category>());
@@ -56,6 +59,7 @@ namespace Data.DataContext
             modelBuilder.Entity<Transaction>().Property(transaction => transaction.TransactionType).HasConversion<string>();
             modelBuilder.Entity<Transaction>().Property(transaction => transaction.TransactionMethod).HasConversion<string>();
             modelBuilder.Entity<User>().Property(user => user.UserType).HasConversion<string>();
+            modelBuilder.Entity<User>().Property(user=>user.Gender).HasConversion<string>();
 
           
         }      

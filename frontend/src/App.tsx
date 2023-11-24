@@ -1,11 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import {
   Routes,
   Route,
   Navigate,
   useNavigate,
   useLocation,
-  BrowserRouter,
 } from "react-router-dom";
 import Navbar from "./components/navbar/Navbar.component";
 import Footer from "./components/footer/Footer";
@@ -32,6 +31,9 @@ import ResetPassword from "./pages/user/ResetPassword.page";
 import Users from "./pages/user/Users.page";
 import AddUser from "./pages/user/AddUser.page";
 import UpdateUser from "./pages/user/UpdateUser.page";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ThemeContext } from "./context/theme.context";
 
 interface MainContentProps {
   isLoggedIn: boolean;
@@ -44,6 +46,7 @@ const MainContent: React.FC<MainContentProps> = ({
 }) => {
   return (
     <div className="wrapper">
+      <ToastContainer />
       <Routes>
         <Route
           path="/"
@@ -100,6 +103,9 @@ const App = () => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const { darkMode } = useContext(ThemeContext);
+  const appStyles = darkMode ? "app dark" : "app";
 
   const handleLoginStatus = (status: boolean) => {
     setLoginStatus(status);
@@ -161,13 +167,15 @@ const App = () => {
   }, [setLoginStatus, navigate, location.pathname]);
 
   return (
-    <div className="app">
-      <Navbar isLoggedIn={isLoggedIn} setLoginStatus={setLoginStatus} />
-      <MainContent
-        isLoggedIn={isLoggedIn}
-        handleLoginStatus={handleLoginStatus}
-      />
-      <Footer />
+    <div className={appStyles}>
+      <div className="app">
+        <Navbar isLoggedIn={isLoggedIn} setLoginStatus={setLoginStatus} />
+        <MainContent
+          isLoggedIn={isLoggedIn}
+          handleLoginStatus={handleLoginStatus}
+        />
+        <Footer />
+      </div>
     </div>
   );
 };

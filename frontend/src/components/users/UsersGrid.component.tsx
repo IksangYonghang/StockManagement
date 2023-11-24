@@ -18,6 +18,7 @@ const column: GridColDef[] = [
   { field: "firstName", headerName: "First Name", width: 150 },
   { field: "middleName", headerName: "Middle Name", width: 150 },
   { field: "lastName", headerName: "Last Name", width: 150 },
+  { field: "gender", headerName: "Gender", width: 150 },
   {
     field: "fullName",
     headerName: "Full Name",
@@ -34,7 +35,7 @@ const column: GridColDef[] = [
   { field: "phone", headerName: "Phone", width: 100 },
   { field: "userType", headerName: "User Type", width: 100 },
   { field: "email", headerName: "Email", width: 200 },
-  { field: "userName", headerName: "User Name", width: 200 },
+  { field: "userName", headerName: "User Name", width: 100 },
   {
     field: "createdAtFromNow",
     headerName: "Created",

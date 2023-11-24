@@ -1,19 +1,32 @@
-import { ToggleButton } from "@mui/material";
-import "./navbar.scss";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useContext, useState, useEffect } from "react";
-import { ThemeContext } from "../../context/theme.context";
+import { ToggleButton } from "@mui/material";
 import { Menu, LightMode, DarkMode, Logout } from "@mui/icons-material";
-import { NepaliFunctions } from 'nepali-date-converter';
+import NepaliDateConverter from "nepali-date-converter";
+import "./navbar.scss";
+import { ThemeContext } from "../../context/theme.context";
 
-const DateDisplay: React.FC<{ style?: React.CSSProperties }> = ({ style }) => {
+interface DateDisplayProps {
+  style?: React.CSSProperties;
+}
+
+const DateDisplay: React.FC<DateDisplayProps> = ({ style }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [nepaliDate, setNepaliDate] = useState("");
 
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date();
       setCurrentDate(now);
-      console.log("Date:", now.toLocaleDateString()); // Log date as a string
+
+      const convertedDate = new NepaliDateConverter(now);
+      const nepaliYear = convertedDate.getYear().toString();
+      const nepaliMonth = (convertedDate.getMonth() + 1)
+        .toString()
+        .padStart(2, "0");
+      const nepaliDay = convertedDate.getDate().toString().padStart(2, "0");
+
+      setNepaliDate(`${nepaliYear}/${nepaliMonth}/${nepaliDay}`);
     }, 1000);
     return () => clearInterval(interval);
   }, []);
@@ -27,7 +40,8 @@ const DateDisplay: React.FC<{ style?: React.CSSProperties }> = ({ style }) => {
         marginLeft: "-0.5rem",
       }}
     >
-      <p>{currentDate.toLocaleDateString()}</p>
+      {/* <p>Date AD: {currentDate.toLocaleDateString()}</p> */}
+      <p>Date : {nepaliDate}</p>
     </div>
   );
 };
@@ -54,6 +68,12 @@ const AuthenticatedNavbar: React.FC<{
   navigate: ReturnType<typeof useNavigate>;
 }> = ({ darkMode, toggleDarkMode, handleLogout }) => {
   const [open, setOpen] = useState<boolean>(false);
+  const [userName, setUserName] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedUserName = localStorage.getItem("userName");
+    setUserName(storedUserName);
+  }, []);
 
   const ToggleOpenMenu = () => {
     setOpen((prevState) => !prevState);
@@ -77,6 +97,18 @@ const AuthenticatedNavbar: React.FC<{
           </Link>
         </span>
       </div>
+      <div className="user">
+        <span
+          style={{
+            marginRight: "6rem",
+            color: darkMode ? "white" : "goldenrod",
+            fontSize: "16px",
+            fontWeight: "bold",
+          }}
+        >
+          {userName}
+        </span>
+      </div>
       <div className={menuStyles}>
         <ul>
           <li style={{ display: "flex", alignItems: "center" }}>
@@ -86,9 +118,7 @@ const AuthenticatedNavbar: React.FC<{
                 color: darkMode ? "white" : "goldenrod",
                 fontWeight: "bold",
               }}
-            >
-              Date :
-            </span>
+            ></span>
             <DateDisplay
               style={{
                 color: darkMode ? "white" : "goldenrod",

@@ -25,6 +25,7 @@ namespace Module.Entities
 
         public long CompanyId { get; set; }
         public Company Company { get; set; }
+        public long UserId { get; set; }
 
     }
 }

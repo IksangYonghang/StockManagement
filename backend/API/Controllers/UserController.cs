@@ -41,12 +41,15 @@ namespace API.Controllers
                 FirstName = request.FirstName ?? "",
                 MiddleName = request.MiddleName ?? "",
                 LastName = request.LastName ?? "",
+                Gender = request.Gender,
                 Address = request.Address ?? "",
                 Phone = request.Phone ?? "",
                 UserType = request.UserType,
                 Email = request.Email ?? "",
                 UserName = request.UserName ?? "",
-                PasswordHash = passwordHash
+                PasswordHash = passwordHash,
+                UserId = request.UserId,
+                
             };
 
             _dbContext.Users.Add(user);
@@ -94,6 +97,15 @@ namespace API.Controllers
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
 
+            UserLogin userLogin = new UserLogin
+            {
+                UserId = user.Id,
+                LogInDT = DateTime.UtcNow,
+            };
+            _dbContext.UsersLogin.Add(userLogin);
+            _dbContext.SaveChanges();
+
+
             return Ok(tokenString);
         }
 
@@ -140,6 +152,11 @@ namespace API.Controllers
                 return NotFound("User to delete does not exist");
             }
 
+            var userInTransaction = await _dbContext.Transactions.AnyAsync(u => u.UserId == id);
+            if (userInTransaction)
+            {
+                return BadRequest("Cannot delete user as its id is present in transaction table.");
+            }
             _dbContext.Users.Remove(userToDelete);
             _dbContext.SaveChanges();
             return Ok("User deleted");
@@ -169,6 +186,11 @@ namespace API.Controllers
             {
                 userToUpdate.LastName = updateUserDto.LastName;
             }
+            if (updateUserDto.Gender != null)
+            {
+                userToUpdate.Gender = updateUserDto.Gender;
+            }
+
             if (!string.IsNullOrEmpty(updateUserDto.Phone))
             {
                 userToUpdate.Phone = updateUserDto.Phone;
@@ -182,7 +204,7 @@ namespace API.Controllers
             {
                 userToUpdate.Email = updateUserDto.Email;
             }
-           
+
 
             // Check if a new password is provided and hash it
             if (!string.IsNullOrEmpty(updateUserDto.Password))
@@ -207,6 +229,19 @@ namespace API.Controllers
             {
                 return StatusCode(500, "Failed to update user. Please try again later.");
             }
+        }
+
+        [HttpGet("GetByUsername")]
+        public async Task<ActionResult<User>> GetUserByUsername(string username)
+        {
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == username);
+
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            return Ok(user);
         }
 
     }

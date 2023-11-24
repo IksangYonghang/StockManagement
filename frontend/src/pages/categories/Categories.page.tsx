@@ -71,7 +71,7 @@ const Categories = () => {
         <h2 style={{ marginBottom: "0.5rem" }}>Categories</h2>
         <input
           type="text"
-          placeholder="Search Categories"
+          placeholder="Search Category"
           value={searchQuery}
           onChange={haldleInputChange}
           style={{

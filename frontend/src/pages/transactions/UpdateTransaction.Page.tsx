@@ -17,6 +17,8 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import httpModule from "../../helpers/http.module";
 import Autocomplete from "@mui/material/Autocomplete";
+import { AddCircleOutline } from "@mui/icons-material";
+import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 
 const transactionTypeArray: string[] = ["Purchase", "Sale"];
 const transactionMethodArray: string[] = [
@@ -128,37 +130,64 @@ const UpdateTransaction = () => {
   const handleClickBackBtn = () => {
     redirect("/transactions");
   };
+  const convertToEnglishDigits = (nepaliNumber: string) => {
+    const nepaliDigits: string[] = [
+      "०",
+      "१",
+      "२",
+      "३",
+      "४",
+      "५",
+      "६",
+      "७",
+      "८",
+      "९",
+    ];
+    return nepaliNumber.replace(/[०-९]/g, (match: string) => {
+      return String(nepaliDigits.indexOf(match));
+    });
+  };
+  const formatToDesiredFormat = (date: string) => {
+    const dateParts = date.split("-");
+    const formattedDate = `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`;
+    return formattedDate;
+  };
 
+  const handleDateChange = (value: string) => {
+    const englishDate = convertToEnglishDigits(value);
+    setSelectedDate(englishDate);
+
+    const formattedEnglishDate = formatToDesiredFormat(englishDate);
+    setSelectedDate(formattedEnglishDate);
+  };
+
+  const handleChange = (field: string, value: string) => {
+    setTransaction({
+      ...transaction,
+      [field]: value,
+    });
+  };
   return (
     <div className="content">
-      <div className="update-transaction">
-        <h2>Update transaction</h2>
-        <input
-          type="text"
-          placeholder="Enter Transaction Date"
-          value={selectedDate}
-          onChange={(e) => {
-            const inputDate = e.target.value;
-            const formattedDate = inputDate
-              .replace(/\D/g, "") // Remove non-digit characters
-              .replace(/^(\d{4})(\d{0,2})/, "$1-$2") // Ensure four digits for year and up to two digits for month
-              .replace(/^(\d{4}-\d{2})(\d{0,2})/, "$1-$2") // Ensure two digits for day
-              .replace(/(\d{4}-\d{2}-\d{2}).*/, "$1"); // Remove any extra characters
-            setSelectedDate(formattedDate);
-          }}
-          style={{
-            width: "40%",
-            height: "40px",
-            fontSize: "16px",
-            paddingLeft: "8px",
-            color: darkMode ? "yellow" : "black",
-            backgroundColor: darkMode ? "#062442" : "#fff",
-          }}
-        />
+      <div className="add-transaction">
+        <h2>Update Transaction </h2>
+        <div className="date-picker-wrapper">
+          <label htmlFor="date">Change Date</label>
+          <NepaliDatePicker
+            inputClassName="form-control"
+            className="nepali-datepicker"
+            value={selectedDate}
+            onChange={(value) => handleDateChange(value)}
+            options={{ calenderLocale: "ne", valueLocale: "en" }}
+          />
+        </div>
         <FormControl fullWidth>
           <InputLabel
             style={{
               color: darkMode ? "#09ee70" : "black",
+              fontSize: "14px",
+              fontWeight: "bold",
+              width: "200px", // Adjust the width as needed
             }}
           >
             Transaction Type
@@ -174,6 +203,10 @@ const UpdateTransaction = () => {
             }
             style={{
               color: darkMode ? "yellow" : "black",
+              fontSize: "14px",
+              padding: "-5px -5px",
+              fontWeight: "bold",
+              width: "160px", // Match the width here
             }}
           >
             {transactionTypeArray.map((item) => (
@@ -183,101 +216,13 @@ const UpdateTransaction = () => {
             ))}
           </Select>
         </FormControl>
-        <TextField
-          fullWidth
-          autoComplete="off"
-          label="Invoice Number"
-          variant="outlined"
-          value={transaction.invoiceNumber}
-          onChange={(n) =>
-            setTransaction({ ...transaction, invoiceNumber: n.target.value })
-          }
-          InputProps={{
-            style: {
-              color: darkMode ? "yellow" : "black",
-            },
-          }}
-          InputLabelProps={{
-            style: {
-              color: darkMode ? "#09ee70" : "black",
-            },
-          }}
-        />
-        <FormControl fullWidth>
-          <Autocomplete
-            options={ledgers}
-            getOptionLabel={(ledger) => ledger.ledgerName}
-            value={
-              ledgers.find((ledger) => ledger.id === transaction.ledgerId) ||
-              null
-            }
-            onChange={(_, newValue) => {
-              setTransaction({ ...transaction, ledgerId: newValue?.id || "" });
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="General Ledger"
-                variant="outlined"
-                InputLabelProps={{
-                  style: {
-                    color: darkMode ? "#09ee70" : "black",
-                  },
-                }}
-              />
-            )}
-          />
-        </FormControl>
-        <FormControl fullWidth>
-          <Autocomplete
-            options={products}
-            getOptionLabel={(product) => product.productName}
-            value={
-              products.find(
-                (product) => product.id === transaction.productId
-              ) || null
-            }
-            onChange={(_, newValue) => {
-              setTransaction({ ...transaction, productId: newValue?.id || "" });
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Product Name"
-                variant="outlined"
-                InputLabelProps={{
-                  style: {
-                    color: darkMode ? "#09ee70" : "black",
-                  },
-                }}
-              />
-            )}
-          />
-        </FormControl>
-        <TextField
-          fullWidth
-          autoComplete="off"
-          label="Piece"
-          variant="outlined"
-          value={transaction.piece}
-          onChange={(n) =>
-            setTransaction({ ...transaction, piece: n.target.value })
-          }
-          InputProps={{
-            style: {
-              color: darkMode ? "yellow" : "black",
-            },
-          }}
-          InputLabelProps={{
-            style: {
-              color: darkMode ? "#09ee70" : "black",
-            },
-          }}
-        />
         <FormControl fullWidth>
           <InputLabel
             style={{
               color: darkMode ? "#09ee70" : "black",
+              fontSize: "14px",
+              fontWeight: "bold",
+              width: "200px", // Adjust the width as needed
             }}
           >
             Transaction Method
@@ -293,6 +238,10 @@ const UpdateTransaction = () => {
             }
             style={{
               color: darkMode ? "yellow" : "black",
+              fontSize: "14px",
+              padding: "-5px -5px",
+              fontWeight: "bold",
+              width: "186px", // Match the width here
             }}
           >
             {transactionMethodArray.map((item) => (
@@ -302,67 +251,260 @@ const UpdateTransaction = () => {
             ))}
           </Select>
         </FormControl>
-        <TextField
-          fullWidth
-          autoComplete="off"
-          label="Debit"
-          variant="outlined"
-          value={transaction.debit}
-          onChange={(n) =>
-            setTransaction({ ...transaction, debit: n.target.value })
-          }
-          InputProps={{
-            style: {
-              color: darkMode ? "yellow" : "black",
-            },
-          }}
-          InputLabelProps={{
-            style: {
+
+        <div className="input-container">
+          <div className="input-group">
+            <TextField
+              fullWidth
+              autoComplete="off"
+              label="Invoice Number"
+              variant="outlined"
+              value={transaction.invoiceNumber}
+              onChange={(n) =>
+                setTransaction({
+                  ...transaction,
+                  invoiceNumber: n.target.value,
+                })
+              }
+              InputProps={{
+                style: {
+                  color: darkMode ? "yellow" : "black",
+                  fontSize: "14px",
+                  padding: "-5px -5px",
+                  fontWeight: "bold",
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  color: darkMode ? "#09ee70" : "black",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                },
+              }}
+              style={{ width: "28%" }} // Adjust width here (e.g., '50%' for half of the parent width)
+            />
+
+            <FormControl fullWidth>
+              <Autocomplete
+                options={ledgers}
+                getOptionLabel={(ledger) => ledger.ledgerName}
+                value={
+                  ledgers.find(
+                    (ledger) => ledger.id === transaction.ledgerId
+                  ) || null
+                }
+                onChange={(_, newValue) => {
+                  setTransaction({
+                    ...transaction,
+                    ledgerId: newValue?.id || "",
+                  });
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Choose Ledger"
+                    variant="outlined"
+                    InputLabelProps={{
+                      style: {
+                        color: darkMode ? "#09ee70" : "black",
+                        fontSize: "14px",
+                        fontWeight: "bold",
+                      },
+                    }}
+                    InputProps={{
+                      ...(params.InputProps as { style?: React.CSSProperties }),
+                      style: {
+                        ...(
+                          params.InputProps as { style?: React.CSSProperties }
+                        ).style,
+                        color: darkMode ? "yellow" : "black",
+                        fontSize: "14px",
+                        padding: "-5px -5px",
+                        fontWeight: "bold",
+                        width: "90%",
+                      },
+                    }}
+                  />
+                )}
+              />
+            </FormControl>
+
+            <FormControl fullWidth style={{ width: "25%" }}>
+              <Autocomplete
+                options={products}
+                getOptionLabel={(product) => product.productName}
+                value={
+                  products.find(
+                    (product) => product.id === transaction.productId
+                  ) || null
+                }
+                onChange={(_, newValue) => {
+                  setTransaction({
+                    ...transaction,
+                    productId: newValue?.id || "",
+                  });
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Choose Product"
+                    variant="outlined"
+                    InputLabelProps={{
+                      style: {
+                        color: darkMode ? "#09ee70" : "black",
+                        fontSize: "14px",
+                        fontWeight: "bold",
+                        marginLeft: "-4.5rem",
+                      },
+                    }}
+                    InputProps={{
+                      ...(params.InputProps as { style?: React.CSSProperties }),
+                      style: {
+                        ...(
+                          params.InputProps as { style?: React.CSSProperties }
+                        ).style,
+                        color: darkMode ? "yellow" : "black",
+                        fontSize: "14px",
+                        padding: "-5px -5px",
+                        fontWeight: "bold",
+                        width: "calc(139% )", // Adjust width here
+                        marginLeft: "-70px", // Add margin to separate from the previous field
+                      },
+                    }}
+                  />
+                )}
+              />
+            </FormControl>
+
+            <TextField
+              fullWidth
+              autoComplete="off"
+              label="Piece"
+              variant="outlined"
+              value={transaction.piece}
+              onChange={(n) =>
+                setTransaction({
+                  ...transaction,
+                  piece: n.target.value,
+                })
+              }
+              InputProps={{
+                style: {
+                  color: darkMode ? "yellow" : "black",
+                  fontSize: "14px",
+                  padding: "-5px -5px",
+                  fontWeight: "bold",
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  color: darkMode ? "#09ee70" : "black",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                },
+              }}
+              style={{ width: "15%" }}
+            />
+
+            <TextField
+              fullWidth
+              autoComplete="off"
+              label="Debit"
+              variant="outlined"
+              value={transaction.debit}
+              onChange={(n) =>
+                setTransaction({
+                  ...transaction,
+                  debit: n.target.value,
+                })
+              }
+              InputProps={{
+                style: {
+                  color: darkMode ? "yellow" : "black",
+                  fontSize: "14px",
+                  padding: "-5px -5px",
+                  fontWeight: "bold",
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  color: darkMode ? "#09ee70" : "black",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                },
+              }}
+              style={{ width: "25%" }}
+            />
+
+            <TextField
+              fullWidth
+              autoComplete="off"
+              label="Credit"
+              variant="outlined"
+              value={transaction.credit}
+              onChange={(n) =>
+                setTransaction({
+                  ...transaction,
+                  credit: n.target.value,
+                })
+              }
+              InputProps={{
+                style: {
+                  color: darkMode ? "yellow" : "black",
+                  fontSize: "14px",
+                  padding: "-5px -5px",
+                  fontWeight: "bold",
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  color: darkMode ? "#09ee70" : "black",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                },
+              }}
+              style={{ width: "25%" }}
+            />
+          </div>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", width: "100%" }}>
+          <TextField
+            fullWidth
+            autoComplete="off"
+            label="Narration"
+            variant="outlined"
+            value={transaction.narration}
+            onChange={(n) =>
+              setTransaction({ ...transaction, narration: n.target.value })
+            }
+            InputProps={{
+              style: {
+                color: darkMode ? "yellow" : "black",
+                fontSize: "14px",
+                padding: "-5px -5px",
+                fontWeight: "bold",
+                width: "99%",
+              },
+            }}
+            InputLabelProps={{
+              style: {
+                color: darkMode ? "#09ee70" : "black",
+                fontSize: "14px",
+                fontWeight: "bold",
+              },
+            }}
+          />
+          <AddCircleOutline
+            style={{
               color: darkMode ? "#09ee70" : "black",
-            },
-          }}
-        />
-        <TextField
-          fullWidth
-          autoComplete="off"
-          label="Credit"
-          variant="outlined"
-          value={transaction.credit}
-          onChange={(n) =>
-            setTransaction({ ...transaction, credit: n.target.value })
-          }
-          InputProps={{
-            style: {
-              color: darkMode ? "yellow" : "black",
-            },
-          }}
-          InputLabelProps={{
-            style: {
-              color: darkMode ? "#09ee70" : "black",
-            },
-          }}
-        />
-        <TextField
-          fullWidth
-          autoComplete="off"
-          label="Narration"
-          variant="outlined"
-          value={transaction.narration}
-          onChange={(n) =>
-            setTransaction({ ...transaction, narration: n.target.value })
-          }
-          InputProps={{
-            style: {
-              color: darkMode ? "yellow" : "black",
-            },
-          }}
-          InputLabelProps={{
-            style: {
-              color: darkMode ? "#09ee70" : "black",
-            },
-          }}
-          multiline
-        />
+              cursor: "pointer",
+              marginLeft: "1px",
+            }}
+            onClick={() => {
+              // Add functionality for the icon here
+            }}
+          />
+        </div>
         <div
           style={{
             display: "flex",

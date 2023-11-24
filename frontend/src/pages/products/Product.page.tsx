@@ -71,7 +71,7 @@ const Products = () => {
         <h2 style={{ marginBottom: "0.5rem" }}>Products</h2>
         <input
           type="text"
-          placeholder="Search Products"
+          placeholder="Search Product"
           value={searchQuery}
           onChange={handleInputChange}
           style={{

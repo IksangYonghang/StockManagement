@@ -19,6 +19,7 @@ namespace Module.Dtos.Candidate
         public decimal RetailPrice { get; set; }        
         public long CategoryId { get; set; }
         public long CompanyId { get; set; }
+        public long UserId { get; set; }
 
     }
 }

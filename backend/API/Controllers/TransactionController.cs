@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Module.Dtos;
-using Module.Dtos.Candidate;
-using Module.Dtos.Job;
 using Module.Dtos.Transaction;
 using Module.Entities;
 using Module.IRepositories;
@@ -38,10 +36,12 @@ namespace API.Controllers
 
             int transactionId = await GenerateUniqueTransactionId();
 
-            
+
             Transaction newTransaction = _mapper.Map<Transaction>(transactionCreateDto);
+
             newTransaction.CreatedAt = DateTime.UtcNow;
             newTransaction.TransactionId = transactionId;
+            newTransaction.UserId = transactionCreateDto.UserId;
 
             await _unitOfWork.Transaction.AddAsync(newTransaction);
             await _unitOfWork.SaveAsync();
@@ -83,7 +83,7 @@ namespace API.Controllers
             }
             else
             {
-                return 0; 
+                return 0;
             }
         }
 
@@ -160,7 +160,7 @@ namespace API.Controllers
 
 
 
-            
+
 
     }
 }

@@ -14,6 +14,7 @@ namespace Module.Dtos.User
         public string MiddleName { get; set; }
         public string LastName { get; set; }
         public string Address { get; set; }
+        public GenderType Gender { get; set; }
 
         [StringLength(10, MinimumLength = 10)]
         public string Phone { get; set; }

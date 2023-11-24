@@ -26,8 +26,18 @@ const AddCompany = () => {
       alert("Field is required");
       return;
     }
+
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      alert("User Id not found");
+      return;
+    }
+    const companyToSend = {
+      ...company,
+      userId: parseInt(userId),
+    };
     httpModule
-      .post("/Company/Create", company)
+      .post("/Company/Create", companyToSend)
       .then((response) => redirect("/companies"))
       .catch((error) => console.log(error));
   };

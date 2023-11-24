@@ -12,7 +12,7 @@ const Companies = () => {
   const [companies, setCompanies] = useState<ICompany[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const {darkMode} = useContext(ThemeContext)
+  const { darkMode } = useContext(ThemeContext);
   const redirect = useNavigate();
 
   useEffect(() => {
@@ -70,7 +70,7 @@ const Companies = () => {
         <h2 style={{ marginBottom: "0.5rem" }}>Companies</h2>
         <input
           type="text"
-          placeholder="Search Companies"
+          placeholder="Search Company"
           value={searchQuery}
           onChange={halndleInputChange}
           style={{

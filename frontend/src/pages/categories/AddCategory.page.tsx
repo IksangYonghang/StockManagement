@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useId } from "react";
 import "./categories.scss";
 import { Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -23,8 +23,17 @@ const AddCategory = () => {
       return;
     }
 
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      alert("User Id not found");
+      return;
+    }
+    const categoryToSend = {
+      ...category,
+      userId: parseInt(userId),
+    };
     httpModule
-      .post("/Category/Create", category)
+      .post("/Category/Create", categoryToSend)
       .then((response) => redirect("/categories"))
       .catch((error) => console.log(error));
   };

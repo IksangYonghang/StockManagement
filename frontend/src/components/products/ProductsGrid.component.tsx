@@ -71,6 +71,12 @@ const column: GridColDef[] = [
   { field: "serialNumber", headerName: "S. N.", width: 66 },
   { field: "id", headerName: "ID", width: 66 },
   { field: "productName", headerName: "Product Name", width: 150 },
+  {
+    field: "download",
+    headerName: "Preview Image",
+    width: 175,
+    renderCell: DownloadImageTooltip,
+  },
   { field: "productDescription", headerName: "Description", width: 250 },
   { field: "productSize", headerName: "Product Size", width: 150 },
   { field: "markedPrice", headerName: "Marked Price", width: 110 },
@@ -87,12 +93,7 @@ const column: GridColDef[] = [
     renderCell: (params) => moment(params.row.createdAt).fromNow(),
   },
   */
-  {
-    field: "download",
-    headerName: "Preview Image",
-    width: 175,
-    renderCell: DownloadImageTooltip,
-  },
+
   {
     field: "actions",
     headerName: "Actions",

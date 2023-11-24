@@ -19,6 +19,7 @@ const AddUser = () => {
     firstName: "",
     middleName: "",
     lastName: "",
+    gender: "",
     address: "",
     phone: "",
     userType: "",
@@ -38,8 +39,19 @@ const AddUser = () => {
       alert("Fields are required");
       return;
     }
+
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      alert("User Id not found");
+      return;
+    }
+
+    const userToSend = {
+      ...user,
+      userId: parseInt(userId),
+    };
     httpModule
-      .post("/User/CreateUser", user)
+      .post("/User/CreateUser", userToSend)
       .then((response) => redirect("/users"))
       .catch((error) => console.log(error));
   };
@@ -82,6 +94,32 @@ const AddUser = () => {
           InputProps={{ style: { color: darkMode ? "yellow" : "black" } }}
           InputLabelProps={{ style: { color: darkMode ? "#09ee70" : "black" } }}
         />
+        <FormControl fullWidth>
+          <InputLabel
+            style={{
+              color: darkMode ? "#09ee70" : "black",
+            }}
+          >
+            Gender
+          </InputLabel>
+          <Select
+            label="Gender"
+            value={user.gender}
+            onChange={(s) => setUser({ ...user, gender: s.target.value })}
+            style={{
+              color: darkMode ? "yellow" : "black",
+            }}
+          >
+            <MenuItem value="Male">Male</MenuItem>
+            <MenuItem value="Female">Female</MenuItem>
+            <MenuItem value="Lesbian">Lesbian</MenuItem>
+            <MenuItem value="Gay">Gay</MenuItem>
+            <MenuItem value="Bisexual">Bisexual</MenuItem>
+            <MenuItem value="ThirdGender">Third Gender</MenuItem>
+            <MenuItem value="TransGender">Trans Gender</MenuItem>
+            <MenuItem value="NotApplicable">Not Applicable</MenuItem>
+          </Select>
+        </FormControl>
         <TextField
           fullWidth
           autoComplete="off"

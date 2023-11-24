@@ -13,6 +13,7 @@ namespace Module.Dtos.User
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
+        public GenderType Gender { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }
         public UserType UserType { get; set; }

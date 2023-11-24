@@ -45,8 +45,18 @@ const AddLedger = () => {
       alert("Field is required");
       return;
     }
+
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      alert("User Id not found");
+      return;
+    }
+    const ledgerToSend = {
+      ...ledger,
+      userId: parseInt(userId),
+    };
     httpModule
-      .post("/Ledger/Create", ledger)
+      .post("/Ledger/Create", ledgerToSend)
       .then((response) => redirect("/ledgers"))
       .catch(console.log);
   };

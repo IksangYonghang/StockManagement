@@ -6,5 +6,6 @@ namespace Module.Dtos.Company
     {
         public string CompanyName { get; set; }
         public CompanySize CompanySize { get; set; }
+        public long UserId { get; set; }
     }
 }

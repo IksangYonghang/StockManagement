@@ -21,6 +21,7 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
+    "src",
+    "node_modules/nepali-datepicker-reactjs" // Adding this line to explicitly include the package
   ]
 }

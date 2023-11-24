@@ -54,7 +54,7 @@ namespace API.Controllers
             var newProduct = _mapper.Map<Product>(productCreateDto);
             newProduct.ImageUrl = imageUrl;
             newProduct.CreatedAt = DateTime.UtcNow;
-
+            newProduct.UserId = productCreateDto.UserId;
             await _unitOfWork.Product.AddAsync(newProduct);
             await _unitOfWork.SaveAsync();
 
@@ -67,7 +67,7 @@ namespace API.Controllers
         public async Task<ActionResult<ProductGetDto>> GetById(long id)
         {
             /* Using include method to include Category Name and Company Name in the get method that is mapped from automapper for frontend Product Grid */
-            var product = await _unitOfWork.Product.Include(c => c.Category).FirstOrDefaultAsync(c=>c.Id==id);
+            var product = await _unitOfWork.Product.Include(c => c.Category).FirstOrDefaultAsync(c => c.Id == id);
             if (product == null)
             {
                 return NotFound("Product you are looking for not found");
@@ -79,7 +79,7 @@ namespace API.Controllers
         [HttpGet("Get")]
         public async Task<ActionResult<List<ProductGetDto>>> GetProducts()
         {
-            var products = await _unitOfWork.Product.Include(j => j.Category, c=>c.Company).OrderByDescending(c=>c.CreatedAt).ToListAsync();
+            var products = await _unitOfWork.Product.Include(j => j.Category, c => c.Company).OrderByDescending(c => c.CreatedAt).ToListAsync();
             if (products == null)
             {
                 return NotFound();
@@ -117,9 +117,11 @@ namespace API.Controllers
                 return NotFound("Product you are looking for not found");
             }
 
-            var nameConflict = await _unitOfWork.Product.AnyAsync(p => p.ProductName == productUpdateDto.ProductName && p.Id != id);
-            var sizeConflict = await _unitOfWork.Product.AnyAsync(p =>p.ProductSize == productUpdateDto.ProductSize && p.Id != id);
-            
+            var nameConflict = await _unitOfWork.Product.AnyAsync(p => p.ProductName == productUpdateDto.ProductName && p.Id != id &&
+                         p.ProductName != existingProduct.ProductName);
+            var sizeConflict = await _unitOfWork.Product.AnyAsync(p => p.ProductSize == productUpdateDto.ProductSize && p.Id != id &&
+                         p.ProductSize != existingProduct.ProductSize);
+
             if (nameConflict || sizeConflict)
             {
                 return Conflict("Product already exists");
@@ -158,7 +160,7 @@ namespace API.Controllers
 
                 // Update the product's image URL.
                 existingProduct.ImageUrl = imageUrl;
-            }           
+            }
 
             _mapper.Map(productUpdateDto, existingProduct);
             await _unitOfWork.SaveAsync();
@@ -182,6 +184,12 @@ namespace API.Controllers
             if (System.IO.File.Exists(filePath))
             {
                 System.IO.File.Delete(filePath);
+            }
+
+            var isInTransaction = await _unitOfWork.Transaction.AnyAsync(product => product.ProductId == id);
+            if (isInTransaction)
+            {
+                return BadRequest("Cannot delete product as its transaction is present in transaction table.");
             }
 
             await _unitOfWork.Product.DeleteAsync(id);

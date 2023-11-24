@@ -70,7 +70,7 @@ const Ledgers = () => {
         <h2 style={{ marginBottom: "0.5rem" }}>Ledgers</h2>
         <input
           type="text"
-          placeholder="Search Ledgers"
+          placeholder="Search Ledger"
           value={searchQuery}
           onChange={handleInputChange}
           style={{

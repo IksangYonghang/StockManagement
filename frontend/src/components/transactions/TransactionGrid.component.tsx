@@ -14,7 +14,7 @@ const column: GridColDef[] = [
     headerName: "S.N.",
     width: 66,
   },
-  { field: "id", headerName: "ID", width: 66 },
+  // { field: "id", headerName: "ID", width: 66 },
   { field: "transactionId", headerName: "Tran Id", width: 66 },
   { field: "date", headerName: "Date", width: 100 },
   { field: "invoiceNumber", headerName: "Invoice No.", width: 100 },

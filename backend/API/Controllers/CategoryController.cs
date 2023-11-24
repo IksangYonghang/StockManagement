@@ -35,6 +35,7 @@ namespace API.Controllers
             }
             Category newCategory = _mapper.Map<Category>(categoryCreatedDto);
             newCategory.CreatedAt = DateTime.UtcNow;
+            newCategory.UserId = categoryCreatedDto.UserId;
             await _unitOfWork.Category.AddAsync(newCategory);
             await _unitOfWork.SaveAsync();
             var convertedCategory = _mapper.Map<CategoryGetDto>(newCategory);

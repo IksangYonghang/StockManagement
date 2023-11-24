@@ -35,6 +35,7 @@ namespace API.Controllers
 
             Company newCompany = _mapper.Map<Company>(companyCreateDto);
             newCompany.CreatedAt = DateTime.UtcNow;
+            newCompany.UserId = companyCreateDto.UserId;
             await _unitOfWork.Company.AddAsync(newCompany);
             await _unitOfWork.SaveAsync();
             var convertedCompany = _mapper.Map<CompanyGetDto>(newCompany);
