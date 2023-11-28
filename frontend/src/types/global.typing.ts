@@ -3,6 +3,9 @@ export interface ICompany {
   companyName: string;
   companySize: string;
   createdAt: string;
+  userName: string | null;
+  userId: string;
+  user: IUser;
 }
 
 export interface ICreateCompanyDto {

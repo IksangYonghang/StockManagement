@@ -172,7 +172,15 @@ const UpdateTransaction = () => {
       <div className="add-transaction">
         <h2>Update Transaction </h2>
         <div className="date-picker-wrapper">
-          <label htmlFor="date">Change Date</label>
+          <label
+            style={{
+              fontWeight: "bold",
+              marginBottom: "-6px",
+              marginLeft: "-2rem",
+            }}
+          >
+            Change Date?
+          </label>
           <NepaliDatePicker
             inputClassName="form-control"
             className="nepali-datepicker"

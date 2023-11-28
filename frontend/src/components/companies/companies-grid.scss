@@ -4,3 +4,7 @@
     color: var(--text-color1);
   }
 }
+
+.MuiDataGrid-root .MuiDataGrid-colCell.bold-header {
+  font-weight: bold;
+}

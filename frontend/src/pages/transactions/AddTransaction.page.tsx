@@ -154,7 +154,9 @@ const AddTransaction = () => {
       <div className="add-transaction">
         <h2>Add Transaction </h2>
         <div className="date-picker-wrapper">
-          <label htmlFor="date">Select Date</label>
+        <label style={{ fontWeight: "bold", marginBottom: "-6px", marginLeft: "-2rem" }}>
+            Select Date{" "}
+          </label>
           <NepaliDatePicker
             inputClassName="form-control"
             className="nepali-datepicker"

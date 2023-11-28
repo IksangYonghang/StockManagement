@@ -34,6 +34,8 @@ import UpdateUser from "./pages/user/UpdateUser.page";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ThemeContext } from "./context/theme.context";
+import ProductReport from "./pages/reports/ProductStockReport.page";
+import ProductStockReport from "./pages/reports/ProductStockReport.page";
 
 interface MainContentProps {
   isLoggedIn: boolean;
@@ -90,6 +92,7 @@ const MainContent: React.FC<MainContentProps> = ({
             <Route path="users/update/:id" element={<UpdateUser />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/" element={<Home />} />
+            <Route path="/productReport" element={<ProductStockReport />} />
           </>
         )}
       </Routes>

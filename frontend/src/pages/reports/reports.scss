@@ -1,0 +1,71 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+label {
+  margin-right: 10px;
+}
+
+select {
+  width: 200px;
+  height: 40px;
+  padding: 0 10px;
+  border: 1px solid #ccc;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  tbody {
+    tr:hover {
+      background-color: lightgray;
+      cursor: pointer;
+    }
+  }
+}
+
+.report-table th,
+.report-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+.report-table th {
+  background-color: #f2f2f2;
+}
+
+.right-align {
+  text-align: justify;
+}
+
+.report-container {
+  margin-top: 5rem;
+}
+
+.date-picker-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 180px;
+  margin-left: 2rem;
+
+  .nepali-datepicker {
+    width: 300px;
+    height: 100px;
+    font-weight: bold;
+  }
+
+  .form-control {
+    width: 160px;
+    height: 30px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+  }
+}

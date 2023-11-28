@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import moment from "moment";
 import { ICompany } from "../../types/global.typing";
@@ -13,14 +13,26 @@ const column: GridColDef[] = [
     field: "serialNumber",
     headerName: "S.N.",
     width: 66,
+    headerClassName: "bold-header",
   },
   { field: "id", headerName: "ID", width: 100 },
-  { field: "companyName", headerName: "Company Name", width: 400 },
-  { field: "companySize", headerName: "Company Size", width: 200 },
+  {
+    field: "companyName",
+    headerName: "Company Name",
+    width: 400,
+    headerClassName: "bold-header",
+  },
+  {
+    field: "companySize",
+    headerName: "Company Size",
+    width: 200,
+    headerClassName: "bold-header",
+  },
   {
     field: "createdAtFromNow",
     headerName: "Created",
     width: 150,
+    headerClassName: "bold-header",
     renderCell: (params) => moment(params.row.createdAt).fromNow(),
   },
   /*
@@ -32,6 +44,14 @@ const column: GridColDef[] = [
       moment(params.row.createdAt).format("YYYY-MM-DD HH:mm:ss"),
   },
 */
+  {
+    field: "userName",
+    headerName: "Creator",
+    width: 100,
+    headerClassName: "bold-header",
+    renderCell: (params) => params.row.user?.userName || "Need to work",
+  },
+
   {
     field: "actions",
     headerName: "Actions",

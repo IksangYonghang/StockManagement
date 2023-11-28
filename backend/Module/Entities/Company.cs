@@ -7,6 +7,7 @@ namespace Module.Entities
         public string CompanyName { get; set; }
         public CompanySize CompanySize { get; set; }
         public long UserId { get; set; }
+        public User User { get; set; }
 
         //Relation
 

@@ -56,7 +56,10 @@ const links: { href: string; label: string }[] = [
   { href: "/categories", label: "Categories" },
   { href: "/products", label: "Products" },
   { href: "/ledgers", label: "Ledgers" },
-  { href: "/transactions", label: "Transaction" },
+
+  { href: "/productReport", label: "Product Report" },
+  { href: "/transactions", label: "Transactions" },
+
   { href: "/users", label: "Users" },
   { href: "/contact", label: "Contact" },
 ];
@@ -143,9 +146,10 @@ const AuthenticatedNavbar: React.FC<{
         <button
           onClick={handleLogout}
           style={{ color: darkMode ? "white" : "goldenrod" }}
+          title="Log Out"
         >
           <Logout />
-          <span style={{ marginLeft: "-5px" }}>Logout</span>
+          <span style={{ marginLeft: "-5px" }}></span>
         </button>
       </div>
       <div className="toggle">
@@ -171,8 +175,11 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, setLoginStatus }) => {
   const [loggedOut, setLoggedOut] = useState(false);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    setLoggedOut(true);
+    const confirmLogout = window.confirm("Are you sure you want to log out?");
+    if (confirmLogout) {
+      localStorage.removeItem("token");
+      setLoggedOut(true);
+    }
   };
 
   useEffect(() => {

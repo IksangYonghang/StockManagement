@@ -14,6 +14,7 @@ const Companies = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const { darkMode } = useContext(ThemeContext);
   const redirect = useNavigate();
+  
 
   useEffect(() => {
     fetchCompanies();
