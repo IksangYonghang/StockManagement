@@ -47,7 +47,7 @@ const DateDisplay: React.FC<DateDisplayProps> = ({ style }) => {
     left: "50%",
     transform: "translate(-50%, -50%)",
     marginBottom: "-6rem",
-    marginRight: "650px",
+    marginRight: "720px",
     ...(style || {}),
   };
 

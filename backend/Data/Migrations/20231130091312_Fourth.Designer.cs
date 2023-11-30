@@ -3,6 +3,7 @@ using System;
 using Data.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231130091312_Fourth")]
+    partial class Fourth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -273,7 +276,7 @@ namespace Data.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_active");
 
-                    b.Property<long?>("LedgerId")
+                    b.Property<long>("LedgerId")
                         .HasColumnType("bigint")
                         .HasColumnName("ledger_id");
 
@@ -285,7 +288,7 @@ namespace Data.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("piece");
 
-                    b.Property<long?>("ProductId")
+                    b.Property<long>("ProductId")
                         .HasColumnType("bigint")
                         .HasColumnName("product_id");
 
@@ -322,11 +325,14 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Module.Entities.TransactionDetail", b =>
                 {
-                    b.Property<int>("TransactionDetailId")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("TransactionDetailId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal?>("Credit")
                         .HasColumnType("numeric");
@@ -341,7 +347,13 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<long?>("LedgerId")
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("LedgerId")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("LedgerId1")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Narration")
@@ -350,8 +362,14 @@ namespace Data.Migrations
                     b.Property<int>("Piece")
                         .HasColumnType("integer");
 
-                    b.Property<long?>("ProductId")
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("ProductId1")
                         .HasColumnType("bigint");
+
+                    b.Property<int>("TransactionDetailId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("TransactionId")
                         .HasColumnType("integer");
@@ -365,14 +383,17 @@ namespace Data.Migrations
                     b.Property<int>("TransactionType")
                         .HasColumnType("integer");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.HasKey("TransactionDetailId");
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
-                    b.HasIndex("LedgerId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("LedgerId1");
+
+                    b.HasIndex("ProductId1");
 
                     b.HasIndex("TransactionId1");
 
@@ -511,11 +532,15 @@ namespace Data.Migrations
                 {
                     b.HasOne("Module.Entities.Ledger", "Ledger")
                         .WithMany()
-                        .HasForeignKey("LedgerId");
+                        .HasForeignKey("LedgerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Module.Entities.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Ledger");
 
@@ -526,11 +551,15 @@ namespace Data.Migrations
                 {
                     b.HasOne("Module.Entities.Ledger", "Ledger")
                         .WithMany()
-                        .HasForeignKey("LedgerId");
+                        .HasForeignKey("LedgerId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Module.Entities.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Module.Entities.Transaction", "Transaction")
                         .WithMany("TransactionDetails")

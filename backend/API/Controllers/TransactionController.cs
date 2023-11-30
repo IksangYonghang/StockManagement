@@ -22,32 +22,46 @@ namespace API.Controllers
         }
 
 
-
         [HttpPost("Create")]
-        public async Task<ActionResult<TransactionGetDto>> CreateTransaction(TransactionCreateDto transactionCreateDto)
+        public async Task<ActionResult<IEnumerable<TransactionGetDto>>> CreateTransactions(IEnumerable<TransactionCreateDto> transactionsCreateDto)
         {
-            /* commented it as the validation logic is performed from front end
-             
-            if (transactionCreateDto.Debit != transactionCreateDto.Credit)
+            int transactionId = await GenerateUniqueTransactionId(); // Generate a single transaction ID for all related transactions
+
+            var transactionsToCreate = new List<Transaction>();
+
+            foreach (var transactionCreateDto in transactionsCreateDto)
             {
-                return BadRequest("Invalid transaction. Debit and credit amounts are not equal.");
+                var newTransaction = new Transaction
+                {
+                    UserId = transactionCreateDto.UserId,
+                    CreatedAt = DateTime.UtcNow,
+                    TransactionId = transactionId, // Assign the same transaction ID to all related transactions
+                    Piece = transactionCreateDto.Piece,
+                    Debit = transactionCreateDto.Debit,
+                    Credit = transactionCreateDto.Credit,
+                    Narration = transactionCreateDto.Narration,
+                    LedgerId = transactionCreateDto.LedgerId,
+                    ProductId = transactionCreateDto.ProductId,
+                    InvoiceNumber = transactionCreateDto.InvoiceNumber,
+                    Date = transactionCreateDto.Date,
+                    TransactionDetails = new List<TransactionDetail>() // Initialize the list of transaction details
+                };
+
+                foreach (var transactionDetailDto in transactionCreateDto.TransactionDetails)
+                {
+                    var newTransactionDetail = _mapper.Map<TransactionDetail>(transactionDetailDto);
+                    newTransactionDetail.TransactionId = transactionId; // Set the same TransactionId for each detail
+                    newTransaction.TransactionDetails.Add(newTransactionDetail); // Add each detail to the transaction
+                }
+
+                transactionsToCreate.Add(newTransaction);
             }
-            */
 
-            int transactionId = await GenerateUniqueTransactionId();
-
-
-            Transaction newTransaction = _mapper.Map<Transaction>(transactionCreateDto);
-
-            newTransaction.CreatedAt = DateTime.UtcNow;
-            newTransaction.TransactionId = transactionId;
-            newTransaction.UserId = transactionCreateDto.UserId;
-
-            await _unitOfWork.Transaction.AddAsync(newTransaction);
+            await _unitOfWork.Transaction.AddRangeAsync(transactionsToCreate);
             await _unitOfWork.SaveAsync();
 
-            var convertedTransaction = _mapper.Map<TransactionGetDto>(newTransaction);
-            return Ok(convertedTransaction);
+            var convertedTransactions = _mapper.Map<IEnumerable<TransactionGetDto>>(transactionsToCreate);
+            return Ok(convertedTransactions);
         }
 
         private int currentTransactionId = 0;
@@ -100,7 +114,6 @@ namespace API.Controllers
             var convertedTransaction = _mapper.Map<TransactionGetDto>(transaction);
             return Ok(convertedTransaction);
         }
-
         [HttpGet("Get")]
         public async Task<ActionResult<List<TransactionGetDto>>> GetTransactions()
         {
@@ -113,6 +126,7 @@ namespace API.Controllers
             var convertedTransactions = _mapper.Map<List<TransactionGetDto>>(transactions);
             return Ok(transactions);
         }
+
 
         [HttpPut("Update")]
         public async Task<ActionResult<TransactionGetDto>> UpdateTransaction(long id, TransactionUpdateDto transactionUpdateDto)
@@ -155,12 +169,6 @@ namespace API.Controllers
             await _unitOfWork.SaveAsync();
             return Ok("Transaction deleted successfully");
         }
-
-
-
-
-
-
 
     }
 }

@@ -22,16 +22,11 @@ namespace API.Controllers
 
 
         [HttpGet("ProductStockReport")]
-        public IActionResult GetStockReportForProduct(
-              [FromQuery] long productId,
-              [FromQuery] string fromDate,
-              [FromQuery] string toDate
-          )
+        public IActionResult GetStockReportForProduct([FromQuery] long productId, [FromQuery] string fromDate, [FromQuery] string toDate )
         {
             try
             {
-                if (!DateTime.TryParse(fromDate, out DateTime fromDateValue) ||
-                    !DateTime.TryParse(toDate, out DateTime toDateValue))
+                if (!DateTime.TryParse(fromDate, out DateTime fromDateValue) ||   !DateTime.TryParse(toDate, out DateTime toDateValue))
                 {
                     return BadRequest("Invalid date format. Please provide dates in YYYY-MM-DD format.");
                 }
@@ -39,55 +34,73 @@ namespace API.Controllers
                 var fromDateOnly = new DateOnly(fromDateValue.Year, fromDateValue.Month, fromDateValue.Day);
                 var toDateOnly = new DateOnly(toDateValue.Year, toDateValue.Month, toDateValue.Day);
 
-                // Retrieve transactions within the date range and for the specified product
-                var transactions = _dbContext.Transactions
-                    .Where(t => t.ProductId == productId &&
-                                t.Date >= fromDateOnly && t.Date <= toDateOnly)
-                    .ToList();
+                // Retrieve product details
+                var product = _dbContext.Products
+                    .FirstOrDefault(p => p.Id == productId);
 
-                // Group transactions by TransactionId
-                var transactionsByTransactionId = transactions
-                    .GroupBy(t => t.TransactionId) // Group by TransactionId
-                    .ToList();
-
-                var report = new List<ProductStockReportDto>();
-
-                var productName = _dbContext.Products
-                    .Where(p => p.Id == productId)
-                    .Select(p => p.ProductName)
-                    .FirstOrDefault();
-
-                var products = _dbContext.Products
-                    .Where(p => p.Id == productId)
-                    .FirstOrDefault();
-
-                if (products == null)
+                if (product == null)
                 {
                     return BadRequest("Product not found");
                 }
 
-                decimal costPrice = products.CostPrice;
+                decimal costPrice = product.CostPrice;
+                var productName = product.ProductName;
 
-                var openingBalanceReportDto = new ProductStockReportDto
+                // Retrieve transactions before the fromDate for the specified product
+                var prevTransactions = _dbContext.Transactions
+                    .Where(t => t.ProductId == productId && t.Date < fromDateOnly)
+                    .OrderBy(t => t.Date)
+                    .ToList();
+
+                int openingStock = 0;
+
+                // Calculate opening stock based on previous transactions
+                foreach (var transaction in prevTransactions)
                 {
-                    ProductId = productId,
-                    ProductName = productName,
-                    TransactionId = 0,
-                    TransactionType = "Opening Balance",
-                    StockBalance = 0,
-                    Date = fromDateOnly,
-                    Piece = 0,
-                    Credit = 0,
-                    Debit = 0,
-                    Narration = "Opening Balance",
-                    TotalCost = 0,
-                    StockValue = 0,
-                };
+                    if (transaction.TransactionType == TransactionType.Purchase)
+                    {
+                        openingStock += transaction.Piece;
+                    }
+                    else if (transaction.TransactionType == TransactionType.Sale)
+                    {
+                        openingStock -= transaction.Piece;
+                    }
+                }
 
-                report.Add(openingBalanceReportDto);
-                int stockBalance = 0; // Initialize the stock balance outside the loop
+                // Retrieve transactions within the date range and for the specified product
+                var transactions = _dbContext.Transactions
+                    .Where(t => t.ProductId == productId &&
+                                t.Date >= fromDateOnly && t.Date <= toDateOnly)
+                    .OrderBy(t => t.Date)
+                    .ToList();
 
-                foreach (var transaction in transactions.OrderBy(t => t.Date))
+                var report = new List<ProductStockReportDto>();
+
+                // Add opening balance row if there are transactions before fromDate
+                if (openingStock != 0)
+                {
+                    var openingBalanceReportDto = new ProductStockReportDto
+                    {
+                        ProductId = productId,
+                        ProductName = productName,
+                        TransactionId = 0,
+                        TransactionType = "Opening Balance",
+                        StockBalance = openingStock,
+                        Date = fromDateOnly,
+                        Piece = 0,
+                        Credit = 0,
+                        Debit = 0,
+                        Narration = "Balance b/d",
+                        TotalCost = openingStock * costPrice,
+                        StockValue = openingStock*costPrice, 
+                    };
+
+                    report.Add(openingBalanceReportDto);
+                }
+
+                int stockBalance = openingStock; // Initialize stock balance with opening stock
+
+                foreach (var transaction in transactions)
                 {
                     if (transaction.TransactionType == TransactionType.Purchase)
                     {
@@ -111,7 +124,7 @@ namespace API.Controllers
                         Debit = transaction.Debit,
                         Narration = transaction.Narration,
                         TotalCost = stockBalance * costPrice,
-                        StockValue = report.Last().StockValue + (stockBalance * costPrice) // Cumulative addition
+                        StockValue = stockBalance * costPrice // Update Stock Value directly from stock balance
                     };
 
                     report.Add(reportDto);
@@ -121,6 +134,9 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                // Log the exception for debugging purposes
+                // Logger.LogError(ex, "Error occurred while generating stock report.");
+
                 return StatusCode(500, $"An error occurred: {ex.Message}");
             }
         }

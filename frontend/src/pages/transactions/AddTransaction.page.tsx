@@ -47,10 +47,12 @@ const AddTransaction = () => {
   });
 
   const [selectedDate, setSelectedDate] = useState("");
-
+  const [vouchers, setVouchers] = useState<any[]>([]);
   const redirect = useNavigate();
   const [ledgers, setLedgers] = useState<ILedger[]>([]);
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [totalDebit, setTotalDebit] = useState<number>(0);
+  const [totalCredit, setTotalCredit] = useState<number>(0);
 
   useEffect(() => {
     httpModule
@@ -82,10 +84,28 @@ const AddTransaction = () => {
       return;
     }
 
-    if (transaction.debit !== transaction.credit) {
+    const debitTotal = vouchers.reduce(
+      (total, voucher) => total + parseFloat(voucher.debit || 0),
+      0
+    );
+    const creditTotal = vouchers.reduce(
+      (total, voucher) => total + parseFloat(voucher.credit || 0),
+      0
+    );
+
+    // Debugging: Print out the debitTotal and creditTotal values
+    console.log("Debit Total:", debitTotal);
+    console.log("Credit Total:", creditTotal);
+
+    // Round the totals to 2 decimal places
+    const roundedDebitTotal = parseFloat(debitTotal.toFixed(2));
+    const roundedCreditTotal = parseFloat(creditTotal.toFixed(2));
+
+    if (roundedDebitTotal !== roundedCreditTotal) {
       alert("Invalid transaction. Debit and credit amounts are not equal.");
       return;
     }
+
     const formattedDate = selectedDate;
 
     const userId = localStorage.getItem("userId"); // Get userId from localStorage
@@ -99,6 +119,7 @@ const AddTransaction = () => {
       ...transaction,
       date: formattedDate,
       userId: parseInt(userId), // Convert userId to a number if needed
+      debit: debitTotal.toString(), // Set the debit field with the total debit
     };
     console.log("Transaction to send:", transactionToSend); // Log the transaction object
     httpModule
@@ -149,12 +170,79 @@ const AddTransaction = () => {
     });
   };
 
+  const addVoucherRow = () => {
+    const newVoucher = {
+      invoiceNumber: transaction.invoiceNumber,
+      productName:
+        products.find((product) => product.id === transaction.productId)
+          ?.productName || "",
+      ledgerName:
+        ledgers.find((ledger) => ledger.id === transaction.ledgerId)
+          ?.ledgerName || "",
+      transactionType: transaction.transactionType,
+      quantity: transaction.piece,
+      transactionMethod: transaction.transactionMethod,
+      debit: transaction.debit,
+      credit: transaction.credit,
+      narration: transaction.narration,
+    };
+
+    const updatedVouchers = [...vouchers, newVoucher];
+
+    // Calculate total debit and total credit based on updated vouchers
+    const updatedTotalDebit = updatedVouchers.reduce(
+      (total, voucher) => total + parseFloat(voucher.debit || 0),
+      0
+    );
+    const updatedTotalCredit = updatedVouchers.reduce(
+      (total, voucher) => total + parseFloat(voucher.credit || 0),
+      0
+    );
+
+    setTotalDebit(updatedTotalDebit);
+    setTotalCredit(updatedTotalCredit);
+
+    setVouchers(updatedVouchers);
+    setShowVoucherHeader(true);
+  };
+
+  const [showVoucherHeader, setShowVoucherHeader] = useState(false);
+
+  const handleDeleteRow = (indexToDelete: number) => {
+    const updatedVouchers = vouchers.filter(
+      (_, index) => index !== indexToDelete
+    );
+    setVouchers(updatedVouchers);
+
+    // Update total debit and total credit after deletion
+    const updatedTotalDebit = updatedVouchers.reduce(
+      (total, voucher) => total + parseFloat(voucher.debit),
+      0
+    );
+    const updatedTotalCredit = updatedVouchers.reduce(
+      (total, voucher) => total + parseFloat(voucher.credit),
+      0
+    );
+    setTotalDebit(updatedTotalDebit);
+    setTotalCredit(updatedTotalCredit);
+
+    // Check if updated vouchers array is empty to toggle the header
+    setShowVoucherHeader(updatedVouchers.length > 0);
+  };
+
   return (
     <div className="content">
       <div className="add-transaction">
-        <h2>Add Transaction </h2>
+        <h2 style={{ marginBottom: "1rem" }}>Add Transaction </h2>
         <div className="date-picker-wrapper">
-        <label style={{ fontWeight: "bold", marginBottom: "-6px", marginLeft: "-2rem" }}>
+          <label
+            style={{
+              fontWeight: "bold",
+              marginBottom: "-6px",
+              marginLeft: "-3rem",
+              fontSize: "18px"
+            }}
+          >
             Select Date{" "}
           </label>
           <NepaliDatePicker
@@ -171,7 +259,9 @@ const AddTransaction = () => {
               color: darkMode ? "#09ee70" : "black",
               fontSize: "14px",
               fontWeight: "bold",
-              width: "200px", // Adjust the width as needed
+              width: "200px",
+              marginLeft: "20rem",
+              marginTop: "-4.7rem",
             }}
           >
             Transaction Type
@@ -190,7 +280,9 @@ const AddTransaction = () => {
               fontSize: "14px",
               padding: "-5px -5px",
               fontWeight: "bold",
-              width: "160px", // Match the width here
+              width: "200px",
+              marginLeft: "20rem",
+              marginTop: "-4.7rem",
             }}
           >
             {transactionTypeArray.map((item) => (
@@ -207,6 +299,8 @@ const AddTransaction = () => {
               fontSize: "14px",
               fontWeight: "bold",
               width: "200px", // Adjust the width as needed
+              marginLeft: "35rem",
+              marginTop: "-5.7rem",
             }}
           >
             Transaction Method
@@ -226,6 +320,8 @@ const AddTransaction = () => {
               padding: "-5px -5px",
               fontWeight: "bold",
               width: "186px", // Match the width here
+              marginLeft: "35rem",
+              marginTop: "-5.7rem",
             }}
           >
             {transactionMethodArray.map((item) => (
@@ -388,6 +484,7 @@ const AddTransaction = () => {
                 },
               }}
               style={{ width: "15%" }}
+              disabled={!transaction.productId} // Disable if productId is not selected
             />
 
             <TextField
@@ -484,11 +581,57 @@ const AddTransaction = () => {
               cursor: "pointer",
               marginLeft: "1px",
             }}
-            onClick={() => {
-              // Add functionality for the icon here
-            }}
+            onClick={addVoucherRow}
           />
         </div>
+        {showVoucherHeader && (
+          <h3 style={{ marginTop: "1rem", textAlign: "center" }}>Voucher</h3>
+        )}
+        {vouchers.length > 0 && (
+          <table className="voucher-table">
+            <thead>
+              <tr>
+                <th>Transaction Type</th>
+                <th>Transaction Method</th>
+                <th>Product Name</th>
+                <th>Ledger Name</th>
+                <th>Quantity</th>
+                <th>Debit</th>
+                <th>Credit</th>
+                <th>Narration</th>
+                <th>Delete?</th>
+              </tr>
+            </thead>
+            <tbody>
+              {vouchers.map((voucher, index) => (
+                <tr key={index}>
+                  <td>{voucher.transactionType}</td>
+                  <td>{voucher.transactionMethod}</td>
+                  <td>{voucher.productName}</td>
+                  <td>{voucher.ledgerName}</td>
+                  <td>{voucher.quantity}</td>
+                  <td>{voucher.debit}</td>
+                  <td>{voucher.credit}</td>
+                  <td>{voucher.narration}</td>
+                  <td>
+                    <button onClick={() => handleDeleteRow(index)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+              <tr>
+                <td colSpan={5} style={{ fontWeight: "bold" }}>
+                  Total
+                </td>
+                <td style={{ fontWeight: "bold" }}>{totalDebit}</td>
+                <td style={{ fontWeight: "bold" }}>{totalCredit}</td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        )}
         <div
           style={{
             display: "flex",

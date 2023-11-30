@@ -170,16 +170,17 @@ const UpdateTransaction = () => {
   return (
     <div className="content">
       <div className="add-transaction">
-        <h2>Update Transaction </h2>
+        <h2 style={{ marginBottom: "1rem" }}>Update Transaction </h2>
         <div className="date-picker-wrapper">
           <label
             style={{
               fontWeight: "bold",
               marginBottom: "-6px",
-              marginLeft: "-2rem",
+              marginLeft: "-3rem",
+              fontSize: "18px",
             }}
           >
-            Change Date?
+            Select Date
           </label>
           <NepaliDatePicker
             inputClassName="form-control"
@@ -195,7 +196,9 @@ const UpdateTransaction = () => {
               color: darkMode ? "#09ee70" : "black",
               fontSize: "14px",
               fontWeight: "bold",
-              width: "200px", // Adjust the width as needed
+              width: "200px",
+              marginLeft: "20rem",
+              marginTop: "-4.7rem",
             }}
           >
             Transaction Type
@@ -214,7 +217,9 @@ const UpdateTransaction = () => {
               fontSize: "14px",
               padding: "-5px -5px",
               fontWeight: "bold",
-              width: "160px", // Match the width here
+              width: "200px",
+              marginLeft: "20rem",
+              marginTop: "-4.7rem",
             }}
           >
             {transactionTypeArray.map((item) => (
@@ -231,6 +236,8 @@ const UpdateTransaction = () => {
               fontSize: "14px",
               fontWeight: "bold",
               width: "200px", // Adjust the width as needed
+              marginLeft: "35rem",
+              marginTop: "-5.7rem",
             }}
           >
             Transaction Method
@@ -250,6 +257,8 @@ const UpdateTransaction = () => {
               padding: "-5px -5px",
               fontWeight: "bold",
               width: "186px", // Match the width here
+              marginLeft: "35rem",
+              marginTop: "-5.7rem",
             }}
           >
             {transactionMethodArray.map((item) => (

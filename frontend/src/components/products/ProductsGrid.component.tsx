@@ -82,7 +82,12 @@ const column: GridColDef[] = [
   { field: "markedPrice", headerName: "Marked Price", width: 110 },
   { field: "costPrice", headerName: "Cost Price", width: 110 },
   { field: "wholeSalePrice", headerName: "Wholesale Price", width: 150 },
-  { field: "retailPrice", headerName: "Retail Price", width: 110 },
+  {
+    field: "retailPrice",
+    headerName: "Retail Price",
+    width: 110,
+    
+  },
   { field: "categoryName", headerName: "Category Name", width: 150 },
   { field: "companyName", headerName: "Company Name", width: 250 },
   /*

@@ -6,17 +6,6 @@
   align-items: center;
 }
 
-label {
-  margin-right: 10px;
-}
-
-select {
-  width: 200px;
-  height: 40px;
-  padding: 0 10px;
-  border: 1px solid #ccc;
-}
-
 .report-table {
   width: 100%;
   border-collapse: collapse;
@@ -53,7 +42,7 @@ select {
   flex-direction: column;
   align-items: flex-start;
   width: 180px;
-  margin-left: 2rem;
+  margin-left: 3rem;
 
   .nepali-datepicker {
     width: 300px;

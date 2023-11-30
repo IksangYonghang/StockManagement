@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Module.Dtos.Ledger;
+using Module.Dtos.LedgerDto;
 using Module.Entities;
 using Module.IRepositories;
 

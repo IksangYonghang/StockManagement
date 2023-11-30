@@ -121,7 +121,13 @@ const ProductStockReport: React.FC = () => {
           />
         </FormControl>
         <div className="date-picker-wrapper">
-          <label style={{ fontWeight: "bold", marginBottom: "-6px" }}>
+          <label
+            style={{
+              fontWeight: "bold",
+              marginBottom: "-6px",
+              marginLeft: "-2rem",
+            }}
+          >
             From Date:{" "}
           </label>
           <NepaliDatePicker
@@ -133,7 +139,13 @@ const ProductStockReport: React.FC = () => {
           />
         </div>
         <div className="date-picker-wrapper">
-          <label style={{ fontWeight: "bold", marginBottom: "-6px" }}>
+          <label
+            style={{
+              fontWeight: "bold",
+              marginBottom: "-6px",
+              marginLeft: "-1rem",
+            }}
+          >
             To Date:{" "}
           </label>
           <NepaliDatePicker
@@ -150,7 +162,8 @@ const ProductStockReport: React.FC = () => {
           style={{
             backgroundColor: "#05386B",
             color: "#fff",
-            marginLeft: "1.6rem",
+            marginLeft: "10rem",
+            marginTop: "-2rem",
           }}
         >
           Show Report

@@ -36,6 +36,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ThemeContext } from "./context/theme.context";
 import ProductReport from "./pages/reports/ProductStockReport.page";
 import ProductStockReport from "./pages/reports/ProductStockReport.page";
+import LogoutOnClose from "./pages/user/LogoutOnClose";
 
 interface MainContentProps {
   isLoggedIn: boolean;
@@ -171,6 +172,7 @@ const App = () => {
 
   return (
     <div className={appStyles}>
+      <LogoutOnClose isLoggedIn={isLoggedIn} setLoginStatus={setLoginStatus} />
       <div className="app">
         <Navbar isLoggedIn={isLoggedIn} setLoginStatus={setLoginStatus} />
         <MainContent

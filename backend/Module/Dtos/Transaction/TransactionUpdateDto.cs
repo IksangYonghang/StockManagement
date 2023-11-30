@@ -20,6 +20,6 @@ namespace Module.Dtos
         public TransactionMethod TransactionMethod { get; set; }
         public decimal? Debit { get; set; }
         public decimal? Credit { get; set; }
-        public string Narration { get; set; }
+        public string? Narration { get; set; }
     }
 }
