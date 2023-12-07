@@ -111,6 +111,7 @@ export interface IUpdateLedgerDto {
 export interface ITransaction {
   id: string;
   date: string;
+  transactionId: string;
   invoiceNumber: string;
   ledgerId: string;
   ledgerName: string;
@@ -126,6 +127,7 @@ export interface ITransaction {
 }
 
 export interface ITransactionCreateDto {
+  userId: number;
   date: string;
   invoiceNumber: string;
   ledgerId: string;
@@ -139,16 +141,21 @@ export interface ITransactionCreateDto {
 }
 
 export interface ITransactionUpdateDto {
+  id?: string;
+  transactionId?: string;
   date: string;
   invoiceNumber: string;
-  ledgerId: string;
-  productId: string;
-  piece: string;
-  transactionType: string;
-  transactionMethod: string;
-  debit: string;
-  credit: string;
-  narration: string;
+  ledgerId?: string | null; 
+  productId?: string | null; 
+  piece: string | null; 
+  transactionType: string; 
+  transactionMethod: string; 
+  debit?: string | null; 
+  credit?: string | null; 
+  narration: string | null;
+  ledgerName: string | null;
+  productName: string | null;
+
 }
 
 export interface ILogin {

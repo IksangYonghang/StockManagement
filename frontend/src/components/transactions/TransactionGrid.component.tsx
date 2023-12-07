@@ -22,27 +22,31 @@ const column: GridColDef[] = [
     field: "ledgerName",
     headerName: "Ledger Name",
     width: 200,
-    renderCell: (params) => params.row.ledger.ledgerName,
+    renderCell: (params) =>
+      params.row.ledger ? params.row.ledger.ledgerName : "",
   },
   {
     field: "productName",
     headerName: "Product Name",
     width: 150,
-    renderCell: (params) => params.row.product.productName,
+    renderCell: (params) =>
+      params.row.product ? params.row.product.productName : "",
   },
+
   { field: "piece", headerName: "Quantity", width: 66 },
   { field: "transactionType", headerName: "Transaction Type", width: 150 },
   { field: "transactionMethod", headerName: "Transaction Method", width: 150 },
   { field: "debit", headerName: "Debit", width: 100 },
   { field: "credit", headerName: "Credit", width: 100 },
   { field: "narration", headerName: "Narration", width: 300 },
+  /*
   {
     field: "createdAtFromNow",
     headerName: "Created",
     width: 150,
     renderCell: (params) => moment(params.row.createdAt).fromNow(),
   },
-  /*
+  
   {
     field: "createdAtTimestamp",
     headerName: "Creation Date With Timestamp",
@@ -59,12 +63,13 @@ const column: GridColDef[] = [
     renderCell: (params) => (
       <div style={{ marginLeft: "3.5rem" }}>
         <Link
-          to={`/transactions/update/${params.row.id}`}
+          to={`/transactions/update/${params.row.transactionId}`} 
           className="action-link"
           style={{ fontSize: "1rem" }}
         >
           Edit
         </Link>
+
         <span
           style={{
             margin: "0 8px",

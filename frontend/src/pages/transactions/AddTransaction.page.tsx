@@ -22,7 +22,12 @@ import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import "nepali-datepicker-reactjs/dist/index.css";
 import { AddCircleOutline } from "@mui/icons-material";
 
-const transactionTypeArray: string[] = ["Purchase", "Sale"];
+const transactionTypeArray: string[] = [
+  "Purchase",
+  "Sale",
+  "Payment",
+  "Receipt",
+];
 const transactionMethodArray: string[] = [
   "Cash",
   "Credit",
@@ -34,6 +39,7 @@ const AddTransaction = () => {
   const { darkMode } = useContext(ThemeContext);
   const [transactions, setTransactions] = useState<ITransaction[]>([]);
   const [transaction, setTransaction] = useState<ITransactionCreateDto>({
+    userId: 0,
     date: "",
     invoiceNumber: "",
     ledgerId: "",
@@ -53,6 +59,59 @@ const AddTransaction = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [totalDebit, setTotalDebit] = useState<number>(0);
   const [totalCredit, setTotalCredit] = useState<number>(0);
+  const [transactionsToSend, setTransactionsToSend] = useState<
+    ITransactionCreateDto[]
+  >([]);
+
+  const addVoucherRow = () => {
+    const selectedLedger = ledgers.find(
+      (ledger) => ledger.id === transaction.ledgerId
+    );
+    const selectedProduct = products.find(
+      (product) => product.id === transaction.productId
+    );
+
+    const newVoucher = {
+      invoiceNumber: transaction.invoiceNumber,
+      productName: selectedProduct ? selectedProduct.productName : "N/A",
+      ledgerName: selectedLedger ? selectedLedger.ledgerName : "N/A",
+      transactionType: transaction.transactionType,
+      quantity: transaction.piece,
+      transactionMethod: transaction.transactionMethod,
+      debit: transaction.debit,
+      credit: transaction.credit,
+      narration: transaction.narration,
+      ledgerId: transaction.ledgerId,
+      productId: transaction.productId,
+    };
+
+    const updatedVouchers = [...vouchers, newVoucher];
+
+    const updatedTotalDebit = updatedVouchers.reduce(
+      (total, voucher) => total + parseFloat(voucher.debit || 0),
+      0
+    );
+
+    const updatedTotalCredit = updatedVouchers.reduce(
+      (total, voucher) => total + parseFloat(voucher.credit || 0),
+      0
+    );
+
+    setTotalDebit(updatedTotalDebit);
+    setTotalCredit(updatedTotalCredit);
+    setVouchers(updatedVouchers);
+    setShowVoucherHeader(true);
+
+    //Reseting only these fields to empty state when a row is added to voucher
+    setTransaction((prevTransaction) => ({
+      ...prevTransaction,
+      ledgerId: "",
+      productId: "",
+      piece: "",
+      debit: "",
+      credit: "",
+    }));
+  };
 
   useEffect(() => {
     httpModule
@@ -92,12 +151,10 @@ const AddTransaction = () => {
       (total, voucher) => total + parseFloat(voucher.credit || 0),
       0
     );
-
-    // Debugging: Print out the debitTotal and creditTotal values
-    console.log("Debit Total:", debitTotal);
-    console.log("Credit Total:", creditTotal);
-
-    // Round the totals to 2 decimal places
+    if (vouchers.length === 0) {
+      alert("No transactions to save");
+      return;
+    }
     const roundedDebitTotal = parseFloat(debitTotal.toFixed(2));
     const roundedCreditTotal = parseFloat(creditTotal.toFixed(2));
 
@@ -108,22 +165,43 @@ const AddTransaction = () => {
 
     const formattedDate = selectedDate;
 
-    const userId = localStorage.getItem("userId"); // Get userId from localStorage
-    //console.log("User ID:", userId); //checking if userId is being parsed or not
+    const userId = localStorage.getItem("userId");
     if (!userId) {
       alert("User ID not found");
       return;
     }
 
-    const transactionToSend = {
-      ...transaction,
+    const transactionToSend: ITransactionCreateDto = {
+      userId: parseInt(userId),
       date: formattedDate,
-      userId: parseInt(userId), // Convert userId to a number if needed
-      debit: debitTotal.toString(), // Set the debit field with the total debit
+      invoiceNumber: "",
+      ledgerId: "",
+      productId: "",
+      piece: "",
+      transactionType: "",
+      transactionMethod: "",
+      debit: debitTotal.toString(),
+      credit: creditTotal.toString(),
+      narration: "",
     };
-    console.log("Transaction to send:", transactionToSend); // Log the transaction object
+
+    const updatedTransactions = vouchers.map((voucher) => ({
+      userId: parseInt(userId),
+      date: formattedDate,
+      invoiceNumber: voucher.invoiceNumber,
+      ledgerId: voucher.ledgerId || null,
+      productId: voucher.productId || null,
+      piece: voucher.quantity || null,
+      transactionType: voucher.transactionType,
+      transactionMethod: voucher.transactionMethod,
+      debit: voucher.debit || "0",
+      credit: voucher.credit || "0",
+      narration: voucher.narration,
+    }));
+    console.log("Transactions to send:", updatedTransactions);
+    setTransactionsToSend(updatedTransactions);
     httpModule
-      .post("/Transaction/Create", transactionToSend)
+      .post("/Transaction/Create", updatedTransactions)
       .then((response) => redirect("/transactions"))
       .catch((error) => console.log(error));
   };
@@ -170,42 +248,6 @@ const AddTransaction = () => {
     });
   };
 
-  const addVoucherRow = () => {
-    const newVoucher = {
-      invoiceNumber: transaction.invoiceNumber,
-      productName:
-        products.find((product) => product.id === transaction.productId)
-          ?.productName || "",
-      ledgerName:
-        ledgers.find((ledger) => ledger.id === transaction.ledgerId)
-          ?.ledgerName || "",
-      transactionType: transaction.transactionType,
-      quantity: transaction.piece,
-      transactionMethod: transaction.transactionMethod,
-      debit: transaction.debit,
-      credit: transaction.credit,
-      narration: transaction.narration,
-    };
-
-    const updatedVouchers = [...vouchers, newVoucher];
-
-    // Calculate total debit and total credit based on updated vouchers
-    const updatedTotalDebit = updatedVouchers.reduce(
-      (total, voucher) => total + parseFloat(voucher.debit || 0),
-      0
-    );
-    const updatedTotalCredit = updatedVouchers.reduce(
-      (total, voucher) => total + parseFloat(voucher.credit || 0),
-      0
-    );
-
-    setTotalDebit(updatedTotalDebit);
-    setTotalCredit(updatedTotalCredit);
-
-    setVouchers(updatedVouchers);
-    setShowVoucherHeader(true);
-  };
-
   const [showVoucherHeader, setShowVoucherHeader] = useState(false);
 
   const handleDeleteRow = (indexToDelete: number) => {
@@ -240,7 +282,7 @@ const AddTransaction = () => {
               fontWeight: "bold",
               marginBottom: "-6px",
               marginLeft: "-3rem",
-              fontSize: "18px"
+              fontSize: "18px",
             }}
           >
             Select Date{" "}
@@ -607,8 +649,8 @@ const AddTransaction = () => {
                 <tr key={index}>
                   <td>{voucher.transactionType}</td>
                   <td>{voucher.transactionMethod}</td>
-                  <td>{voucher.productName}</td>
-                  <td>{voucher.ledgerName}</td>
+                  <td>{voucher.productName ? voucher.productName : "N/A"}</td>
+                  <td>{voucher.ledgerName ? voucher.ledgerName : "N/A"}</td>
                   <td>{voucher.quantity}</td>
                   <td>{voucher.debit}</td>
                   <td>{voucher.credit}</td>
@@ -626,8 +668,7 @@ const AddTransaction = () => {
                 </td>
                 <td style={{ fontWeight: "bold" }}>{totalDebit}</td>
                 <td style={{ fontWeight: "bold" }}>{totalCredit}</td>
-                <td></td>
-                <td></td>
+                <td colSpan={5}></td>
               </tr>
             </tbody>
           </table>

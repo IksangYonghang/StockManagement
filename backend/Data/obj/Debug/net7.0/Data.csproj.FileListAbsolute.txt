@@ -74,3 +74,4 @@ E:\REPOS\Stock Management\backend\Data\obj\Debug\net7.0\refint\Data.dll
 E:\REPOS\Stock Management\backend\Data\obj\Debug\net7.0\Data.pdb
 E:\REPOS\Stock Management\backend\Data\obj\Debug\net7.0\Data.genruntimeconfig.cache
 E:\REPOS\Stock Management\backend\Data\obj\Debug\net7.0\ref\Data.dll
+E:\REPOS\Stock Management\backend\Data\obj\Debug\net7.0\Data.sourcelink.json

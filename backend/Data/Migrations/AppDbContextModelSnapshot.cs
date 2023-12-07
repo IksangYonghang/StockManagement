@@ -281,7 +281,7 @@ namespace Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("narration");
 
-                    b.Property<int>("Piece")
+                    b.Property<int?>("Piece")
                         .HasColumnType("integer")
                         .HasColumnName("piece");
 
@@ -347,7 +347,7 @@ namespace Data.Migrations
                     b.Property<string>("Narration")
                         .HasColumnType("text");
 
-                    b.Property<int>("Piece")
+                    b.Property<int?>("Piece")
                         .HasColumnType("integer");
 
                     b.Property<long?>("ProductId")

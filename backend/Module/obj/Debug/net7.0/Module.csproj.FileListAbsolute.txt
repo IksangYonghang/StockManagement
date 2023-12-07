@@ -58,3 +58,4 @@ E:\REPOS\Stock Management\backend\Module\obj\Debug\net7.0\Module.dll
 E:\REPOS\Stock Management\backend\Module\obj\Debug\net7.0\refint\Module.dll
 E:\REPOS\Stock Management\backend\Module\obj\Debug\net7.0\Module.pdb
 E:\REPOS\Stock Management\backend\Module\obj\Debug\net7.0\ref\Module.dll
+E:\REPOS\Stock Management\backend\Module\obj\Debug\net7.0\Module.sourcelink.json

@@ -7,9 +7,8 @@ using Module.Dtos.LedgerDto;
 using Module.Dtos.Transaction;
 using Module.Dtos.User;
 using Module.Entities;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
+
 
 namespace Module.AutoMapper
 {
@@ -62,7 +61,9 @@ namespace Module.AutoMapper
             .ForMember(dest => dest.LedgerId, opt => opt.MapFrom(src => src.LedgerId))
             .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.ProductId))
             .ForMember(dest => dest.InvoiceNumber, opt => opt.MapFrom(src => src.InvoiceNumber))
-            .ForMember(dest => dest.Date, opt => opt.MapFrom(src =>src.Date))
+            .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date))
+            .ForMember(dest => dest.TransactionType, opt => opt.MapFrom(src => src.TransactionType))
+            .ForMember(dest => dest.TransactionMethod, opt => opt.MapFrom(src => src.TransactionMethod))
             .AfterMap((src, dest) =>
             {
                 Debug.WriteLine($"Source: {src} \nDestination: {dest}");
@@ -79,6 +80,8 @@ namespace Module.AutoMapper
             CreateMap<TransactionGetDto, TransactionCreateDto>();
             CreateMap<TransactionDetail, TransactionGetDto>();
             CreateMap<TransactionDetail, TransactionCreateDto>();
+            CreateMap<TransactionUpdateDto, TransactionGetDto> ();
+            CreateMap<TransactionUpdateDto, Transaction> ();
 
             var config = new MapperConfiguration(cfg =>
             {

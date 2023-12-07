@@ -24,7 +24,6 @@ import AddProduct from "./pages/products/AddProduct.page";
 import UpdateProduct from "./pages/products/UpdateProduct.page";
 import Transaction from "./pages/transactions/Transaction.page";
 import AddTransaction from "./pages/transactions/AddTransaction.page";
-import UpdateTransaction from "./pages/transactions/UpdateTransaction.Page";
 import Login from "./pages/user/Login.page";
 import Registration from "./pages/user/Register.page";
 import ResetPassword from "./pages/user/ResetPassword.page";
@@ -34,9 +33,10 @@ import UpdateUser from "./pages/user/UpdateUser.page";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ThemeContext } from "./context/theme.context";
-import ProductReport from "./pages/reports/ProductStockReport.page";
 import ProductStockReport from "./pages/reports/ProductStockReport.page";
 import LogoutOnClose from "./pages/user/LogoutOnClose";
+import EditTransaction from "./pages/transactions/EditTransaction.page";
+import LedgerReport from "./pages/reports/LedgerReport.page";
 
 interface MainContentProps {
   isLoggedIn: boolean;
@@ -82,7 +82,7 @@ const MainContent: React.FC<MainContentProps> = ({
             <Route path="/transactions/add" element={<AddTransaction />} />
             <Route
               path="/transactions/update/:id"
-              element={<UpdateTransaction />}
+              element={<EditTransaction />}
             />
             <Route path="/products" element={<Products />} />
             <Route path="/products/add" element={<AddProduct />} />
@@ -94,6 +94,7 @@ const MainContent: React.FC<MainContentProps> = ({
             <Route path="/contact" element={<Contact />} />
             <Route path="/" element={<Home />} />
             <Route path="/productReport" element={<ProductStockReport />} />
+            <Route path="/ledgerReport" element={<LedgerReport/>}/>
           </>
         )}
       </Routes>

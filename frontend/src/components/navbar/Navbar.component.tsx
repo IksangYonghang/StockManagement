@@ -56,10 +56,9 @@ const links: { href: string; label: string }[] = [
   { href: "/categories", label: "Categories" },
   { href: "/products", label: "Products" },
   { href: "/ledgers", label: "Ledgers" },
-
   { href: "/productReport", label: "Product Report" },
+  { href: "/ledgerReport", label: "Ledger Report" },
   { href: "/transactions", label: "Transactions" },
-
   { href: "/users", label: "Users" },
   { href: "/contact", label: "Contact" },
 ];

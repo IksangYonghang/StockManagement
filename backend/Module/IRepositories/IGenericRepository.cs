@@ -17,5 +17,6 @@ namespace Module.IRepositories
         Task DeleteAsync(long id);
         IQueryable<T> Include(params Expression<Func<T, object>>[] includes);
         Task AddRangeAsync(IEnumerable<T> entities);
+       
     }
 }

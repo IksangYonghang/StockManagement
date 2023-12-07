@@ -35,8 +35,11 @@ const Transactions = () => {
   };
 
   const handleDeleteTransaction = (transactionToDelete: ITransaction) => {
+    const { transactionId } = transactionToDelete;
+    httpModule;
     httpModule
-      .delete(`/Transaction?id=${transactionToDelete.id}`)
+      .delete(`/Transaction/transactionId?transactionId=${transactionId}`)
+
       .then(() => {
         fetchTransactions();
       })

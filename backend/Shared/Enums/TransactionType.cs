@@ -8,8 +8,11 @@ namespace Shared.Enums
 {
     public enum TransactionType
     {
+        Sale,
         Purchase,
-        Sale
+        Payment,
+        Receipt
+       
 
     }
 }

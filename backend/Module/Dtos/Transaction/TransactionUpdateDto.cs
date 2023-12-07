@@ -10,12 +10,14 @@ namespace Module.Dtos
 {
     public class TransactionUpdateDto
     {
-        
+
+        public long Id { get; set; }
+        public int TransactionId { get; set; }
         public DateOnly Date { get; set; }
         public string InvoiceNumber { get; set; } = string.Empty;
-        public long LedgerId { get; set; }       
-        public long ProductId { get; set; }   
-        public int Piece { get; set; }
+        public long? LedgerId { get; set; }       
+        public long? ProductId { get; set; }   
+        public int? Piece { get; set; }
         public TransactionType TransactionType { get; set; }
         public TransactionMethod TransactionMethod { get; set; }
         public decimal? Debit { get; set; }

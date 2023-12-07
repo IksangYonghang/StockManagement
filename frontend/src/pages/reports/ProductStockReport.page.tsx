@@ -14,7 +14,9 @@ const ProductStockReport: React.FC = () => {
   const [report, setReport] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const { darkMode } = useContext(ThemeContext);
-
+  const [fetchedProductName, setFetechedProductName] = useState<string | null>(
+    null
+  );
   useEffect(() => {
     httpModule
       .get<IProduct[]>("/Product/Get")
@@ -66,6 +68,9 @@ const ProductStockReport: React.FC = () => {
         `Report/ProductStockReport?productId=${selectedProduct}&fromDate=${englishFromDate}&toDate=${englishToDate}`
       );
       setReport(response.data);
+      setFetechedProductName(
+        response.data.length > 0 ? response.data[0].productName : null
+      );
       setError(null);
     } catch (error: any) {
       setError(
@@ -171,48 +176,65 @@ const ProductStockReport: React.FC = () => {
       </div>
 
       {report && (
-        <div className="report-container">
-          <table className="report-table">
-            <thead>
-              <tr>
-                {[
-                  "Date",
-                  "Transaction Id",
-                  "Transaction Type",
-                  "Product Id",
-                  "Product Name",
-                  "Piece",
-                  "Stock Balance",
-                  "Debit",
-                  "Credit",
-                  "Total Cost",
-                  "Stock Value",
-                  "Narration",
-                ].map((header, index) => (
-                  <th key={index}>{header}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {report.map((item: any, index: number) => (
-                <tr key={index}>
-                  <td>{item.date}</td>
-                  <td>{item.transactionId}</td>
-                  <td>{item.transactionType}</td>
-                  <td>{item.productId}</td>
-                  <td>{item.productName}</td>
-                  <td>{item.piece}</td>
-                  <td>{item.stockBalance}</td>
-                  <td className="right-align">{item.debit}</td>
-                  <td className="right-align">{item.credit}</td>
-                  <td className="right-align">{item.totalCost}</td>
-                  <td className="right-align">{item.stockValue}</td>
-                  <td>{item.narration}</td>
+        <>
+          {fetchedProductName && (
+            <p
+              style={{
+                marginLeft: "655px",
+                fontWeight: "bold",
+                marginBottom: "-50px",
+                fontSize: "26px",
+              }}
+            >
+              {" "}
+              {fetchedProductName}
+            </p>
+          )}
+          <div className="report-container">
+            <table className="report-table">
+              <thead>
+                <tr>
+                  {[
+                    "Date",
+                    "Transaction Id",
+                    "Invoice Number",
+                    "Transaction Type",
+                    "Product Id",
+                    "Piece",
+                    "Stock Balance",
+                    "Debit",
+                    "Credit",
+                    "Total Cost",
+                    "Stock Value",
+                    "Narration",
+                    "Creator",
+                  ].map((header, index) => (
+                    <th key={index}>{header}</th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {report.map((item: any, index: number) => (
+                  <tr key={index}>
+                    <td>{item.date}</td>
+                    <td>{item.transactionId}</td>
+                    <td>{item.invoiceNumber}</td>
+                    <td>{item.transactionType}</td>
+                    <td>{item.productId}</td>
+                    <td>{item.piece}</td>
+                    <td>{item.stockBalance}</td>
+                    <td className="right-align">{item.debit}</td>
+                    <td className="right-align">{item.credit}</td>
+                    <td className="right-align">{item.totalCost}</td>
+                    <td className="right-align">{item.stockValue}</td>
+                    <td>{item.narration}</td>
+                    <td>{item.userName}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
     </>
   );

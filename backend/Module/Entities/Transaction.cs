@@ -13,7 +13,7 @@ namespace Module.Entities
         public Ledger Ledger { get; set; }
         public long? ProductId { get; set; }
         public Product Product { get; set; }
-        public int Piece { get; set; }
+        public int? Piece { get; set; }
         public TransactionType TransactionType { get; set; }
         public TransactionMethod TransactionMethod { get; set; }
         public decimal? Debit { get; set; }
@@ -32,9 +32,8 @@ namespace Module.Entities
         public long? LedgerId { get; set; }
         public Ledger Ledger { get; set; }
         public long? ProductId { get; set; }
-        public Product Product { get; set; }      
-       
-        public int Piece { get; set; }
+        public Product Product { get; set; }       
+        public int? Piece { get; set; }
         public TransactionType TransactionType { get; set; }
         public TransactionMethod TransactionMethod { get; set; }
         public decimal? Debit { get; set; }

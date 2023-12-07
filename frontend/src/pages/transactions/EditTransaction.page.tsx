@@ -12,13 +12,15 @@ import { ThemeContext } from "../../context/theme.context";
 import {
   ILedger,
   IProduct,
+  ITransaction,
   ITransactionUpdateDto,
 } from "../../types/global.typing";
 import { useNavigate, useParams } from "react-router-dom";
 import httpModule from "../../helpers/http.module";
 import Autocomplete from "@mui/material/Autocomplete";
-import { AddCircleOutline } from "@mui/icons-material";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
+import "nepali-datepicker-reactjs/dist/index.css";
+import { AddCircleOutline } from "@mui/icons-material";
 
 const transactionTypeArray: string[] = ["Purchase", "Sale"];
 const transactionMethodArray: string[] = [
@@ -28,11 +30,12 @@ const transactionMethodArray: string[] = [
   "PhonePay",
 ];
 
-const UpdateTransaction = () => {
+const EditTransaction = () => {
   const { darkMode } = useContext(ThemeContext);
-  const { id } = useParams();
-
+  const { id: transactionId } = useParams<{ id?: string }>();
+  const [transactions, setTransactions] = useState<ITransaction[]>([]);
   const [transaction, setTransaction] = useState<ITransactionUpdateDto>({
+    id: "",
     date: "",
     invoiceNumber: "",
     ledgerId: "",
@@ -43,33 +46,73 @@ const UpdateTransaction = () => {
     debit: "",
     credit: "",
     narration: "",
+    productName: "",
+    ledgerName: "",
   });
 
-  const [selectedDate, setSelectedDate] = useState(""); // Add state for the selected date
-
+  const [selectedDate, setSelectedDate] = useState("");
+  const [vouchers, setVouchers] = useState<any[]>([]);
+  const redirect = useNavigate();
   const [ledgers, setLedgers] = useState<ILedger[]>([]);
   const [products, setProducts] = useState<IProduct[]>([]);
-  const redirect = useNavigate();
+  const [totalDebit, setTotalDebit] = useState<number>(0);
+  const [totalCredit, setTotalCredit] = useState<number>(0);
+  const [transactionsToSend, setTransactionsToSend] = useState<
+    ITransactionUpdateDto[]
+  >([]);
+
+  const addVoucherRow = () => {
+    const selectedLedger = ledgers.find(
+      (ledger) => ledger.id === transaction.ledgerId
+    );
+    const selectedProduct = products.find(
+      (product) => product.id === transaction.productId
+    );
+    const newVoucher: ITransactionUpdateDto = {
+      id: transaction.id || "",
+      date: selectedDate || "",
+      invoiceNumber: transaction.invoiceNumber || "",
+      ledgerId: transaction.ledgerId || null,
+      productId: transaction.productId || null,
+      piece: transaction.piece || null,
+      transactionType: transaction.transactionType || "",
+      transactionMethod: transaction.transactionMethod || "",
+      debit: transaction.debit || null,
+      credit: transaction.credit || null,
+      narration: transaction.narration || null,
+      productName: selectedProduct ? selectedProduct.productName : null,
+      ledgerName: selectedLedger ? selectedLedger.ledgerName : null,
+    };
+
+    const updatedVouchers = [...vouchers, newVoucher];
+
+    const updatedTotalDebit = updatedVouchers.reduce(
+      (total, voucher) => total + parseFloat(voucher.debit || 0),
+      0
+    );
+
+    const updatedTotalCredit = updatedVouchers.reduce(
+      (total, voucher) => total + parseFloat(voucher.credit || 0),
+      0
+    );
+
+    setTotalDebit(updatedTotalDebit);
+    setTotalCredit(updatedTotalCredit);
+    setVouchers(updatedVouchers);
+    setShowVoucherHeader(true);
+
+    //Reseting only these fields to empty state when a row is added to voucher
+    setTransaction((prevTransaction) => ({
+      ...prevTransaction,
+      ledgerId: "",
+      productId: "",
+      piece: "",
+      debit: "",
+      credit: "",
+    }));
+  };
 
   useEffect(() => {
-    httpModule
-      .get(`/Transaction/GetById?id=${id}`)
-      .then((response) => {
-        const transactionData = response.data;
-        console.log(response.data);
-
-        // Populate the date and selectedDate fields from the database response
-        setTransaction({
-          ...transactionData,
-          date: transactionData.date, // Assuming date is already in the correct format
-        });
-        setSelectedDate(transactionData.date); // Assuming date is already in the correct format
-      })
-      .catch((error) => {
-        alert("Error while fetching transaction data");
-        console.log(error);
-      });
-
     httpModule
       .get<ILedger[]>("/Ledger/Get")
       .then((response) => {
@@ -79,7 +122,40 @@ const UpdateTransaction = () => {
         alert("Error while fetching ledgers");
         console.log(error);
       });
+  }, []);
 
+  useEffect(() => {
+    httpModule
+      .get(`/Transaction/GetById?id=${transactionId}`)
+      .then((response) => {
+        const transactionData = response.data;
+        setTransactions(transactionData);
+        setVouchers(transactionData);
+        setTransaction(transactionData);
+      })
+      .catch((error) => console.error(error));
+  }, [transactionId]);
+
+  const handleFieldChange = (fieldName: string, value: string | number) => {
+    setTransaction({
+      ...transaction,
+      [fieldName]: value,
+    });
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await httpModule.put(
+        "/Transaction/Update",
+        transactionsToSend
+      );
+      redirect("/transactions");
+    } catch (error) {
+      console.error("Error updating transactions:", error);
+    }
+  };
+
+  useEffect(() => {
     httpModule
       .get<IProduct[]>("/Product/Get")
       .then((response) => {
@@ -89,47 +165,95 @@ const UpdateTransaction = () => {
         alert("Error while fetching products");
         console.log(error);
       });
-  }, [id]);
+  }, []);
 
-  const handleUpdateTransaction = () => {
-    if (
-      transaction.credit === "" ||
-      transaction.debit === "" ||
-      transaction.narration === "" ||
-      transaction.ledgerId === "" ||
-      transaction.productId === "" ||
-      transaction.transactionMethod === "" ||
-      transaction.transactionType === "" ||
-      selectedDate === ""
-    ) {
-      alert("All fields are required");
+  const handleClickSaveBtn = async () => {
+    if (!selectedDate) {
+      alert("Please select a date (YYYY-MM-DD)");
       return;
     }
-    // Convert debit and credit to numbers
-    const debit = Number(transaction.debit);
-    const credit = Number(transaction.credit);
 
-    // Check if debit and credit are equal
-    if (debit !== credit) {
+    const debitTotal = vouchers.reduce(
+      (total, voucher) => total + parseFloat(voucher.debit || 0),
+      0
+    );
+    const creditTotal = vouchers.reduce(
+      (total, voucher) => total + parseFloat(voucher.credit || 0),
+      0
+    );
+    if (vouchers.length === 0) {
+      alert("No transactions to save");
+      return;
+    }
+
+    console.log("Debit Total:", debitTotal);
+    console.log("Credit Total:", creditTotal);
+
+    const roundedDebitTotal = parseFloat(debitTotal.toFixed(2));
+    const roundedCreditTotal = parseFloat(creditTotal.toFixed(2));
+
+    if (roundedDebitTotal !== roundedCreditTotal) {
       alert("Invalid transaction. Debit and credit amounts are not equal.");
       return;
     }
 
-    const updatedTransaction = {
-      ...transaction,
-      date: selectedDate,
-      debit: debit.toString(), // Convert back to string for consistency
-      credit: credit.toString(), // Convert back to string for consistency
-    };
-    httpModule
-      .put(`/Transaction/Update?id=${id}`, updatedTransaction)
-      .then(() => redirect("/transactions"))
-      .catch((error) => console.log(error));
+    const formattedDate = selectedDate;
+
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      alert("User ID not found");
+      return;
+    }
+
+    const transactionToSend: ITransactionUpdateDto[] = vouchers.map(
+      (voucher) => ({
+        id: voucher.id,
+        transactionId: voucher.transactionId,
+        date: selectedDate,
+        invoiceNumber: voucher.invoiceNumber,
+        ledgerId: voucher.ledgerId,
+        productId: voucher.productId,
+        piece: voucher.piece,
+        transactionType: voucher.transactionType,
+        transactionMethod: voucher.transactionMethod,
+        debit: voucher.debit,
+        credit: voucher.credit,
+        narration: voucher.narration,
+        ledgerName: voucher.ledgerName,
+        productName: voucher.productName,
+      })
+    );
+
+    const updatedTransactions: ITransactionUpdateDto[] = vouchers.map(
+      (voucher) => ({
+        id: voucher.id || "",
+        transactionId: voucher.transactionId,
+        date: selectedDate,
+        invoiceNumber: voucher.invoiceNumber,
+        ledgerId: voucher.ledgerId || null,
+        productId: voucher.productId || null,
+        piece: voucher.quantity || null,
+        transactionType: voucher.transactionType,
+        transactionMethod: voucher.transactionMethod,
+        debit: voucher.debit || null,
+        credit: voucher.credit || null,
+        narration: voucher.narration || null,
+        ledgerName: voucher.ledgerName || null,
+        productName: voucher.productName || null,
+      })
+    );
+    try {
+      await httpModule.put("/Transaction/Update", updatedTransactions);
+      redirect("/transactions");
+    } catch (error) {
+      console.error("Error updating transactions:", error);
+    }
   };
 
   const handleClickBackBtn = () => {
     redirect("/transactions");
   };
+
   const convertToEnglishDigits = (nepaliNumber: string) => {
     const nepaliDigits: string[] = [
       "०",
@@ -167,10 +291,57 @@ const UpdateTransaction = () => {
       [field]: value,
     });
   };
+
+  const [showVoucherHeader, setShowVoucherHeader] = useState(false);
+
+  const handleEditRow = (indexToEdit: number) => {
+    const editedVouchers = [...vouchers];
+    const voucherToEdit = { ...editedVouchers[indexToEdit] };
+
+    const updatedVoucher = {
+      ...voucherToEdit,
+      productId: voucherToEdit.productId || null,
+      ledgerId: voucherToEdit.ledgerId || null,
+      debit: voucherToEdit.debit || null,
+      credit: voucherToEdit.credit || null,
+      narration: voucherToEdit.narration || null,
+      transactionId: voucherToEdit.transactionId,
+    };
+
+    if (!updatedVoucher.productId) {
+      updatedVoucher.piece = null;
+    }
+
+    editedVouchers[indexToEdit] = updatedVoucher;
+
+    const updatedTransactionsToSend = [...transactionsToSend];
+    updatedTransactionsToSend[indexToEdit] = updatedVoucher;
+
+    const updatedVouchers = editedVouchers.filter(
+      (_, index) => index !== indexToEdit
+    );
+
+    const updatedTotalDebit = updatedVouchers.reduce(
+      (total, voucher) => total + parseFloat(voucher.debit || 0),
+      0
+    );
+    const updatedTotalCredit = updatedVouchers.reduce(
+      (total, voucher) => total + parseFloat(voucher.credit || 0),
+      0
+    );
+
+    setTransaction({ ...updatedVoucher });
+    setTransactionsToSend(updatedTransactionsToSend);
+    setTotalDebit(updatedTotalDebit);
+    setTotalCredit(updatedTotalCredit);
+    setVouchers(updatedVouchers);
+    setShowVoucherHeader(updatedVouchers.length > 1);
+  };
+
   return (
     <div className="content">
       <div className="add-transaction">
-        <h2 style={{ marginBottom: "1rem" }}>Update Transaction </h2>
+        <h2 style={{ marginBottom: "1rem" }}>Edit Transaction </h2>
         <div className="date-picker-wrapper">
           <label
             style={{
@@ -180,7 +351,7 @@ const UpdateTransaction = () => {
               fontSize: "18px",
             }}
           >
-            Select Date
+            Select Date{" "}
           </label>
           <NepaliDatePicker
             inputClassName="form-control"
@@ -421,6 +592,7 @@ const UpdateTransaction = () => {
                 },
               }}
               style={{ width: "15%" }}
+              disabled={!transaction.productId} // Disable if productId is not selected
             />
 
             <TextField
@@ -517,11 +689,54 @@ const UpdateTransaction = () => {
               cursor: "pointer",
               marginLeft: "1px",
             }}
-            onClick={() => {
-              // Add functionality for the icon here
-            }}
+            onClick={addVoucherRow}
           />
         </div>
+        {!showVoucherHeader && (
+          <h3 style={{ marginTop: "1rem", textAlign: "center" }}>Voucher</h3>
+        )}
+        {vouchers.length > 0 && (
+          <table className="voucher-table">
+            <thead>
+              <tr>
+                <th>Transaction Type</th>
+                <th>Transaction Method</th>
+                <th>Product Name</th>
+                <th>Ledger Name</th>
+                <th>Quantity</th>
+                <th>Debit</th>
+                <th>Credit</th>
+                <th>Narration</th>
+                <th>Delete?</th>
+              </tr>
+            </thead>
+            <tbody>
+              {vouchers.map((voucher, index) => (
+                <tr key={index}>
+                  <td>{voucher.transactionType}</td>
+                  <td>{voucher.transactionMethod}</td>
+                  <td>{voucher.productName ? voucher.productName : "N/A"}</td>
+                  <td>{voucher.ledgerName ? voucher.ledgerName : "N/A"}</td>
+                  <td>{voucher.piece}</td>
+                  <td>{voucher.debit}</td>
+                  <td>{voucher.credit}</td>
+                  <td>{voucher.narration}</td>
+                  <td>
+                    <button onClick={() => handleEditRow(index)}>Edit</button>
+                  </td>
+                </tr>
+              ))}
+              <tr>
+                <td colSpan={5} style={{ fontWeight: "bold" }}>
+                  Total
+                </td>
+                <td style={{ fontWeight: "bold" }}>{totalDebit}</td>
+                <td style={{ fontWeight: "bold" }}>{totalCredit}</td>
+                <td colSpan={5}></td>
+              </tr>
+            </tbody>
+          </table>
+        )}
         <div
           style={{
             display: "flex",
@@ -535,9 +750,9 @@ const UpdateTransaction = () => {
               backgroundColor: "#05386B",
               color: "#fff",
             }}
-            onClick={handleUpdateTransaction}
+            onClick={handleClickSaveBtn}
           >
-            Update
+            Save
           </Button>
           <Button
             onClick={handleClickBackBtn}
@@ -556,4 +771,4 @@ const UpdateTransaction = () => {
   );
 };
 
-export default UpdateTransaction;
+export default EditTransaction;

@@ -4,6 +4,7 @@
     {
         public DateOnly Date { get; set; }
         public int TransactionId { get; set; }
+        public string InvoiceNumber { get; set; }
         public string TransactionType { get; set; }       
         public long ProductId { get; set; }
         public string ProductName { get; set; }
@@ -14,5 +15,7 @@
         public string Narration { get; set; }
         public decimal  TotalCost { get; set; }
         public decimal StockValue { get; set;}
+        public long UserId { get; set; }
+        public string UserName { get; set; }
     }
 }

@@ -8,9 +8,10 @@ namespace Shared.Enums
 {
     public enum TransactionMethod
     {
-        Cash,
+       
         Credit,
         ESewa,
-        PhonePay
+        PhonePay,
+        Cash,
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Data.DataContext;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Module.Dtos;
@@ -14,11 +15,13 @@ namespace API.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly AppDbContext _dbContext;
 
-        public TransactionController(IUnitOfWork unitOfWork, IMapper mapper)
+        public TransactionController(IUnitOfWork unitOfWork, IMapper mapper, AppDbContext dbContext)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _dbContext = dbContext;
         }
 
 
@@ -35,8 +38,10 @@ namespace API.Controllers
                 {
                     UserId = transactionCreateDto.UserId,
                     CreatedAt = DateTime.UtcNow,
-                    TransactionId = transactionId, // Assign the same transaction ID to all related transactions
+                    TransactionId = transactionId, // Assign the same transaction ID to all related transactions                   
                     Piece = transactionCreateDto.Piece,
+                    TransactionMethod = transactionCreateDto.TransactionMethod,
+                    TransactionType = transactionCreateDto.TransactionType,
                     Debit = transactionCreateDto.Debit,
                     Credit = transactionCreateDto.Credit,
                     Narration = transactionCreateDto.Narration,
@@ -46,13 +51,6 @@ namespace API.Controllers
                     Date = transactionCreateDto.Date,
                     TransactionDetails = new List<TransactionDetail>() // Initialize the list of transaction details
                 };
-
-                foreach (var transactionDetailDto in transactionCreateDto.TransactionDetails)
-                {
-                    var newTransactionDetail = _mapper.Map<TransactionDetail>(transactionDetailDto);
-                    newTransactionDetail.TransactionId = transactionId; // Set the same TransactionId for each detail
-                    newTransaction.TransactionDetails.Add(newTransactionDetail); // Add each detail to the transaction
-                }
 
                 transactionsToCreate.Add(newTransaction);
             }
@@ -103,17 +101,19 @@ namespace API.Controllers
 
 
         [HttpGet("GetById")]
-        public async Task<ActionResult<TransactionGetDto>> GetById(long id)
+        public async Task<ActionResult<List<TransactionGetDto>>> GetById(int id)
         {
             /* Using include method to include Ledger Name and Product Name in the get method that is mapped from automapper for frontend Transaction Grid */
-            var transaction = await _unitOfWork.Transaction.Include(c => c.Ledger, p => p.Product).FirstOrDefaultAsync(c => c.Id == id);
-            if (transaction == null)
+            var transaction = await _unitOfWork.Transaction.Include(c => c.Ledger, p => p.Product).Where(c => c.TransactionId == id).ToListAsync();
+            if (transaction == null || !transaction.Any())
             {
                 return NotFound("Transaction you are looking for not found");
             }
-            var convertedTransaction = _mapper.Map<TransactionGetDto>(transaction);
+            var convertedTransaction = _mapper.Map<List<TransactionGetDto>>(transaction);
             return Ok(convertedTransaction);
         }
+
+
         [HttpGet("Get")]
         public async Task<ActionResult<List<TransactionGetDto>>> GetTransactions()
         {
@@ -127,46 +127,80 @@ namespace API.Controllers
             return Ok(transactions);
         }
 
-
         [HttpPut("Update")]
-        public async Task<ActionResult<TransactionGetDto>> UpdateTransaction(long id, TransactionUpdateDto transactionUpdateDto)
+        public async Task<ActionResult<TransactionGetDto>> UpdateTransactions(List<TransactionUpdateDto> transactionUpdateDtos)
         {
+            var updatedTransactions = new List<TransactionGetDto>();
 
-            var existingTransaction = await _unitOfWork.Transaction.GetByIdAsync(id);
-
-            if (existingTransaction == null)
+            foreach (var transactionUpdateDto in transactionUpdateDtos)
             {
-                return NotFound("Transaction you are looking for not found");
+                var transactionId = transactionUpdateDto.TransactionId;
+                var rowId = transactionUpdateDto.Id;
+
+                var existingTransaction = await _unitOfWork.Transaction
+                    .Include(c => c.Ledger)
+                    .Include(p => p.Product)
+                    .Where(t => t.TransactionId == transactionId && t.Id== rowId)
+                    .ToListAsync();
+
+                if (existingTransaction == null || !existingTransaction.Any())
+                {
+                    return NotFound("Transaction not found");
+                }
+
+                foreach (var transaction in existingTransaction)
+                {
+                    transaction.TransactionId = transactionId;
+                    transaction.Date = transactionUpdateDto.Date;
+                    transaction.InvoiceNumber = transactionUpdateDto.InvoiceNumber;
+                    transaction.LedgerId = transactionUpdateDto.LedgerId;
+                    transaction.ProductId = transactionUpdateDto.ProductId;
+                    transaction.Piece = transactionUpdateDto.Piece;
+                    transaction.TransactionType = transactionUpdateDto.TransactionType;
+                    transaction.TransactionMethod = transactionUpdateDto.TransactionMethod;
+                    transaction.Debit = transactionUpdateDto.Debit;
+                    transaction.Credit = transactionUpdateDto.Credit;
+                    transaction.Narration = transactionUpdateDto.Narration;
+                }
+
+                await _unitOfWork.SaveAsync();
+
+                var updatedTransactionDtoList = existingTransaction
+                                            .Select(transaction => _mapper.Map<TransactionGetDto>(transaction))
+                                            .ToList();
+
+                updatedTransactions.AddRange(updatedTransactionDtoList);
+
+
             }
 
-
-            _mapper.Map(transactionUpdateDto, existingTransaction);
-            await _unitOfWork.SaveAsync();
-            var updatedTransaction = _mapper.Map<TransactionGetDto>(existingTransaction);
-            return Ok(updatedTransaction);
+            return Ok(updatedTransactions);
         }
 
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteTransaction(long id)
+
+        [HttpDelete("transactionId")]
+        public async Task<IActionResult> DeleteTransaction(int transactionId)
         {
-            var transactionToDelete = await _unitOfWork.Transaction.GetByIdAsync(id);
-            if (transactionToDelete == null)
+            var transactionsToDelete = await _dbContext.Transactions.Where(t => t.TransactionId == transactionId).ToListAsync();
+            if (transactionsToDelete == null || !transactionsToDelete.Any())
             {
-                return NotFound("Transaction to be deleted not found");
+                return NotFound("Transactions to be deleted not found");
             }
 
-            // Check if there are other transactions with the same productId and ID greater than the current transaction
+            var productId = transactionsToDelete.First().ProductId;
+
+           
             var hasLaterTransactions = await _unitOfWork.Transaction.AnyAsync(t =>
-                t.ProductId == transactionToDelete.ProductId && t.Id > id);
+                t.ProductId == productId && t.TransactionId > transactionId);
 
             if (hasLaterTransactions)
             {
-                return BadRequest("Cannot delete the transaction as there are later transactions for the same product.");
+                return BadRequest("Cannot delete the transactions as there are later transactions for the same product.");
             }
 
-            await _unitOfWork.Transaction.DeleteAsync(id);
-            await _unitOfWork.SaveAsync();
+            _dbContext.Transactions.RemoveRange(transactionsToDelete);
+            _dbContext.SaveChanges();
             return Ok("Transaction deleted successfully");
         }
 
