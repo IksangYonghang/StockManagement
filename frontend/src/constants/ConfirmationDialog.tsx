@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Dialog,
   DialogActions,
@@ -9,7 +8,17 @@ import {
 } from "@mui/material";
 import "./confirmationdialog.scss";
 
-const ConfirmationDialog = ({ open, onClose, onConfirm, shake }: { open: boolean; onClose: () => void; onConfirm: () => void; shake?: boolean }) => {
+const ConfirmationDialog = ({
+  open,
+  onClose,
+  onConfirm,
+  shake,
+}: {
+  open: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  shake?: boolean;
+}) => {
   const dialogClassName = `shake-dialog ${shake ? "shake" : ""}`;
 
   return (

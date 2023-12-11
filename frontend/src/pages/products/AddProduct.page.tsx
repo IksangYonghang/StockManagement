@@ -118,7 +118,7 @@ const AddProduct = () => {
         ""
     );
     newProductFormData.append("userId", userId);
-    
+
     console.log(newProductFormData, product);
     if (imgFile) {
       newProductFormData.append("imageFile", imgFile);
@@ -351,7 +351,7 @@ const AddProduct = () => {
           <Button
             variant="contained"
             style={{
-              backgroundColor: "#05386B",
+              backgroundColor: "rgba(116, 0, 105, 8)",
               color: "#fff",
             }}
             onClick={handleClickSaveBtn}

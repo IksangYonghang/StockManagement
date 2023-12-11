@@ -58,3 +58,46 @@
     font-size: 15px;
   }
 }
+
+.report-table tr.category-odd {
+  background-color: #f0d0d0;
+}
+
+.report-table tr.category-even {
+  background-color: #ece6e6;
+}
+
+.dark-mode .report-table tr.category-odd {
+  background-color: rgba(88, 3, 105, 0.938);
+}
+
+.dark-mode .report-table tr.category-even {
+  background-color: rgba(
+    130,
+    37,
+    151,
+    0.938
+  );
+}
+
+
+.report-table tr.master-odd {
+  background-color: #f0d0d0;
+}
+
+.report-table tr.master-even {
+  background-color: #ece6e6;
+}
+
+.dark-mode .report-table tr.master-odd {
+  background-color: rgba(88, 3, 105, 0.938);
+}
+
+.dark-mode .report-table tr.master-even {
+  background-color: rgba(
+    130,
+    37,
+    151,
+    0.938
+  );
+}

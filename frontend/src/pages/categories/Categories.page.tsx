@@ -82,7 +82,7 @@ const Categories = () => {
             fontSize: "0.95rem",
             border: "1px solid #ddd",
             marginBottom: "0.8rem",
-            background: darkMode ? "#062442" : "white",
+            background: darkMode ? "rgba(88, 3, 105, 0.938)" : "white",
             color: darkMode ? "yellow" : "black",
           }}
         />
@@ -90,7 +90,7 @@ const Categories = () => {
           variant="contained"
           color="primary"
           style={{
-            backgroundColor: "#05386B",
+            backgroundColor: "rgba(116, 0, 105, 8)",
             color: "white",
             marginBottom: "0.9rem",
           }}

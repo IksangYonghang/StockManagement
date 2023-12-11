@@ -202,7 +202,7 @@ const UpdateUser = () => {
           <Button
             variant="contained"
             style={{
-              backgroundColor: "#05386B",
+              backgroundColor: "rgba(116, 0, 105, 8)",
               color: "#fff",
             }}
             onClick={handleClickUpdateBtn}

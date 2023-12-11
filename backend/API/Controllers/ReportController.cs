@@ -1,11 +1,9 @@
 ﻿using Data.DataContext;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Module.Dtos.Reports;
 using Shared.Enums;
-using System;
-using System.Linq;
+using Module.Entities;
 
 namespace API.Controllers
 {
@@ -72,12 +70,12 @@ namespace API.Controllers
                     .OrderBy(t => t.Date).ThenBy(t => t.TransactionId)
                     .ToList();
 
-                var report = new List<ProductStockReportDto>();
+                var report = new List<ProductReportDto>();
 
                 // Add opening balance row if there are transactions before fromDate
                 if (openingStock != 0)
                 {
-                    var openingBalanceReportDto = new ProductStockReportDto
+                    var openingBalanceReportDto = new ProductReportDto
                     {
                         ProductId = productId,
                         ProductName = productName,
@@ -112,7 +110,7 @@ namespace API.Controllers
                      .Select(u => u.UserName)
                      .FirstOrDefault();
 
-                    var reportDto = new ProductStockReportDto
+                    var reportDto = new ProductReportDto
                     {
                         ProductId = productId,
                         ProductName = productName,
@@ -129,6 +127,92 @@ namespace API.Controllers
                         StockValue = stockBalance * costPrice, // Update Stock Value directly from stock balance
                         UserName = transactionUserName,
                     };
+                    report.Add(reportDto);
+                }
+                return Ok(report);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
+
+        [HttpGet("StockReport")]
+        public IActionResult GetStockReport([FromQuery] long? categoryId, [FromQuery] long? productId, [FromQuery] string fromDate, [FromQuery] string toDate)
+        {
+            try
+            {
+                if (!DateTime.TryParse(fromDate, out DateTime fromDateValue) || !DateTime.TryParse(toDate, out DateTime toDateValue))
+                {
+                    return BadRequest("Provide in YYYY-MM-DD format");
+                }
+
+                var fromDateOnly = new DateOnly(fromDateValue.Year, fromDateValue.Month, fromDateValue.Day);
+                var toDateOnly = new DateOnly(toDateValue.Year, toDateValue.Month, toDateValue.Day);
+
+                var productsQuery = _dbContext.Products.AsQueryable();
+
+                if (categoryId.HasValue)
+                {
+                    productsQuery = productsQuery.Where(p => p.CategoryId == categoryId);
+                }
+
+                if (productId.HasValue)
+                {
+                    productsQuery = productsQuery.Where(p => p.Id == productId);
+                }
+
+                productsQuery = productsQuery.OrderBy(p => p.CategoryId)
+                    .ThenBy(p => p.Category.CategoryName)
+                    .ThenBy(p => p.ProductName)
+                    .ThenBy(p => p.ProductSize);
+
+                var products = productsQuery.ToList();
+
+                var report = new List<StockReportDto>();
+
+                foreach (var product in products)
+                {
+                    var openingStock = _dbContext.Transactions
+                        .Where(t => t.ProductId == product.Id && t.Date < fromDateOnly)
+                        .Sum(t => t.TransactionType == TransactionType.Purchase ? t.Piece : -t.Piece) ?? 0;
+
+                    var currentStock = _dbContext.Transactions
+                        .Where(t => t.ProductId == product.Id && t.Date >= fromDateOnly && t.Date <= toDateOnly)
+                        .Sum(t => t.TransactionType == TransactionType.Purchase ? t.Piece : -t.Piece) ?? 0;
+
+                    var totalPurchased = _dbContext.Transactions
+                       .Where(t => t.ProductId == product.Id && t.Date >= fromDateOnly && t.Date <= toDateOnly && t.TransactionType == TransactionType.Purchase)
+                       .Sum(t => t.Piece) ?? 0;
+
+                    var totalSold = _dbContext.Transactions
+                        .Where(t => t.ProductId == product.Id && t.Date >= fromDateOnly && t.Date <= toDateOnly && t.TransactionType == TransactionType.Sale)
+                        .Sum(t => t.Piece) ?? 0;
+
+
+                    var totalStockBalance = openingStock + currentStock;
+
+                    var productCategory = _dbContext.Categories.FirstOrDefault(c => c.Id == product.CategoryId);
+
+                    var reportDto = new StockReportDto
+                    {
+                        ProductId = product.Id,
+                        ProductName = product.ProductName,
+                        CategoryName = productCategory?.CategoryName,
+                        CategoryId = product.CategoryId,
+                        CostPrice = product.CostPrice.ToString(),
+                        WholeSalePrice = product.WholeSalePrice.ToString(),
+                        RetailPrice = product.RetailPrice.ToString(),
+                        ProductSize = product.ProductSize.ToString(),
+                        OpeningStock = openingStock,
+                        TotalPurchased = totalPurchased,
+                        TotalSold = totalSold,
+                        CurrentStock = currentStock,
+                        TotalStockBalance = totalStockBalance,
+                        StockValue = totalStockBalance * product.CostPrice,
+                    };
+
                     report.Add(reportDto);
                 }
                 return Ok(report);
@@ -158,79 +242,306 @@ namespace API.Controllers
                     return BadRequest("Ledger not found");
                 }
 
+                var isLiabilities = ledger.MasterAccount == MasterAccount.Liabilities;
+                var isAssetss = ledger.MasterAccount == MasterAccount.Assets;
+                var isIncomes = ledger.MasterAccount == MasterAccount.Incomes;
+                var isExpenses = ledger.MasterAccount == MasterAccount.Expenses;
+
                 var ledgerName = ledger.LedgerName;
-
-                var prevTransactions = _dbContext.Transactions.Where(t => t.LedgerId == ledgerId && t.Date < fromDateOnly).ToList();
-
-                decimal openingBal = 0;
-
-                foreach (var transaction in prevTransactions)
-                {
-                    if (transaction.TransactionType == TransactionType.Purchase || transaction.TransactionType == TransactionType.Receipt)
-                    {
-                        openingBal += transaction.Credit ?? 0;
-                    }
-                    else if (transaction.TransactionType == TransactionType.Payment)
-                    {
-                        openingBal -= transaction.Debit ?? 0;
-                    }
-                }
-
-                var transactions = _dbContext.Transactions.Where(t => t.LedgerId == ledgerId && t.Date >= fromDateOnly && t.Date <= toDateOnly)
-                    .OrderBy(t => t.Date)
-                    .ThenBy(t => t.TransactionId).ToList();
-
                 var report = new List<LedgerReportDto>();
 
-                if (openingBal != 0)
+                if (isLiabilities)
                 {
-                    var openingBalReportDto = new LedgerReportDto
-                    {
-                        LedgerId = ledgerId,
-                        LedgerName = ledgerName,
-                        TransactionId = 0,
-                        TransactionType = "OpeningBalance",
-                        Date = fromDateOnly,
-                        Credit = 0,
-                        Debit = 0,
-                        Narration = "Balance b/d",
-                        Balance = openingBal,
+                    var prevTransactions = _dbContext.Transactions.Where(t => t.LedgerId == ledgerId && t.Date < fromDateOnly).ToList();
 
-                    };
-                    report.Add(openingBalReportDto);
+                    decimal openingBal = 0;
+
+                    foreach (var transaction in prevTransactions)
+                    {
+                        if (transaction.TransactionType == TransactionType.Purchase || transaction.TransactionType == TransactionType.Receipt)
+                        {
+                            openingBal += transaction.Credit ?? 0;
+                        }
+                        else if (transaction.TransactionType == TransactionType.Payment)
+                        {
+                            openingBal -= transaction.Debit ?? 0;
+                        }
+                    }
+
+                    var transactions = _dbContext.Transactions.Where(t => t.LedgerId == ledgerId && t.Date >= fromDateOnly && t.Date <= toDateOnly)
+                        .OrderBy(t => t.Date)
+                        .ThenBy(t => t.TransactionId).ToList();
+
+                    if (openingBal != 0)
+                    {
+                        var openingBalReportDto = new LedgerReportDto
+                        {
+                            LedgerId = ledgerId,
+                            LedgerName = ledgerName,
+                            TransactionId = 0,
+                            TransactionType = "OpeningBalance",
+                            Date = fromDateOnly,
+                            Credit = 0,
+                            Debit = 0,
+                            Narration = "Balance b/d",
+                            Balance = openingBal,
+
+                        };
+                        report.Add(openingBalReportDto);
+                    }
+
+                    decimal currentBal = openingBal;
+
+                    foreach (var transaction in transactions)
+                    {
+                        if (transaction.TransactionType == TransactionType.Purchase || transaction.TransactionType == TransactionType.Receipt)
+                        {
+                            currentBal += transaction.Credit ?? 0;
+                        }
+                        else if (transaction.TransactionType == TransactionType.Payment)
+                        {
+                            currentBal -= transaction.Debit ?? 0;
+                        }
+                        var transactionUserName = _dbContext.Users.Where(u => u.Id == transaction.UserId).Select(u => u.UserName).FirstOrDefault();
+
+                        var reportDto = new LedgerReportDto
+                        {
+                            LedgerId = ledgerId,
+                            LedgerName = ledgerName,
+                            TransactionId = transaction.TransactionId,
+                            InvoiceNumber = transaction.InvoiceNumber,
+                            TransactionType = transaction.TransactionType.ToString(),
+                            Date = transaction.Date,
+                            Credit = transaction.Credit,
+                            Debit = transaction.Debit,
+                            Narration = transaction.Narration,
+                            Balance = currentBal + openingBal,
+                            UserName = transactionUserName,
+                        };
+                        report.Add(reportDto);
+                    }
                 }
-
-                decimal currentBal = openingBal;
-
-                foreach (var transaction in transactions)
+                else if (isAssetss)
                 {
-                    if (transaction.TransactionType == TransactionType.Purchase || transaction.TransactionType == TransactionType.Receipt)
-                    {
-                        currentBal += transaction.Credit ?? 0;
-                    }
-                    else if (transaction.TransactionType == TransactionType.Payment)
-                    {
-                        currentBal -= transaction.Debit ?? 0;
-                    }
-                    var transactionUserName = _dbContext.Users.Where(u => u.Id == transaction.UserId).Select(u => u.UserName).FirstOrDefault();
+                    var prevTransactions = _dbContext.Transactions.Where(t => t.LedgerId == ledgerId && t.Date < fromDateOnly).ToList();
 
-                    var reportDto = new LedgerReportDto
+                    decimal openingBal = 0;
+
+                    foreach (var transaction in prevTransactions)
                     {
-                        LedgerId = ledgerId,
-                        LedgerName = ledgerName,
-                        TransactionId = transaction.TransactionId,
-                        InvoiceNumber = transaction.InvoiceNumber,
-                        TransactionType = transaction.TransactionType.ToString(),
-                        Date = transaction.Date,
-                        Credit = transaction.Credit,
-                        Debit = transaction.Debit,
-                        Narration = transaction.Narration,
-                        Balance = currentBal + openingBal,
-                        UserName = transactionUserName,
-                    };
-                    report.Add(reportDto);
+                        if (transaction.TransactionType == TransactionType.Sale || transaction.TransactionType == TransactionType.Payment)
+                        {
+                            openingBal += transaction.Debit ?? 0;
+                        }
+                        else if (transaction.TransactionType == TransactionType.Receipt)
+                        {
+                            openingBal -= transaction.Credit ?? 0;
+                        }
+                    }
+
+                    var transactions = _dbContext.Transactions.Where(t => t.LedgerId == ledgerId && t.Date >= fromDateOnly && t.Date <= toDateOnly)
+                        .OrderBy(t => t.Date)
+                        .ThenBy(t => t.TransactionId).ToList();
+
+
+
+                    if (openingBal != 0)
+                    {
+                        var openingBalReportDto = new LedgerReportDto
+                        {
+                            LedgerId = ledgerId,
+                            LedgerName = ledgerName,
+                            TransactionId = 0,
+                            TransactionType = "OpeningBalance",
+                            Date = fromDateOnly,
+                            Credit = 0,
+                            Debit = 0,
+                            Narration = "Balance b/d",
+                            Balance = openingBal,
+                        };
+                        report.Add(openingBalReportDto);
+                    }
+
+                    decimal currentBal = openingBal;
+
+                    foreach (var transaction in transactions)
+                    {
+                        if (transaction.TransactionType == TransactionType.Sale || transaction.TransactionType == TransactionType.Payment)
+                        {
+                            currentBal += transaction.Debit ?? 0;
+                        }
+                        else if (transaction.TransactionType == TransactionType.Receipt)
+                        {
+                            currentBal -= transaction.Credit ?? 0;
+                        }
+                        var transactionUserName = _dbContext.Users.Where(u => u.Id == transaction.UserId).Select(u => u.UserName).FirstOrDefault();
+
+                        var reportDto = new LedgerReportDto
+                        {
+                            LedgerId = ledgerId,
+                            LedgerName = ledgerName,
+                            TransactionId = transaction.TransactionId,
+                            InvoiceNumber = transaction.InvoiceNumber,
+                            TransactionType = transaction.TransactionType.ToString(),
+                            Date = transaction.Date,
+                            Credit = transaction.Credit,
+                            Debit = transaction.Debit,
+                            Narration = transaction.Narration,
+                            Balance = currentBal + openingBal,
+                            UserName = transactionUserName,
+                        };
+                        report.Add(reportDto);
+                    }
+
+                }
+                else if (isIncomes)
+                {
+                    var prevTransactions = _dbContext.Transactions.Where(t => t.LedgerId == ledgerId && t.Date < fromDateOnly).ToList();
+
+                    decimal openingBal = 0;
+
+                    foreach (var transaction in prevTransactions)
+                    {
+                        if (transaction.TransactionType == TransactionType.Payment)
+                        {
+                            openingBal -= transaction.Debit ?? 0;
+                        }
+                        else if (transaction.TransactionType == TransactionType.Receipt)
+                        {
+                            openingBal += transaction.Credit ?? 0;
+                        }
+                    }
+
+                    var transactions = _dbContext.Transactions.Where(t => t.LedgerId == ledgerId && t.Date >= fromDateOnly && t.Date <= toDateOnly)
+                        .OrderBy(t => t.Date)
+                        .ThenBy(t => t.TransactionId).ToList();
+
+
+
+                    if (openingBal != 0)
+                    {
+                        var openingBalReportDto = new LedgerReportDto
+                        {
+                            LedgerId = ledgerId,
+                            LedgerName = ledgerName,
+                            TransactionId = 0,
+                            TransactionType = "OpeningBalance",
+                            Date = fromDateOnly,
+                            Credit = 0,
+                            Debit = 0,
+                            Narration = "Balance b/d",
+                            Balance = openingBal,
+                        };
+                        report.Add(openingBalReportDto);
+                    }
+
+                    decimal currentBal = openingBal;
+
+                    foreach (var transaction in transactions)
+                    {
+                        if (transaction.TransactionType == TransactionType.Payment)
+                        {
+                            openingBal -= transaction.Debit ?? 0;
+                        }
+                        else if (transaction.TransactionType == TransactionType.Receipt)
+                        {
+                            openingBal += transaction.Credit ?? 0;
+                        }
+                        var transactionUserName = _dbContext.Users.Where(u => u.Id == transaction.UserId).Select(u => u.UserName).FirstOrDefault();
+
+                        var reportDto = new LedgerReportDto
+                        {
+                            LedgerId = ledgerId,
+                            LedgerName = ledgerName,
+                            TransactionId = transaction.TransactionId,
+                            InvoiceNumber = transaction.InvoiceNumber,
+                            TransactionType = transaction.TransactionType.ToString(),
+                            Date = transaction.Date,
+                            Credit = transaction.Credit,
+                            Debit = transaction.Debit,
+                            Narration = transaction.Narration,
+                            Balance = currentBal + openingBal,
+                            UserName = transactionUserName,
+                        };
+                        report.Add(reportDto);
+                    }
+
+                }
+                else
+                {
+                    var prevTransactions = _dbContext.Transactions.Where(t => t.LedgerId == ledgerId && t.Date < fromDateOnly).ToList();
+
+                    decimal openingBal = 0;
+
+                    foreach (var transaction in prevTransactions)
+                    {
+                        if (transaction.TransactionType == TransactionType.Payment)
+                        {
+                            openingBal += transaction.Debit ?? 0;
+                        }
+                        else if (transaction.TransactionType == TransactionType.Receipt)
+                        {
+                            openingBal -= transaction.Credit ?? 0;
+                        }
+                    }
+
+                    var transactions = _dbContext.Transactions.Where(t => t.LedgerId == ledgerId && t.Date >= fromDateOnly && t.Date <= toDateOnly)
+                        .OrderBy(t => t.Date)
+                        .ThenBy(t => t.TransactionId).ToList();
+
+
+
+                    if (openingBal != 0)
+                    {
+                        var openingBalReportDto = new LedgerReportDto
+                        {
+                            LedgerId = ledgerId,
+                            LedgerName = ledgerName,
+                            TransactionId = 0,
+                            TransactionType = "OpeningBalance",
+                            Date = fromDateOnly,
+                            Credit = 0,
+                            Debit = 0,
+                            Narration = "Balance b/d",
+                            Balance = openingBal,
+                        };
+                        report.Add(openingBalReportDto);
+                    }
+
+                    decimal currentBal = openingBal;
+
+                    foreach (var transaction in transactions)
+                    {
+                        if (transaction.TransactionType == TransactionType.Payment)
+                        {
+                            openingBal += transaction.Debit ?? 0;
+                        }
+                        else if (transaction.TransactionType == TransactionType.Receipt)
+                        {
+                            openingBal -= transaction.Credit ?? 0;
+                        }
+                        var transactionUserName = _dbContext.Users.Where(u => u.Id == transaction.UserId).Select(u => u.UserName).FirstOrDefault();
+
+                        var reportDto = new LedgerReportDto
+                        {
+                            LedgerId = ledgerId,
+                            LedgerName = ledgerName,
+                            TransactionId = transaction.TransactionId,
+                            InvoiceNumber = transaction.InvoiceNumber,
+                            TransactionType = transaction.TransactionType.ToString(),
+                            Date = transaction.Date,
+                            Credit = transaction.Credit,
+                            Debit = transaction.Debit,
+                            Narration = transaction.Narration,
+                            Balance = currentBal + openingBal,
+                            UserName = transactionUserName,
+                        };
+                        report.Add(reportDto);
+                    }
+
                 }
                 return Ok(report);
+
             }
             catch (Exception ex)
             {
@@ -238,65 +549,176 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("StockReport")]
-        public IActionResult GetStockReport([FromQuery] long? categoryId, [FromQuery] long? productId, [FromQuery] string fromDate, [FromQuery] string toDate)
+
+        [HttpGet("LedgerClosingBalance")]
+        public IActionResult GetLedgerClosingBalance([FromQuery] string? master, [FromQuery] long? parentId, [FromQuery] long? ledgerId, [FromQuery] string fromDate, [FromQuery] string toDate)
         {
             try
             {
                 if (!DateTime.TryParse(fromDate, out DateTime fromDateValue) || !DateTime.TryParse(toDate, out DateTime toDateValue))
                 {
-                    return BadRequest("Provide in YYYY-MM-DD format");
+                    return BadRequest("Provide dates in YYYY-MM-DD format");
                 }
 
                 var fromDateOnly = new DateOnly(fromDateValue.Year, fromDateValue.Month, fromDateValue.Day);
                 var toDateOnly = new DateOnly(toDateValue.Year, toDateValue.Month, toDateValue.Day);
 
-                var productsQuery = _dbContext.Products.AsQueryable();
 
-                if (categoryId.HasValue)
+
+                var ledgersQuery = _dbContext.Ledgers.AsQueryable();
+
+
+                if (!string.IsNullOrEmpty(master))
                 {
-                    productsQuery = productsQuery.Where(p => p.CategoryId == categoryId);
-                }
-
-                if (productId.HasValue)
-                {
-                    productsQuery = productsQuery.Where(p => p.Id == productId);
-                }
-
-                var products = productsQuery.ToList();
-
-                var report = new List<StockReportDto>();
-
-                foreach (var product in products)
-                {
-                    var openingStock = _dbContext.Transactions
-                        .Where(t => t.ProductId == product.Id && t.Date < fromDateOnly)
-                        .Sum(t => t.TransactionType == TransactionType.Purchase ? t.Piece : -t.Piece) ?? 0;
-
-                    var currentStock = _dbContext.Transactions
-                        .Where(t => t.ProductId == product.Id && t.Date >= fromDateOnly && t.Date <= toDateOnly)
-                        .Sum(t => t.TransactionType == TransactionType.Purchase ? t.Piece : -t.Piece) ?? 0;
-
-                    var totalStockBalance = openingStock + currentStock;
-
-                    var productCategory = _dbContext.Categories.FirstOrDefault(c => c.Id == product.CategoryId);
-
-                    var reportDto = new StockReportDto
+                    if (Enum.TryParse(master, out MasterAccount masterAccount))
                     {
-                        ProductId = product.Id,
-                        ProductName = product.ProductName,
-                        CategoryName = productCategory?.CategoryName,
-                        CategoryId = product.CategoryId,
-                        CostPrice = product.CostPrice.ToString(),
-                        WholeSalePrice = product.WholeSalePrice.ToString(),
-                        RetailPrice = product.RetailPrice.ToString(),
-                        ProductSize = product.ProductSize.ToString(),
-                        OpeningStock = openingStock,
-                        CurrentStock = currentStock,
-                        TotalStockBalance = totalStockBalance,
-                        StockValue = totalStockBalance * product.CostPrice,
-                    };
 
+                        ledgersQuery = ledgersQuery.Where(t => t.MasterAccount == masterAccount);
+
+                    }
+                    else
+                    {
+                        return BadRequest("Invalid master account value");
+                    }
+                }
+
+                if (parentId.HasValue)
+                {
+                    ledgersQuery = ledgersQuery.Where(t => t.ParentId == parentId);
+                }
+                else if (ledgerId.HasValue)
+                {
+                    ledgersQuery = ledgersQuery.Where(t => t.Id == ledgerId);
+                }
+
+                ledgersQuery = ledgersQuery.OrderBy(p => p.Id)
+                   .ThenBy(p => p.LedgerName)
+                   .ThenBy(p => p.ParentId);
+
+                var ledgers = ledgersQuery.ToList();
+
+                var report = new List<LedgerClosingReportDto>();
+
+                foreach (var ledger in ledgers)
+                {
+
+                    var isAssets = ledger.MasterAccount == MasterAccount.Assets;
+                    var isLiabilities = ledger.MasterAccount == MasterAccount.Liabilities;
+                    var isExpenses = ledger.MasterAccount == MasterAccount.Expenses;
+                    var isIncomes = ledger.MasterAccount == MasterAccount.Incomes;
+
+                    decimal openingBalance = 0;
+                    decimal totalCurrent = 0;
+                  
+
+                    if (isLiabilities)
+                    {
+                        openingBalance = _dbContext.Transactions
+                         .Where(t => t.LedgerId == ledger.Id && t.Date < fromDateOnly)
+                         .ToList() 
+                         .Sum(transaction =>
+                         {
+                             if (transaction.TransactionType == TransactionType.Purchase || transaction.TransactionType == TransactionType.Receipt)
+                             {
+                                 return +transaction.Credit ?? 0;
+                             }
+                             else if (transaction.TransactionType == TransactionType.Payment)
+                             {
+                                 return -transaction.Debit ?? 0;
+                             }
+                             return 0; 
+                         });
+
+                        totalCurrent = _dbContext.Transactions
+                         .Where(t => t.LedgerId == ledger.Id && t.Date >= fromDateOnly && t.Date <= toDateOnly)
+                         .ToList()
+                         .Sum(transaction =>
+                         {
+                             if (transaction.TransactionType == TransactionType.Purchase || transaction.TransactionType == TransactionType.Receipt)
+                             {
+                                 return +transaction.Credit ?? 0;
+                             }
+                             else if (transaction.TransactionType == TransactionType.Payment)
+                             {
+                                 return -transaction.Debit ?? 0;
+                             }
+                             return 0;
+                         });
+                       
+                    }
+                    else if (isAssets)
+                    {
+                        openingBalance = _dbContext.Transactions
+                         .Where(t => t.LedgerId == ledger.Id && t.Date < fromDateOnly)
+                         .ToList()
+                         .Sum(transaction =>
+                         {
+                             if (transaction.TransactionType == TransactionType.Sale || transaction.TransactionType == TransactionType.Payment)
+                             {
+                                 return +transaction.Debit ?? 0;
+                             }
+                             else if (transaction.TransactionType == TransactionType.Receipt)
+                             {
+                                 return -transaction.Credit ?? 0;
+                             }
+                             return 0;
+                         });
+
+                        totalCurrent = _dbContext.Transactions
+                         .Where(t => t.LedgerId == ledger.Id && t.Date >= fromDateOnly && t.Date <= toDateOnly)
+                         .ToList()
+                         .Sum(transaction =>
+                         {
+                             if (transaction.TransactionType == TransactionType.Sale || transaction.TransactionType == TransactionType.Payment)
+                             {
+                                 return +transaction.Debit ?? 0;
+                             }
+                             else if (transaction.TransactionType == TransactionType.Receipt)
+                             {
+                                 return -transaction.Credit ?? 0;
+                             }
+                             return 0;
+                         });
+
+                    }
+                    else if (isIncomes)
+                    {
+                        openingBalance = _dbContext.Transactions
+                           .Where(t => t.LedgerId == ledger.Id && t.Date < fromDateOnly)
+                           .Sum(t => t.TransactionType == TransactionType.Purchase ? t.Piece : -t.Piece) ?? 0;
+
+                        totalCurrent = _dbContext.Transactions
+                            .Where(t => t.LedgerId == ledger.Id && t.Date >= fromDateOnly && t.Date <= toDateOnly && t.TransactionType == TransactionType.Purchase)
+                            .Sum(t => t.Piece) ?? 0;
+
+                    }
+                    else
+                    {
+                        openingBalance = _dbContext.Transactions
+                           .Where(t => t.LedgerId == ledger.Id && t.Date < fromDateOnly)
+                           .Sum(t => t.TransactionType == TransactionType.Purchase ? t.Piece : -t.Piece) ?? 0;
+
+                        totalCurrent = _dbContext.Transactions
+                            .Where(t => t.LedgerId == ledger.Id && t.Date >= fromDateOnly && t.Date <= toDateOnly && t.TransactionType == TransactionType.Purchase)
+                            .Sum(t => t.Piece) ?? 0;
+
+                       
+                    }
+
+                    var parentLedger = _dbContext.Ledgers.FirstOrDefault(c => c.Id == ledger.ParentId);
+                    string parentName = parentLedger != null ? parentLedger.LedgerName : string.Empty;
+
+                    var reportDto = new LedgerClosingReportDto
+                    {
+                        Master = ledger.MasterAccount.ToString(),
+                        ParentId = ledger.ParentId,
+                        ParentName = parentName,
+                        LedgerId = ledger.Id,
+                        LedgerName = ledger.LedgerName,
+                        OpeningBal = openingBalance,
+                        TotalCurrent = totalCurrent,                        
+                        Balance = openingBalance + totalCurrent,
+                    };
                     report.Add(reportDto);
                 }
                 return Ok(report);

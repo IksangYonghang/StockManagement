@@ -15,5 +15,6 @@ namespace Module.Dtos.LedgerDto
         public string Address { get; set; } = string.Empty;
         public long? ParentId { get; set; }
         public MasterAccount? MasterAccount { get; set; }
+        public bool IsTranGl { get; set; } = false;
     }
 }

@@ -36,8 +36,6 @@ const DateDisplay: React.FC<DateDisplayProps> = ({ style }) => {
       style={{
         color: "white",
         ...style,
-        marginRight: "6rem",
-        marginLeft: "-0.5rem",
       }}
     >
       {/* <p>Date AD: {currentDate.toLocaleDateString()}</p> */}
@@ -57,8 +55,11 @@ const links: { href: string; label: string }[] = [
   { href: "/products", label: "Products" },
   { href: "/ledgers", label: "Ledgers" },
   { href: "/productReport", label: "Product Report" },
+  { href: "/stockReport", label: "Stock Report" },
   { href: "/ledgerReport", label: "Ledger Report" },
+  { href: "/lcb", label: "Ledger Closing Balance" },
   { href: "/transactions", label: "Transactions" },
+  { href: "/pr", label: "P & R" },
   { href: "/users", label: "Users" },
   { href: "/contact", label: "Contact" },
 ];
@@ -102,7 +103,7 @@ const AuthenticatedNavbar: React.FC<{
       <div className="user">
         <span
           style={{
-            marginRight: "6rem",
+            /* marginRight: "1rem",*/
             color: darkMode ? "white" : "goldenrod",
             fontSize: "16px",
             fontWeight: "bold",

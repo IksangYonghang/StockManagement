@@ -14,7 +14,6 @@ const Companies = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const { darkMode } = useContext(ThemeContext);
   const redirect = useNavigate();
-  
 
   useEffect(() => {
     fetchCompanies();
@@ -82,7 +81,7 @@ const Companies = () => {
             fontSize: "0.95rem",
             border: "1px solid #ddd",
             marginBottom: "0.8rem",
-            background: darkMode ? "#062442" : "white",
+            background: darkMode ? "rgba(88, 3, 105, 0.938)" : "white",
             color: darkMode ? "yellow" : "black",
           }}
         />
@@ -90,7 +89,7 @@ const Companies = () => {
           variant="contained"
           color="primary"
           style={{
-            backgroundColor: "#05386B",
+            backgroundColor: "rgba(116, 0, 105, 8)",
             marginBottom: "0.9rem",
           }}
           onClick={() => redirect("/companies/add")}

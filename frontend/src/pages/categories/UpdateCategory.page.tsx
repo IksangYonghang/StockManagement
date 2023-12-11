@@ -13,15 +13,12 @@ import httpModule from "../../helpers/http.module";
 import { ThemeContext } from "../../context/theme.context";
 import { IUpdateCategoryDto } from "../../types/global.typing";
 
-
-
 const UpdateCategory = () => {
   const { darkMode } = useContext(ThemeContext);
   const { id } = useParams();
   const [category, setCategory] = useState<IUpdateCategoryDto>({
     categoryName: "",
     description: "",
-  
   });
 
   const redirect = useNavigate();
@@ -84,7 +81,7 @@ const UpdateCategory = () => {
           InputProps={{ style: { color: darkMode ? "yellow" : "black" } }}
           InputLabelProps={{ style: { color: darkMode ? "#09ee70" : "black" } }}
         />
-       
+
         <div
           style={{
             display: "flex",
@@ -102,7 +99,7 @@ const UpdateCategory = () => {
             <Button
               variant="contained"
               style={{
-                backgroundColor: "#05386B",
+                backgroundColor: "rgba(116, 0, 105, 8)",
                 color: "#fff",
               }}
               onClick={handleClickUpdateBtn}

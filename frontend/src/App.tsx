@@ -33,10 +33,15 @@ import UpdateUser from "./pages/user/UpdateUser.page";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ThemeContext } from "./context/theme.context";
-import ProductStockReport from "./pages/reports/ProductStockReport.page";
+import ProductStockReport from "./pages/reports/ProductReport.page";
 import LogoutOnClose from "./pages/user/LogoutOnClose";
 import EditTransaction from "./pages/transactions/EditTransaction.page";
 import LedgerReport from "./pages/reports/LedgerReport.page";
+import StockReport from "./pages/reports/StockReport.page";
+
+import AddPaymentReceipt from "./pages/transactions/AddPaymentReceipt.page";
+import PaymentReceipt from "./pages/transactions/PaymentReceipt.page";
+import LedgerClosingBalance from "./pages/reports/LedgerClosingBalance.page";
 
 interface MainContentProps {
   isLoggedIn: boolean;
@@ -84,6 +89,8 @@ const MainContent: React.FC<MainContentProps> = ({
               path="/transactions/update/:id"
               element={<EditTransaction />}
             />
+            <Route path="/pr" element={<PaymentReceipt />} />
+            <Route path="/pr/add" element={<AddPaymentReceipt />} />
             <Route path="/products" element={<Products />} />
             <Route path="/products/add" element={<AddProduct />} />
             <Route path="/products/update/:id" element={<UpdateProduct />} />
@@ -94,7 +101,9 @@ const MainContent: React.FC<MainContentProps> = ({
             <Route path="/contact" element={<Contact />} />
             <Route path="/" element={<Home />} />
             <Route path="/productReport" element={<ProductStockReport />} />
-            <Route path="/ledgerReport" element={<LedgerReport/>}/>
+            <Route path="/ledgerReport" element={<LedgerReport />} />
+            <Route path="/stockReport" element={<StockReport />} />
+            <Route path="/lcb" element={<LedgerClosingBalance />} />
           </>
         )}
       </Routes>

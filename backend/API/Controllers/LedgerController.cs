@@ -70,6 +70,31 @@ namespace API.Controllers
             return Ok(convertedLedgers);
         }
 
+
+        [HttpGet("GetByParentId/{parentId}")]
+        public async Task<ActionResult<IEnumerable<LedgerGetDto>>> GetLedgersByParentId(long parentId)
+        {
+            try
+            {
+                var ledgers = await _unitOfWork.Ledger.GetAllAsync();
+                var ledgersByParentId = ledgers.Where(ledger => ledger.ParentId == parentId).ToList();
+
+                if (ledgersByParentId.Count == 0)
+                {
+                    return NotFound("No ledgers found for the provided parent ID");
+                }
+
+                var allLedgers = await _unitOfWork.Ledger.GetAllAsync();
+                var convertedLedgers = _mapper.Map<List<LedgerGetDto>>(ledgersByParentId, opts => opts.Items["LedgerList"] = allLedgers);
+                return Ok(convertedLedgers);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+
         [HttpPut("Update")]
         public async Task<ActionResult<LedgerGetDto>> EditLedger(LedgerUpdateDto ledgerUpdateDto, long id)
         {

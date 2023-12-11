@@ -88,6 +88,7 @@ export interface ILedger {
   parentId?: string;
   parentAccount?: string;
   createdAt: string;
+  isTranGl: boolean;
 }
 
 export interface ICreateLedgerDto {
@@ -97,6 +98,7 @@ export interface ICreateLedgerDto {
   address: string;
   MasterAccount: string;
   ParentId?: string;
+  isTranGl: boolean;
 }
 
 export interface IUpdateLedgerDto {
@@ -106,6 +108,8 @@ export interface IUpdateLedgerDto {
   address: string;
   masterAccount: string;
   parentId?: string;
+  isTranGl: boolean;
+
 }
 
 export interface ITransaction {
@@ -145,17 +149,16 @@ export interface ITransactionUpdateDto {
   transactionId?: string;
   date: string;
   invoiceNumber: string;
-  ledgerId?: string | null; 
-  productId?: string | null; 
-  piece: string | null; 
-  transactionType: string; 
-  transactionMethod: string; 
-  debit?: string | null; 
-  credit?: string | null; 
+  ledgerId?: string | null;
+  productId?: string | null;
+  piece: string | null;
+  transactionType: string;
+  transactionMethod: string;
+  debit?: string | null;
+  credit?: string | null;
   narration: string | null;
   ledgerName: string | null;
   productName: string | null;
-
 }
 
 export interface ILogin {
@@ -205,4 +208,30 @@ export interface IUpdateUserDto {
   email: string;
   userName: string;
   password: string;
+}
+
+export interface IPaymentReceipt {
+  id: string;
+  date: string;
+  transactionId: string;
+  invoiceNumber: string;
+  ledgerId: string;
+  ledgerName: string;
+  transactionType: string;
+  transactionMethod: string;
+  debit: string;
+  credit: string;
+  narration: string;
+}
+
+export interface IPaymentReceiptCreateDto {
+  userId: number;
+  date: string;
+  invoiceNumber: string;
+  ledgerId: string;
+  transactionType: string;
+  transactionMethod: string;
+  debit: string;
+  credit: string;
+  narration: string;
 }

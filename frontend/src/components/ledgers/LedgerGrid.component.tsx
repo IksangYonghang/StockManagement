@@ -28,7 +28,7 @@ const column: GridColDef[] = [
     width: 150,
     renderCell: (params) => moment(params.row.createdAt).fromNow(),
   },
-
+  { field: "isTranGl", headerName: "TranGl?", width: 100 },
   /*
   {
     field: "createdAtTimestamp",

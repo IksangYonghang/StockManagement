@@ -15,21 +15,19 @@ import { ThemeContext } from "../../context/theme.context";
 
 const UpdateCompany = () => {
   const { darkMode } = useContext(ThemeContext);
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [company, setCompany] = useState<IUpdateCompanyDto>({
     companyName: "",
     companySize: "",
   });
   const redirect = useNavigate();
 
-
   useEffect(() => {
-    
     httpModule
       .get(`/Company/GetById?id=${id}`)
       .then((response) => {
         const companyData = response.data;
-        setCompany(companyData); 
+        setCompany(companyData);
       })
       .catch((error) => console.error(error));
   }, [id]);
@@ -40,7 +38,6 @@ const UpdateCompany = () => {
       return;
     }
 
-    
     httpModule
       .put(`/Company/Update?id=${id}`, company)
       .then(() => redirect("/companies"))
@@ -100,7 +97,7 @@ const UpdateCompany = () => {
           <Button
             variant="contained"
             style={{
-              backgroundColor: "#05386B",
+              backgroundColor: "rgba(116, 0, 105, 8)",
               color: "#fff",
             }}
             onClick={handleClickUpdateBtn}

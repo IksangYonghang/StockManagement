@@ -117,7 +117,10 @@ const AddTransaction = () => {
     httpModule
       .get<ILedger[]>("/Ledger/Get")
       .then((response) => {
-        setLedgers(response.data);
+        const tranGlLedgers = response.data.filter(
+          (ledger) => ledger.isTranGl === true
+        );
+        setLedgers(tranGlLedgers);
       })
       .catch((error) => {
         alert("Error while fetching ledgers");
@@ -683,7 +686,7 @@ const AddTransaction = () => {
           <Button
             variant="contained"
             style={{
-              backgroundColor: "#05386B",
+              backgroundColor: "rgba(116, 0, 105, 8)",
               color: "#fff",
             }}
             onClick={handleClickSaveBtn}

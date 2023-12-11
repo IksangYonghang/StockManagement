@@ -45,10 +45,6 @@ namespace Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("description");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_active");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
@@ -84,10 +80,6 @@ namespace Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_active");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -127,9 +119,9 @@ namespace Data.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("IsTranGl")
                         .HasColumnType("boolean")
-                        .HasColumnName("is_active");
+                        .HasColumnName("is_tran_gl");
 
                     b.Property<string>("LedgerCode")
                         .IsRequired()
@@ -140,6 +132,10 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("ledger_name");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("integer")
+                        .HasColumnName("level");
 
                     b.Property<string>("MasterAccount")
                         .HasColumnType("text")
@@ -191,10 +187,6 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("image_url");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_active");
 
                     b.Property<decimal>("MarkedPrice")
                         .HasColumnType("numeric")
@@ -268,10 +260,6 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("invoice_number");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_active");
 
                     b.Property<long?>("LedgerId")
                         .HasColumnType("bigint")
@@ -411,10 +399,6 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("gender");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_active");
 
                     b.Property<string>("LastName")
                         .IsRequired()

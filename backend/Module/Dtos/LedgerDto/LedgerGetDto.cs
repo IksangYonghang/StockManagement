@@ -19,5 +19,6 @@ namespace Module.Dtos.LedgerDto
         public long? ParentId { get; set; }
         public MasterAccount? MasterAccount { get; set; }
         public DateTime CreatedAt { get; set; }
+        public bool IsTranGl { get; set; } 
     }
 }

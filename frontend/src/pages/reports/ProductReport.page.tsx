@@ -82,7 +82,7 @@ const ProductStockReport: React.FC = () => {
 
   return (
     <>
-      <h1 style={{ marginBottom: "2rem" }}>Product Stock Report</h1>
+      <h1 style={{ marginBottom: "2rem" }}>Product Report</h1>
       <div className="container">
         <FormControl fullWidth style={{ width: "20%" }}>
           <Autocomplete
@@ -165,10 +165,11 @@ const ProductStockReport: React.FC = () => {
           onClick={handleShowReport}
           variant="contained"
           style={{
-            backgroundColor: "#05386B",
+            backgroundColor: "rgba(116, 0, 105, 8)",
             color: "#fff",
             marginLeft: "10rem",
             marginTop: "-2rem",
+            height: "40px"
           }}
         >
           Show Report
@@ -192,9 +193,15 @@ const ProductStockReport: React.FC = () => {
           )}
           <div className="report-container">
             <table className="report-table">
-              <thead>
+              <thead
+                style={{
+                  color: darkMode ? "rgba(88, 3, 105, 0.938)" : "black",
+                  backgroundColor: darkMode ? "#A6A6A6" : "lightgray",
+                }}
+              >
                 <tr>
                   {[
+                    "S. N.",
                     "Date",
                     "Transaction Id",
                     "Invoice Number",
@@ -216,6 +223,7 @@ const ProductStockReport: React.FC = () => {
               <tbody>
                 {report.map((item: any, index: number) => (
                   <tr key={index}>
+                    <td>{index + 1}</td>
                     <td>{item.date}</td>
                     <td>{item.transactionId}</td>
                     <td>{item.invoiceNumber}</td>

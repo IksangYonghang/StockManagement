@@ -19,6 +19,8 @@ namespace Module.Dtos.Reports
         public string RetailPrice { get; set; }
         public string ProductSize { get; set; }
         public int OpeningStock { get; set; }
+        public int TotalPurchased { get; set; }
+        public int TotalSold { get; set; }
         public int CurrentStock { get; set; }
         public int? TotalStockBalance { get; set; }      
         public decimal StockValue { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace Module.Dtos.Reports
 {
-    public class ProductStockReportDto
+    public class ProductReportDto
     {
         public DateOnly Date { get; set; }
         public int TransactionId { get; set; }

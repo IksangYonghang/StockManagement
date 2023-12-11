@@ -165,10 +165,11 @@ const LedgerReport: React.FC = () => {
           onClick={handleShowReport}
           variant="contained"
           style={{
-            backgroundColor: "#05386B",
+            backgroundColor: "rgba(116, 0, 105, 8)",
             color: "#fff",
             marginLeft: "10rem",
             marginTop: "-2rem",
+            height: "40px"
           }}
         >
           Show Report
@@ -194,6 +195,7 @@ const LedgerReport: React.FC = () => {
               <thead>
                 <tr>
                   {[
+                    "S. N.",
                     "Date",
                     "Transaction Id",
                     "Transaction Type",
@@ -211,6 +213,7 @@ const LedgerReport: React.FC = () => {
               <tbody>
                 {report.map((item: any, index: number) => (
                   <tr key={index}>
+                    <td>{index + 1}</td>
                     <td>{item.date}</td>
                     <td>{item.transactionId}</td>
                     <td>{item.transactionType}</td>

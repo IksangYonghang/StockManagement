@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import httpModule from "../../helpers/http.module";
 import { ThemeContext } from "../../context/theme.context";
 import { ICreateLedgerDto, ILedger } from "../../types/global.typing";
+import { Checkbox, FormControlLabel } from "@mui/material";
 
 const AddLedger = () => {
   const { darkMode } = useContext(ThemeContext);
@@ -23,6 +24,7 @@ const AddLedger = () => {
     address: "",
     MasterAccount: "",
     ParentId: "",
+    isTranGl: false,
   });
 
   const [ledgerData, setLedgerData] = useState<ILedger[]>([]);
@@ -63,6 +65,9 @@ const AddLedger = () => {
 
   const handleClickBackBtn = () => {
     redirect("/ledgers");
+  };
+  const handleIsTranGlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLedger({ ...ledger, isTranGl: event.target.checked });
   };
 
   return (
@@ -156,6 +161,18 @@ const AddLedger = () => {
             <MenuItem value="Expenses">Expenses</MenuItem>
           </Select>
         </FormControl>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={ledger.isTranGl}
+              onChange={(event) =>
+                setLedger({ ...ledger, isTranGl: event.target.checked })
+              }
+            />
+          }
+          label="Is Transaction Ledger?"
+        />
+
         <div
           style={{
             display: "flex",
@@ -166,7 +183,7 @@ const AddLedger = () => {
           <Button
             variant="contained"
             style={{
-              backgroundColor: "#05386B",
+              backgroundColor: "rgba(116, 0, 105, 8)",
               color: "#fff",
             }}
             onClick={handleClickSaveBtn}

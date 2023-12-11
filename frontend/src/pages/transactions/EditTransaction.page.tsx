@@ -116,7 +116,10 @@ const EditTransaction = () => {
     httpModule
       .get<ILedger[]>("/Ledger/Get")
       .then((response) => {
-        setLedgers(response.data);
+        const isTrannGlLedgers = response.data.filter(
+          (ledger) => ledger.isTranGl === true
+        );
+        setLedgers(isTrannGlLedgers);
       })
       .catch((error) => {
         alert("Error while fetching ledgers");
@@ -747,7 +750,7 @@ const EditTransaction = () => {
           <Button
             variant="contained"
             style={{
-              backgroundColor: "#05386B",
+              backgroundColor: "rgba(116, 0, 105, 8)",
               color: "#fff",
             }}
             onClick={handleClickSaveBtn}
