@@ -1,10 +1,23 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { ILedger } from "../../types/global.typing";
 import { ThemeContext } from "../../context/theme.context";
 import httpModule from "../../helpers/http.module";
 import "./reports.scss";
 import { Autocomplete, Button, FormControl, TextField } from "@mui/material";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
+import { useReactToPrint } from "react-to-print";
+import PrintIcon from "@mui/icons-material/Print";
+
+type ColumnNames =
+  | "date"
+  | "transactionId"
+  | "transactionType"
+  | "invoiceNumber"
+  | "debit"
+  | "credit"
+  | "narration"
+  | "balance"
+  | "userName";
 
 const LedgerReport: React.FC = () => {
   const [selectedLedger, setSelectedLedger] = useState<string>("");
@@ -17,6 +30,28 @@ const LedgerReport: React.FC = () => {
   const [fetchedLedgerName, setFetchedLedgerName] = useState<string | null>(
     null
   );
+  const componentPDF = useRef<HTMLDivElement>(null);
+  const [tableLoaded, setTableLoaded] = useState(false);
+
+  const [dropdownColumns, setDropdownColumns] = useState<ColumnNames[]>([
+    "date",
+    "transactionId",
+    "transactionType",
+    "invoiceNumber",
+    "debit",
+    "credit",
+    "narration",
+    "balance",
+    "userName",
+  ]);
+
+  const toggleDropdownColumn = (columnName: ColumnNames) => {
+    setDropdownColumns((prevColumns) =>
+      prevColumns.includes(columnName)
+        ? prevColumns.filter((col) => col !== columnName)
+        : [...prevColumns, columnName]
+    );
+  };
 
   useEffect(() => {
     httpModule
@@ -73,6 +108,7 @@ const LedgerReport: React.FC = () => {
       );
       setError(null);
       setError(null);
+      setTableLoaded(true);
     } catch (error: any) {
       setError(
         error.response?.data || "An error occured while fetching report"
@@ -81,10 +117,34 @@ const LedgerReport: React.FC = () => {
     }
   };
 
+  const generatePDF = useReactToPrint({
+    content: () => componentPDF.current,
+    documentTitle: "LedgerData",
+  });
+
   return (
     <>
       <h1 style={{ marginBottom: "2rem" }}>Ledger Report</h1>
       <div className="container">
+        <div>
+          {report && (
+            <div>
+              <label>Select Columns:</label>
+              <select
+                value=""
+                onChange={(e) =>
+                  toggleDropdownColumn(e.target.value as ColumnNames)
+                }
+              >
+                {dropdownColumns.map((column, index) => (
+                  <option key={index} value={column}>
+                    {column}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
         <FormControl fullWidth style={{ width: "20%" }}>
           <Autocomplete
             options={ledgerNames}
@@ -169,7 +229,7 @@ const LedgerReport: React.FC = () => {
             color: "#fff",
             marginLeft: "10rem",
             marginTop: "-2rem",
-            height: "40px"
+            height: "40px",
           }}
         >
           Show Report
@@ -190,43 +250,44 @@ const LedgerReport: React.FC = () => {
               {fetchedLedgerName}
             </p>
           )}
+          <div
+            style={{
+              marginLeft: "100rem",
+            }}
+          >
+            <Button
+              variant="contained"
+              color="success"
+              onClick={generatePDF}
+              startIcon={<PrintIcon />}
+            >
+              Print
+            </Button>
+          </div>
           <div className="report-container">
-            <table className="report-table">
-              <thead>
-                <tr>
-                  {[
-                    "S. N.",
-                    "Date",
-                    "Transaction Id",
-                    "Transaction Type",
-                    "Invoice Number",
-                    "Debit",
-                    "Credit",
-                    "Narration",
-                    "Balance",
-                    "Creator",
-                  ].map((header, index) => (
-                    <th key={index}>{header}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {report.map((item: any, index: number) => (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{item.date}</td>
-                    <td>{item.transactionId}</td>
-                    <td>{item.transactionType}</td>
-                    <td>{item.invoiceNumber}</td>
-                    <td>{item.debit}</td>
-                    <td>{item.credit}</td>
-                    <td>{item.narration}</td>
-                    <td>{item.balance}</td>
-                    <td>{item.userName}</td>
+            <div ref={componentPDF} style={{ width: "100%" }}>
+              <table className="report-table">
+                <thead>
+                  <tr>
+                    {dropdownColumns.map((column, index) => (
+                      <th key={index}>
+                        <span>{column === "date" ? "S. N." : column}</span>
+                      </th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {report.map((item: any, index: number) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      {dropdownColumns.map((column, index) => (
+                        <td key={index}>{item[column]}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </>
       )}
