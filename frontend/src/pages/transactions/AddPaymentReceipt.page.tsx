@@ -19,14 +19,9 @@ import { AddCircleOutline } from "@mui/icons-material";
 import MethodSelectionDialog from "./MethodSelection.page";
 
 const transactionTypeArray: string[] = ["Payment", "Receipt"];
-const transactionMethodArray: string[] = [
-  "Cash",
-  "Credit",
-  "ESewa",
-  "PhonePay",
-];
 
 const AddPaymentReceipt = () => {
+  const [selectedLedger, setSelectedLedger] = useState("");
   const { darkMode } = useContext(ThemeContext);
   const [transaction, setTransaction] = useState<IPaymentReceiptCreateDto>({
     userId: 0,
@@ -39,7 +34,7 @@ const AddPaymentReceipt = () => {
     credit: "",
     narration: "",
   });
-  const [showTransactionMethod, setShowTransactionMethod] = useState(false);
+  const [showSaveButton, setShowSaveButtotn] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
   const [vouchers, setVouchers] = useState<any[]>([]);
   const redirect = useNavigate();
@@ -168,14 +163,42 @@ const AddPaymentReceipt = () => {
 
   const [showDialog, setShowDialog] = useState(false);
   const [selectedMethod, setSelectedMethod] = useState("");
-  const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
 
   const handleCloseDialog = () => {
     setShowDialog(false);
   };
 
-  const handleConfirmDialog = () => {
+  const handleConfirmDialog = (
+    newVoucher: any,
+    selectedLedger: any,
+    selectedAmount: number
+  ) => {
+    const ledgerName = selectedLedger;
+
+    const updatedVoucher = {
+      ...newVoucher,
+      ledgerName: ledgerName,
+      debit: selectedAmount > 0 ? selectedAmount.toString() : "",
+      credit: selectedAmount < 0 ? (-selectedAmount).toString() : "",
+    };
+
+    const updatedVouchers = [...vouchers, updatedVoucher];
+    setVouchers(updatedVouchers);
+
     setShowDialog(false);
+
+    const updatedTotalDebit = updatedVouchers.reduce(
+      (total, voucher) => total + parseFloat(voucher.debit || 0),
+      0
+    );
+
+    const updatedTotalCredit = updatedVouchers.reduce(
+      (total, voucher) => total + parseFloat(voucher.credit || 0),
+      0
+    );
+
+    setTotalDebit(updatedTotalDebit);
+    setTotalCredit(updatedTotalCredit);
   };
 
   const handleSelectMethod = (value: string) => {
@@ -186,12 +209,20 @@ const AddPaymentReceipt = () => {
   };
 
   const handleClickSaveBtn = () => {
+    httpModule
+      .post("/Transaction/Create", transactionsToSend)
+      .then((response) => redirect("/pr"))
+      .catch((error) => console.log(error));
+  };
+
+  const handleClickNextBtn = () => {
     if (!selectedDate) {
       alert("Please select a date (YYYY-MM-DD)");
       return;
     }
 
     setShowDialog(true);
+    setShowSaveButtotn(true);
 
     const debitTotal = vouchers.reduce(
       (total, voucher) => total + parseFloat(voucher.debit || 0),
@@ -250,10 +281,6 @@ const AddPaymentReceipt = () => {
     }));
     // console.log("Transactions to send:", updatedTransactions);
     setTransactionsToSend(updatedTransactions);
-    httpModule
-      .post("/Transaction/Create", updatedTransactions)
-      .then((response) => redirect("/pr"))
-      .catch((error) => console.log(error));
   };
   const handleClickBackBtn = () => {
     redirect("/pr");
@@ -330,6 +357,18 @@ const AddPaymentReceipt = () => {
             onSelectMethod={handleSelectMethod}
             ledgers={ledgers}
             onSelectLedger={(value: string) => {}}
+            totalDebit={totalDebit}
+            totalCredit={totalCredit}
+            onConfirmSelection={(selectedMethod, isDebit, selectedAmount) => {
+              const updatedTransaction = {
+                ...transaction,
+                transactionMethod: selectedMethod,
+                debit: isDebit ? selectedAmount.toString() : "",
+                credit: !isDebit ? selectedAmount.toString() : "",
+              };
+
+              setTransaction(updatedTransaction);
+            }}
           />
         )}
         <div className="input-container">
@@ -558,16 +597,29 @@ const AddPaymentReceipt = () => {
             marginTop: "1rem",
           }}
         >
-          <Button
-            variant="contained"
-            style={{
-              backgroundColor: "rgba(116, 0, 105, 8)",
-              color: "#fff",
-            }}
-            onClick={handleClickSaveBtn}
-          >
-            Save
-          </Button>
+          {showSaveButton ? (
+            <Button
+              variant="contained"
+              style={{
+                backgroundColor: "rgba(116, 0, 105, 8)",
+                color: "#fff",
+              }}
+              onClick={handleClickSaveBtn}
+            >
+              Save
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              style={{
+                backgroundColor: "rgba(116, 0, 105, 8)",
+                color: "#fff",
+              }}
+              onClick={handleClickNextBtn}
+            >
+              Next
+            </Button>
+          )}
           <Button
             onClick={handleClickBackBtn}
             style={{

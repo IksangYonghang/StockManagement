@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogActions,
@@ -10,6 +10,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  TextField,
 } from "@mui/material";
 import { ILedger, IPaymentReceiptCreateDto } from "../../types/global.typing";
 import { SelectChangeEvent } from "@mui/material/Select";
@@ -17,11 +18,22 @@ import { SelectChangeEvent } from "@mui/material/Select";
 interface MethodSelectionDialogProps {
   open: boolean;
   onClose: () => void;
-  onConfirm: () => void;
+  onConfirm: (
+    newVoucher: any,
+    selectedLedger: any,
+    selectedAmount: number
+  ) => void;
   selectedMethod: string;
   onSelectMethod: (value: string) => void;
   ledgers: ILedger[];
   onSelectLedger: (value: string) => void;
+  totalDebit: number;
+  totalCredit: number;
+  onConfirmSelection: (
+    selectedMethod: string,
+    isDebit: boolean,
+    totalAmount: number
+  ) => void;
 }
 
 const MethodSelectionDialog: React.FC<MethodSelectionDialogProps> = ({
@@ -32,9 +44,13 @@ const MethodSelectionDialog: React.FC<MethodSelectionDialogProps> = ({
   onSelectMethod,
   ledgers,
   onSelectLedger,
+  totalDebit,
+  totalCredit,
+  onConfirmSelection,
 }) => {
   const [showLedgerSelection, setShowLedgerSelection] = useState(false);
-  const [selectedLedger, setSelectedLedger] = useState<string | undefined>("");
+  const [selectedLedger, setSelectedLedger] = useState<string>("");
+
   const [vouchers, setVouchers] = useState<any[]>([]);
   const [transaction, setTransaction] = useState<IPaymentReceiptCreateDto>({
     userId: 0,
@@ -47,6 +63,7 @@ const MethodSelectionDialog: React.FC<MethodSelectionDialogProps> = ({
     credit: "",
     narration: "",
   });
+  const [showNarrationField, setShowNarrationField] = useState(false);
 
   const handleClose = () => {
     onClose();
@@ -61,8 +78,11 @@ const MethodSelectionDialog: React.FC<MethodSelectionDialogProps> = ({
 
   const handleLedgerChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     const selectedValue = event.target.value as string;
+    // console.log("Selected Ledger Name:", selectedValue);
+
     onSelectLedger(selectedValue);
     setSelectedLedger(selectedValue);
+    setShowNarrationField(true);
   };
 
   const handleConfirm = () => {
@@ -74,23 +94,31 @@ const MethodSelectionDialog: React.FC<MethodSelectionDialogProps> = ({
             : "Payment"
           : transaction.transactionType;
 
+      const selectedLedgerObj = ledgers.find(
+        (ledger) => ledger.id === selectedLedger
+      );
+      const selectedAmount =
+        oppositeTransactionType === "Payment" ? totalCredit : totalDebit;
       const newVoucher = {
         invoiceNumber: transaction.invoiceNumber,
-        ledgerName:
-          ledgers.find((ledger) => ledger.id === selectedLedger)?.ledgerName ||
-          "N/A",
+        ledgerName: selectedLedgerObj?.ledgerName || "N/A",
         transactionType: oppositeTransactionType,
         transactionMethod: selectedMethod,
         debit:
-          transaction.transactionType === "Payment" ? transaction.credit : "",
+          oppositeTransactionType === "Payment"
+            ? selectedAmount.toString()
+            : "",
         credit:
-          transaction.transactionType === "Receipt" ? transaction.debit : "",
+          oppositeTransactionType === "Receipt"
+            ? selectedAmount.toString()
+            : "",
         narration: transaction.narration,
         ledgerId: selectedLedger,
       };
 
       const updatedVouchers = [...vouchers, newVoucher];
-      onConfirm();
+      onConfirm(newVoucher, selectedLedger, selectedAmount);
+
       onClose();
     }
   };
@@ -151,12 +179,25 @@ const MethodSelectionDialog: React.FC<MethodSelectionDialogProps> = ({
               }
             >
               {ledgers.map((ledger) => (
-                <MenuItem key={ledger.id} value={String(ledger.id)}>
+                <MenuItem key={ledger.id} value={ledger.ledgerName}>
                   {ledger.ledgerName}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
+        )}
+        {showNarrationField && (
+          <TextField
+            fullWidth
+            style={{ marginTop: "26px", marginBottom: "-6px" }}
+            autoComplete="off"
+            label="Narration"
+            variant="outlined"
+            value={transaction.narration}
+            onChange={(n) =>
+              setTransaction({ ...transaction, narration: n.target.value })
+            }
+          />
         )}
       </DialogContent>
 

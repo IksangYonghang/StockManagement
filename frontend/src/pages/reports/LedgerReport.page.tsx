@@ -3,7 +3,14 @@ import { ILedger } from "../../types/global.typing";
 import { ThemeContext } from "../../context/theme.context";
 import httpModule from "../../helpers/http.module";
 import "./reports.scss";
-import { Autocomplete, Button, FormControl, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  TextField,
+} from "@mui/material";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import { useReactToPrint } from "react-to-print";
 import PrintIcon from "@mui/icons-material/Print";
@@ -32,24 +39,66 @@ const LedgerReport: React.FC = () => {
   );
   const componentPDF = useRef<HTMLDivElement>(null);
   const [tableLoaded, setTableLoaded] = useState(false);
+  const [showHideForm, setShowHideForm] = useState(false);
 
-  const [dropdownColumns, setDropdownColumns] = useState<ColumnNames[]>([
-    "date",
-    "transactionId",
-    "transactionType",
-    "invoiceNumber",
-    "debit",
-    "credit",
-    "narration",
-    "balance",
-    "userName",
-  ]);
+  const toggleHideForm = () => {
+    setShowHideForm(!showHideForm);
+  };
+
+  const renderHideForm = () => {
+    return (
+      <div className="hide-columns">
+        <form>
+          <label>Hide Columns:</label>
+          <FormControl component="fieldset">
+            {dropdownColumns.map((column, index) => (
+              <FormControlLabel
+                key={index}
+                control={
+                  <Checkbox
+                    checked={!column.visible}
+                    onChange={() => toggleDropdownColumn(column.name)}
+                    name={column.name}
+                  />
+                }
+                label={column.name}
+              />
+            ))}
+          </FormControl>
+        </form>
+      </div>
+    );
+  };
+
+  const hideColumnsButton = (
+    <Button onClick={toggleHideForm} variant="contained">
+      {showHideForm ? "Hide Columns" : "Show Columns"}
+    </Button>
+  );
+
+  type ColumnConfig = {
+    name: ColumnNames;
+    visible: boolean;
+  };
+  const initialColumns: ColumnConfig[] = [
+    { name: "date", visible: true },
+    { name: "transactionId", visible: true },
+    { name: "transactionType", visible: true },
+    { name: "invoiceNumber", visible: true },
+    { name: "debit", visible: true },
+    { name: "credit", visible: true },
+    { name: "narration", visible: true },
+    { name: "userName", visible: true },
+  ];
+
+  const [dropdownColumns, setDropdownColumns] =
+    useState<ColumnConfig[]>(initialColumns);
 
   const toggleDropdownColumn = (columnName: ColumnNames) => {
     setDropdownColumns((prevColumns) =>
-      prevColumns.includes(columnName)
-        ? prevColumns.filter((col) => col !== columnName)
-        : [...prevColumns, columnName]
+      prevColumns.map((col) =>
+        col.name === columnName ? { ...col, visible: !col.visible } : col
+      )
     );
   };
 
@@ -102,9 +151,14 @@ const LedgerReport: React.FC = () => {
       const response = await httpModule.get(
         `Report/LedgerReport?ledgerId=${selectedLedger}&fromDate=${englishFromDate}&toDate=${englishToDate}`
       );
-      setReport(response.data);
+      const modifiedReport = response.data.map((item: any, index: number) => ({
+        ...item,
+        SN: index + 1,
+      }));
+
+      setReport(modifiedReport);
       setFetchedLedgerName(
-        response.data.length > 0 ? response.data[0].ledgerName : null
+        modifiedReport.length > 0 ? modifiedReport[0].ledgerName : null
       );
       setError(null);
       setError(null);
@@ -126,25 +180,6 @@ const LedgerReport: React.FC = () => {
     <>
       <h1 style={{ marginBottom: "2rem" }}>Ledger Report</h1>
       <div className="container">
-        <div>
-          {report && (
-            <div>
-              <label>Select Columns:</label>
-              <select
-                value=""
-                onChange={(e) =>
-                  toggleDropdownColumn(e.target.value as ColumnNames)
-                }
-              >
-                {dropdownColumns.map((column, index) => (
-                  <option key={index} value={column}>
-                    {column}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
-        </div>
         <FormControl fullWidth style={{ width: "20%" }}>
           <Autocomplete
             options={ledgerNames}
@@ -250,39 +285,50 @@ const LedgerReport: React.FC = () => {
               {fetchedLedgerName}
             </p>
           )}
-          <div
-            style={{
-              marginLeft: "100rem",
-            }}
-          >
-            <Button
-              variant="contained"
-              color="success"
-              onClick={generatePDF}
-              startIcon={<PrintIcon />}
-            >
-              Print
-            </Button>
-          </div>
+          {report && (
+            <div className="pdf-and-hide">
+              <div className="button-group">
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={generatePDF}
+                  startIcon={<PrintIcon />}
+                >
+                  Print
+                </Button>
+                {hideColumnsButton}
+              </div>
+              {showHideForm && renderHideForm()}
+            </div>
+          )}
+
           <div className="report-container">
             <div ref={componentPDF} style={{ width: "100%" }}>
               <table className="report-table">
                 <thead>
                   <tr>
-                    {dropdownColumns.map((column, index) => (
-                      <th key={index}>
-                        <span>{column === "date" ? "S. N." : column}</span>
-                      </th>
-                    ))}
+                    <th>
+                      <span>SN</span>
+                    </th>
+                    {dropdownColumns.map((column, index) =>
+                      column.visible ? (
+                        <th key={index}>
+                          <span>{column.name}</span>
+                        </th>
+                      ) : null
+                    )}
                   </tr>
                 </thead>
                 <tbody>
-                  {report.map((item: any, index: number) => (
-                    <tr key={index}>
-                      <td>{index + 1}</td>
-                      {dropdownColumns.map((column, index) => (
-                        <td key={index}>{item[column]}</td>
-                      ))}
+                  {report.map((item: any, rowIndex: number) => (
+                    <tr key={rowIndex}>
+                      <td>{rowIndex + 1}</td>
+                      {dropdownColumns.map(
+                        (column, colIndex) =>
+                          column.visible && (
+                            <td key={colIndex}>{item[column.name]}</td>
+                          )
+                      )}
                     </tr>
                   ))}
                 </tbody>

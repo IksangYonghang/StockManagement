@@ -72,14 +72,8 @@
 }
 
 .dark-mode .report-table tr.category-even {
-  background-color: rgba(
-    130,
-    37,
-    151,
-    0.938
-  );
+  background-color: rgba(130, 37, 151, 0.938);
 }
-
 
 .report-table tr.master-odd {
   background-color: #f0d0d0;
@@ -94,10 +88,27 @@
 }
 
 .dark-mode .report-table tr.master-even {
-  background-color: rgba(
-    130,
-    37,
-    151,
-    0.938
-  );
+  background-color: rgba(130, 37, 151, 0.938);
+}
+
+.pdf-and-hide {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .button-group {
+    margin-bottom: -1.5rem;
+    display: flex;
+    gap: 20px;
+    margin-left: 92rem;
+    margin-top: 0.5rem;
+  }
+}
+.pdf-and-hide > * {
+  margin-left: 60px;
+}
+
+.hide-columns {
+  display: flex;
+  align-items: center;
 }
