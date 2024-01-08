@@ -28,6 +28,8 @@ const AddPaymentReceipt = () => {
     date: "",
     invoiceNumber: "",
     ledgerId: "",
+    productId: "",
+    piece: "",
     transactionType: "",
     transactionMethod: "",
     debit: "",
@@ -44,6 +46,7 @@ const AddPaymentReceipt = () => {
   const [transactionsToSend, setTransactionsToSend] = useState<
     IPaymentReceiptCreateDto[]
   >([]);
+  const [selectedTransactionType, setSelectedTransactionType] = useState<any>();
 
   const addVoucherRow = () => {
     const selectedLedger = ledgers.find(
@@ -59,6 +62,9 @@ const AddPaymentReceipt = () => {
       credit: transaction.credit,
       narration: transaction.narration,
       ledgerId: transaction.ledgerId,
+      piece: null,
+      productId: null,
+      date: selectedDate,
     };
 
     const updatedVouchers = [...vouchers, newVoucher];
@@ -178,6 +184,8 @@ const AddPaymentReceipt = () => {
     const updatedVoucher = {
       ...newVoucher,
       ledgerName: ledgerName,
+      transactionType: transaction.transactionType,
+
       debit: selectedAmount > 0 ? selectedAmount.toString() : "",
       credit: selectedAmount < 0 ? (-selectedAmount).toString() : "",
     };
@@ -185,6 +193,7 @@ const AddPaymentReceipt = () => {
     const updatedVouchers = [...vouchers, updatedVoucher];
     setVouchers(updatedVouchers);
 
+    console.log("Update vouchers in handleConfirm", updatedVouchers);
     setShowDialog(false);
 
     const updatedTotalDebit = updatedVouchers.reduce(
@@ -209,9 +218,23 @@ const AddPaymentReceipt = () => {
   };
 
   const handleClickSaveBtn = () => {
+    console.log("Transaction being sent to DB in handleClickSaveBtn", vouchers);
+
+    if (vouchers.length === 0) {
+      alert("No transactions to save");
+      return;
+    }
+
     httpModule
-      .post("/Transaction/Create", transactionsToSend)
-      .then((response) => redirect("/pr"))
+      .post("/Transaction/Create", vouchers)
+      .then((response) => {
+        console.log("Transactions saved successfully!");
+        setVouchers([]); // Clear vouchers after saving
+        setTotalDebit(0);
+        setTotalCredit(0);
+        setTransactionsToSend([]); // Clear transactions to send
+        redirect("/pr");
+      })
       .catch((error) => console.log(error));
   };
 
@@ -220,6 +243,7 @@ const AddPaymentReceipt = () => {
       alert("Please select a date (YYYY-MM-DD)");
       return;
     }
+    const selectedTransactionType = transaction.transactionType;
 
     setShowDialog(true);
     setShowSaveButtotn(true);
@@ -258,7 +282,7 @@ const AddPaymentReceipt = () => {
 
     const transactionToSend: IPaymentReceiptCreateDto = {
       userId: parseInt(userId),
-      date: formattedDate,
+      date: selectedDate,
       invoiceNumber: "",
       ledgerId: "",
       transactionType: "",
@@ -266,24 +290,36 @@ const AddPaymentReceipt = () => {
       debit: debitTotal.toString(),
       credit: creditTotal.toString(),
       narration: "",
+      piece: null,
+      productId: null,
     };
 
     const updatedTransactions = vouchers.map((voucher) => ({
       userId: parseInt(userId),
-      date: formattedDate,
+      date: selectedDate,
       invoiceNumber: voucher.invoiceNumber,
       ledgerId: voucher.ledgerId || null,
-      transactionType: voucher.transactionType,
+      transactionType: selectedTransactionType,
       transactionMethod: voucher.transactionMethod,
       debit: voucher.debit || "0",
       credit: voucher.credit || "0",
       narration: voucher.narration,
+      piece: null,
+      productId: null,
     }));
-    // console.log("Transactions to send:", updatedTransactions);
+
     setTransactionsToSend(updatedTransactions);
   };
   const handleClickBackBtn = () => {
     redirect("/pr");
+  };
+
+  const handleUpdateTransactionMethod = (selectedMethod: string) => {
+    const updatedVouchers = vouchers.map((voucher) => ({
+      ...voucher,
+      transactionMethod: selectedMethod,
+    }));
+    setVouchers(updatedVouchers);
   };
 
   return (
@@ -352,6 +388,9 @@ const AddPaymentReceipt = () => {
           <MethodSelectionDialog
             open={showDialog}
             onClose={handleCloseDialog}
+            selecteDate={selectedDate}
+            onSelectDate={setSelectedDate}
+            invoiceNumber={transaction.invoiceNumber}
             onConfirm={handleConfirmDialog}
             selectedMethod={selectedMethod}
             onSelectMethod={handleSelectMethod}
@@ -359,6 +398,7 @@ const AddPaymentReceipt = () => {
             onSelectLedger={(value: string) => {}}
             totalDebit={totalDebit}
             totalCredit={totalCredit}
+            selectedTransactionType={selectedTransactionType}
             onConfirmSelection={(selectedMethod, isDebit, selectedAmount) => {
               const updatedTransaction = {
                 ...transaction,

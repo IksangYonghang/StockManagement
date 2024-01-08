@@ -109,7 +109,6 @@ export interface IUpdateLedgerDto {
   masterAccount: string;
   parentId?: string;
   isTranGl: boolean;
-
 }
 
 export interface ITransaction {
@@ -224,11 +223,25 @@ export interface IPaymentReceipt {
   narration: string;
 }
 
+// export interface IPaymentReceiptCreateDto {
+//   userId: number;
+//   date: string;
+//   invoiceNumber: string;
+//   ledgerId: string;
+//   transactionType: string;
+//   transactionMethod: string;
+//   debit: string;
+//   credit: string;
+//   narration: string;
+// }
+
 export interface IPaymentReceiptCreateDto {
   userId: number;
   date: string;
   invoiceNumber: string;
   ledgerId: string;
+  piece: string | null | undefined;
+  productId: string | null | undefined;
   transactionType: string;
   transactionMethod: string;
   debit: string;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogActions,
@@ -23,6 +23,7 @@ interface MethodSelectionDialogProps {
     selectedLedger: any,
     selectedAmount: number
   ) => void;
+
   selectedMethod: string;
   onSelectMethod: (value: string) => void;
   ledgers: ILedger[];
@@ -34,6 +35,10 @@ interface MethodSelectionDialogProps {
     isDebit: boolean,
     totalAmount: number
   ) => void;
+  invoiceNumber: string;
+  selecteDate: string;
+  onSelectDate: (date: string) => void;
+  selectedTransactionType: () => any;
 }
 
 const MethodSelectionDialog: React.FC<MethodSelectionDialogProps> = ({
@@ -46,7 +51,10 @@ const MethodSelectionDialog: React.FC<MethodSelectionDialogProps> = ({
   onSelectLedger,
   totalDebit,
   totalCredit,
+  selectedTransactionType,
   onConfirmSelection,
+  selecteDate,
+  invoiceNumber,
 }) => {
   const [showLedgerSelection, setShowLedgerSelection] = useState(false);
   const [selectedLedger, setSelectedLedger] = useState<string>("");
@@ -57,6 +65,8 @@ const MethodSelectionDialog: React.FC<MethodSelectionDialogProps> = ({
     date: "",
     invoiceNumber: "",
     ledgerId: "",
+    productId: "",
+    piece: "",
     transactionType: "",
     transactionMethod: "",
     debit: "",
@@ -97,13 +107,19 @@ const MethodSelectionDialog: React.FC<MethodSelectionDialogProps> = ({
       const selectedLedgerObj = ledgers.find(
         (ledger) => ledger.id === selectedLedger
       );
-      const selectedAmount =
-        oppositeTransactionType === "Payment" ? totalCredit : totalDebit;
+
+      let selectedAmount = 0;
+      if (oppositeTransactionType === "Payment") {
+        selectedAmount = totalCredit;
+      } else if (oppositeTransactionType === "Receipt") {
+        selectedAmount = totalDebit;
+      }
+
       const newVoucher = {
-        invoiceNumber: transaction.invoiceNumber,
+        invoiceNumber: invoiceNumber,
         ledgerName: selectedLedgerObj?.ledgerName || "N/A",
-        transactionType: oppositeTransactionType,
-        transactionMethod: selectedMethod,
+        transactionType: selectedTransactionType,
+        selectedMethod: selectedMethod,
         debit:
           oppositeTransactionType === "Payment"
             ? selectedAmount.toString()
@@ -114,11 +130,14 @@ const MethodSelectionDialog: React.FC<MethodSelectionDialogProps> = ({
             : "",
         narration: transaction.narration,
         ledgerId: selectedLedger,
+        piece: null,
+        productId: null,
+        date: selecteDate,
       };
 
       const updatedVouchers = [...vouchers, newVoucher];
+      setVouchers(updatedVouchers);
       onConfirm(newVoucher, selectedLedger, selectedAmount);
-
       onClose();
     }
   };
