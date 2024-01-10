@@ -21,7 +21,6 @@ import MethodSelectionDialog from "./MethodSelection.page";
 const transactionTypeArray: string[] = ["Payment", "Receipt"];
 
 const AddPaymentReceipt = () => {
-  const [selectedLedger, setSelectedLedger] = useState("");
   const { darkMode } = useContext(ThemeContext);
   const [transaction, setTransaction] = useState<IPaymentReceiptCreateDto>({
     userId: 0,
@@ -46,7 +45,16 @@ const AddPaymentReceipt = () => {
   const [transactionsToSend, setTransactionsToSend] = useState<
     IPaymentReceiptCreateDto[]
   >([]);
-  const [selectedTransactionType, setSelectedTransactionType] = useState<any>();
+  const [selectedTransactionType, setSelectedTransactionType] =
+    useState<string>("");
+
+  const handleUpdateTransactionMethod = (transactionMethod: string) => {
+    const updatedVouchers = vouchers.map((voucher) => ({
+      ...voucher,
+      transactionMethod: transactionMethod,
+    }));
+    setVouchers(updatedVouchers);
+  };
 
   const addVoucherRow = () => {
     const selectedLedger = ledgers.find(
@@ -57,7 +65,7 @@ const AddPaymentReceipt = () => {
       invoiceNumber: transaction.invoiceNumber,
       ledgerName: selectedLedger ? selectedLedger.ledgerName : "N/A",
       transactionType: transaction.transactionType,
-      transactionMethod: transaction.transactionMethod,
+      transactionMethod: transactionMethod,
       debit: transaction.debit,
       credit: transaction.credit,
       narration: transaction.narration,
@@ -143,6 +151,7 @@ const AddPaymentReceipt = () => {
       ...transaction,
       [field]: value,
     });
+    setSelectedTransactionType(value);
   };
 
   const [showVoucherHeader, setShowVoucherHeader] = useState(false);
@@ -168,32 +177,29 @@ const AddPaymentReceipt = () => {
   };
 
   const [showDialog, setShowDialog] = useState(false);
-  const [selectedMethod, setSelectedMethod] = useState("");
+  const [transactionMethod, setTransactionMethod] = useState("");
+
+  const updateTransactionMethod = (value: any) => {
+    setTransactionMethod(value);
+    updateVouchersTransactionMethod(value);
+  };
 
   const handleCloseDialog = () => {
     setShowDialog(false);
   };
 
-  const handleConfirmDialog = (
-    newVoucher: any,
-    selectedLedger: any,
-    selectedAmount: number
-  ) => {
-    const ledgerName = selectedLedger;
-
+  const handleConfirmDialog = (newVoucher: any, selectedLedger: any) => {
     const updatedVoucher = {
       ...newVoucher,
-      ledgerName: ledgerName,
+      ledgerId: selectedLedger,
+      ledgerName: newVoucher.ledgerName,
       transactionType: transaction.transactionType,
-
-      debit: selectedAmount > 0 ? selectedAmount.toString() : "",
-      credit: selectedAmount < 0 ? (-selectedAmount).toString() : "",
     };
+    console.log("data from child ", newVoucher);
 
     const updatedVouchers = [...vouchers, updatedVoucher];
     setVouchers(updatedVouchers);
 
-    console.log("Update vouchers in handleConfirm", updatedVouchers);
     setShowDialog(false);
 
     const updatedTotalDebit = updatedVouchers.reduce(
@@ -210,8 +216,16 @@ const AddPaymentReceipt = () => {
     setTotalCredit(updatedTotalCredit);
   };
 
+  const updateVouchersTransactionMethod = (transactionMethod: string) => {
+    const updatedVouchers = vouchers.map((voucher) => ({
+      ...voucher,
+      transactionMethod: transactionMethod,
+    }));
+    setVouchers(updatedVouchers);
+  };
+
   const handleSelectMethod = (value: string) => {
-    setSelectedMethod(value);
+    setTransactionMethod(value);
     if (value !== "") {
       setShowDialog(true);
     }
@@ -243,7 +257,9 @@ const AddPaymentReceipt = () => {
       alert("Please select a date (YYYY-MM-DD)");
       return;
     }
-    const selectedTransactionType = transaction.transactionType;
+
+    updateVouchersTransactionMethod(transactionMethod);
+    const transactionType = transaction.transactionType;
 
     setShowDialog(true);
     setShowSaveButtotn(true);
@@ -300,7 +316,7 @@ const AddPaymentReceipt = () => {
       invoiceNumber: voucher.invoiceNumber,
       ledgerId: voucher.ledgerId || null,
       transactionType: selectedTransactionType,
-      transactionMethod: voucher.transactionMethod,
+      transactionMethod: transactionMethod,
       debit: voucher.debit || "0",
       credit: voucher.credit || "0",
       narration: voucher.narration,
@@ -312,14 +328,6 @@ const AddPaymentReceipt = () => {
   };
   const handleClickBackBtn = () => {
     redirect("/pr");
-  };
-
-  const handleUpdateTransactionMethod = (selectedMethod: string) => {
-    const updatedVouchers = vouchers.map((voucher) => ({
-      ...voucher,
-      transactionMethod: selectedMethod,
-    }));
-    setVouchers(updatedVouchers);
   };
 
   return (
@@ -361,11 +369,8 @@ const AddPaymentReceipt = () => {
           <Select
             label="Transaction Type"
             value={transaction.transactionType}
-            onChange={(s) =>
-              setTransaction({
-                ...transaction,
-                transactionType: s.target.value as string,
-              })
+            onChange={(e) =>
+              handleChange("transactionType", e.target.value as string)
             }
             style={{
               color: darkMode ? "yellow" : "black",
@@ -392,22 +397,23 @@ const AddPaymentReceipt = () => {
             onSelectDate={setSelectedDate}
             invoiceNumber={transaction.invoiceNumber}
             onConfirm={handleConfirmDialog}
-            selectedMethod={selectedMethod}
-            onSelectMethod={handleSelectMethod}
+            transactionMethod={transactionMethod}
+            onSelectMethod={updateTransactionMethod}
             ledgers={ledgers}
             onSelectLedger={(value: string) => {}}
             totalDebit={totalDebit}
             totalCredit={totalCredit}
             selectedTransactionType={selectedTransactionType}
-            onConfirmSelection={(selectedMethod, isDebit, selectedAmount) => {
+            onConfirmSelection={(isDebit) => {
               const updatedTransaction = {
                 ...transaction,
-                transactionMethod: selectedMethod,
-                debit: isDebit ? selectedAmount.toString() : "",
-                credit: !isDebit ? selectedAmount.toString() : "",
+                transactionMethod: transactionMethod,
+                debit: isDebit.toString(),
+                credit: (!isDebit).toString(),
               };
 
               setTransaction(updatedTransaction);
+              handleUpdateTransactionMethod(transactionMethod);
             }}
           />
         )}
@@ -491,13 +497,13 @@ const AddPaymentReceipt = () => {
               <TextField
                 fullWidth
                 autoComplete="off"
-                label="Debit"
+                label="Credit"
                 variant="outlined"
-                value={transaction.debit}
+                value={transaction.credit}
                 onChange={(n) =>
                   setTransaction({
                     ...transaction,
-                    debit: n.target.value,
+                    credit: n.target.value,
                   })
                 }
                 InputProps={{
@@ -522,13 +528,13 @@ const AddPaymentReceipt = () => {
               <TextField
                 fullWidth
                 autoComplete="off"
-                label="Credit"
+                label="Debit"
                 variant="outlined"
-                value={transaction.credit}
+                value={transaction.debit}
                 onChange={(n) =>
                   setTransaction({
                     ...transaction,
-                    credit: n.target.value,
+                    debit: n.target.value,
                   })
                 }
                 InputProps={{

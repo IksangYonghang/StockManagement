@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogActions,
@@ -18,34 +18,31 @@ import { SelectChangeEvent } from "@mui/material/Select";
 interface MethodSelectionDialogProps {
   open: boolean;
   onClose: () => void;
-  onConfirm: (
-    newVoucher: any,
-    selectedLedger: any,
-    selectedAmount: number
-  ) => void;
+  onConfirm: (newVoucher: any, selectedLedger: any) => void;
 
-  selectedMethod: string;
+  transactionMethod: string;
   onSelectMethod: (value: string) => void;
   ledgers: ILedger[];
   onSelectLedger: (value: string) => void;
   totalDebit: number;
   totalCredit: number;
   onConfirmSelection: (
-    selectedMethod: string,
+    transactionMethod: string,
     isDebit: boolean,
     totalAmount: number
   ) => void;
   invoiceNumber: string;
   selecteDate: string;
   onSelectDate: (date: string) => void;
-  selectedTransactionType: () => any;
+  selectedTransactionType: string;
 }
 
 const MethodSelectionDialog: React.FC<MethodSelectionDialogProps> = ({
   open,
+
   onClose,
   onConfirm,
-  selectedMethod,
+  transactionMethod,
   onSelectMethod,
   ledgers,
   onSelectLedger,
@@ -73,6 +70,10 @@ const MethodSelectionDialog: React.FC<MethodSelectionDialogProps> = ({
     credit: "",
     narration: "",
   });
+
+ 
+
+
   const [showNarrationField, setShowNarrationField] = useState(false);
 
   const handleClose = () => {
@@ -88,7 +89,10 @@ const MethodSelectionDialog: React.FC<MethodSelectionDialogProps> = ({
 
   const handleLedgerChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     const selectedValue = event.target.value as string;
-    // console.log("Selected Ledger Name:", selectedValue);
+
+    const selectedLedgerObj = ledgers.find(
+      (ledger) => ledger.id === selectedValue
+    );
 
     onSelectLedger(selectedValue);
     setSelectedLedger(selectedValue);
@@ -96,48 +100,29 @@ const MethodSelectionDialog: React.FC<MethodSelectionDialogProps> = ({
   };
 
   const handleConfirm = () => {
-    if (selectedLedger !== "" && selectedMethod !== "") {
-      const oppositeTransactionType =
-        selectedMethod === "Cash" || selectedMethod === "Credit"
-          ? transaction.transactionType === "Payment"
-            ? "Receipt"
-            : "Payment"
-          : transaction.transactionType;
-
+    if (selectedLedger !== "" && transactionMethod !== "") {
       const selectedLedgerObj = ledgers.find(
         (ledger) => ledger.id === selectedLedger
       );
 
-      let selectedAmount = 0;
-      if (oppositeTransactionType === "Payment") {
-        selectedAmount = totalCredit;
-      } else if (oppositeTransactionType === "Receipt") {
-        selectedAmount = totalDebit;
-      }
-
       const newVoucher = {
         invoiceNumber: invoiceNumber,
-        ledgerName: selectedLedgerObj?.ledgerName || "N/A",
+        ledgerName: selectedLedgerObj ? selectedLedgerObj.ledgerName : "N/A",
         transactionType: selectedTransactionType,
-        selectedMethod: selectedMethod,
-        debit:
-          oppositeTransactionType === "Payment"
-            ? selectedAmount.toString()
-            : "",
-        credit:
-          oppositeTransactionType === "Receipt"
-            ? selectedAmount.toString()
-            : "",
+        transactionMethod: transactionMethod,
+        debit: totalCredit,
+        credit: totalDebit,
         narration: transaction.narration,
         ledgerId: selectedLedger,
         piece: null,
         productId: null,
         date: selecteDate,
       };
+      //console.log("Voucher being passed back to parent :", newVoucher);
 
       const updatedVouchers = [...vouchers, newVoucher];
       setVouchers(updatedVouchers);
-      onConfirm(newVoucher, selectedLedger, selectedAmount);
+      onConfirm(newVoucher, selectedLedger);
       onClose();
     }
   };
@@ -168,7 +153,7 @@ const MethodSelectionDialog: React.FC<MethodSelectionDialogProps> = ({
             <InputLabel>Transaction Method</InputLabel>
             <Select
               label="Transaction Method"
-              value={selectedMethod as unknown as ""}
+              value={transactionMethod as unknown as ""}
               onChange={
                 handleMethodChange as (
                   event: SelectChangeEvent<{ value: unknown }>
@@ -198,7 +183,7 @@ const MethodSelectionDialog: React.FC<MethodSelectionDialogProps> = ({
               }
             >
               {ledgers.map((ledger) => (
-                <MenuItem key={ledger.id} value={ledger.ledgerName}>
+                <MenuItem key={ledger.id} value={ledger.id}>
                   {ledger.ledgerName}
                 </MenuItem>
               ))}
