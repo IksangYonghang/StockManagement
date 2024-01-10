@@ -232,21 +232,31 @@ const AddPaymentReceipt = () => {
   };
 
   const handleClickSaveBtn = () => {
-    console.log("Transaction being sent to DB in handleClickSaveBtn", vouchers);
-
     if (vouchers.length === 0) {
       alert("No transactions to save");
       return;
     }
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      alert("User ID not found");
+      return;
+    }
+
+    const transactionsWithUserId = vouchers.map((voucher) => ({
+      ...voucher,
+      userId: parseInt(userId),
+      debit: voucher.debit || "0",
+      credit: voucher.credit || "0",
+    }));
 
     httpModule
-      .post("/Transaction/Create", vouchers)
+      .post("/Transaction/Create", transactionsWithUserId)
       .then((response) => {
         console.log("Transactions saved successfully!");
-        setVouchers([]); // Clear vouchers after saving
+        setVouchers([]);
         setTotalDebit(0);
         setTotalCredit(0);
-        setTransactionsToSend([]); // Clear transactions to send
+        setTransactionsToSend([]);
         redirect("/pr");
       })
       .catch((error) => console.log(error));
@@ -615,8 +625,8 @@ const AddPaymentReceipt = () => {
                   <td>{voucher.transactionType}</td>
                   <td>{voucher.transactionMethod}</td>
                   <td>{voucher.ledgerName ? voucher.ledgerName : "N/A"}</td>
-                  <td>{voucher.debit}</td>
-                  <td>{voucher.credit}</td>
+                  {voucher.debit ? <td>{voucher.debit}</td> : <td></td>}
+                  {voucher.credit ? <td>{voucher.credit}</td> : <td></td>}
                   <td>{voucher.narration}</td>{" "}
                   <td>
                     <button onClick={() => handleDeleteRow(index)}>
