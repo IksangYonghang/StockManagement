@@ -94,8 +94,8 @@ export interface ILedger {
 export interface ICreateLedgerDto {
   LedgerCode: string;
   LedgerName: string;
-  contact: string;
-  address: string;
+  contact: null | string;
+  address: null | string;
   MasterAccount: string;
   ParentId?: string;
   isTranGl: boolean;
@@ -104,8 +104,8 @@ export interface ICreateLedgerDto {
 export interface IUpdateLedgerDto {
   ledgerCode: string;
   ledgerName: string;
-  contact: string;
-  address: string;
+  contact: null | string;
+  address: null | string;
   masterAccount: string;
   parentId?: string;
   isTranGl: boolean;
@@ -223,8 +223,6 @@ export interface IPaymentReceipt {
   narration: string;
 }
 
-
-
 export interface IPaymentReceiptCreateDto {
   userId: number;
   date: string;
@@ -237,4 +235,16 @@ export interface IPaymentReceiptCreateDto {
   debit: string;
   credit: string;
   narration: string;
+}
+
+export interface IDashProductList {
+  productName: string;
+  productSize: string;
+  markedPrice: string;
+  costPrice: string;
+  wholeSalePrice: string;
+  retailPrice: string;
+  categoryId: string;
+  categoryName: string;
+  imageUrl: string;
 }

@@ -20,8 +20,8 @@ const UpdateLedger = () => {
   const [ledger, setLedger] = useState<IUpdateLedgerDto>({
     ledgerCode: "",
     ledgerName: "",
-    contact: "",
-    address: "",
+    contact: null,
+    address: null,
     masterAccount: "",
     parentId: "",
     isTranGl: false,
@@ -132,11 +132,13 @@ const UpdateLedger = () => {
               color: darkMode ? "yellow" : "black",
             }}
           >
-            {ledgerData.map((item) => (
-              <MenuItem key={item.id} value={item.id}>
-                {item.ledgerName}
-              </MenuItem>
-            ))}
+            {ledgerData
+              .filter((item) => !item.isTranGl)
+              .map((item) => (
+                <MenuItem key={item.id} value={item.id}>
+                  {item.ledgerName}
+                </MenuItem>
+              ))}
           </Select>
         </FormControl>
         <FormControl fullWidth>
@@ -145,10 +147,10 @@ const UpdateLedger = () => {
               color: darkMode ? "#09ee70" : "black",
             }}
           >
-            Parent Account
+            Master Account
           </InputLabel>
           <Select
-            label="Parent Account"
+            label="Master Account"
             value={ledger.masterAccount}
             onChange={(e) =>
               setLedger({ ...ledger, masterAccount: e.target.value })

@@ -106,7 +106,10 @@ const LedgerReport: React.FC = () => {
     httpModule
       .get<ILedger[]>("/Ledger/Get")
       .then((response) => {
-        setLedgerNames(response.data);
+        const filteredLedgers = response.data.filter(
+          (ledger) => ledger.isTranGl
+        );
+        setLedgerNames(filteredLedgers);
       })
       .catch((error) => {
         console.log("Error", error);

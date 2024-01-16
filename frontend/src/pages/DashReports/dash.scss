@@ -1,0 +1,31 @@
+.styled-table {
+  width: 45%;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+}
+
+.styled-table th,
+.styled-table td {
+  border: 1px solid #ddd;
+  padding: 2px;
+  text-align: left;
+  font-size: 13px;
+}
+
+.image-cell {
+  position: sticky;
+}
+
+.enlarge-on-hover {
+  width: 50px;
+  height: 50px;
+  transition: transform 0.3s ease-in-out;
+  position: relative;
+  z-index: 2;
+}
+
+.enlarge-on-hover:hover {
+  transform: scale(5);
+  position: sticky;
+  overflow: hidden;
+}

@@ -252,7 +252,7 @@ const LedgerClosingBalance: React.FC = () => {
 
         <FormControl fullWidth style={{ width: "20%" }}>
           <Autocomplete
-            options={ledgerNames}
+            options={ledgerNames.filter((ledger) => ledger.isTranGl)}
             getOptionLabel={(ledger) => ledger.ledgerName}
             value={
               ledgerNames.find((ledger) => ledger.id === selectedLedger) || null

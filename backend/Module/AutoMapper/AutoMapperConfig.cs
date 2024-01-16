@@ -2,6 +2,7 @@
 using Module.Dtos;
 using Module.Dtos.Candidate;
 using Module.Dtos.Company;
+using Module.Dtos.Dash;
 using Module.Dtos.Job;
 using Module.Dtos.LedgerDto;
 using Module.Dtos.Transaction;
@@ -53,7 +54,7 @@ namespace Module.AutoMapper
 
             CreateMap<Transaction, TransactionCreateDto>();
             CreateMap<TransactionCreateDto, Transaction>()
-            .ForMember(dest => dest.TransactionDetails, opt => opt.Ignore()) // Exclude details for now
+            .ForMember(dest => dest.TransactionDetails, opt => opt.Ignore()) // Excludind details for now
             .ForMember(dest => dest.Piece, opt => opt.MapFrom(src => src.Piece))
             .ForMember(dest => dest.Debit, opt => opt.MapFrom(src => src.Debit))
             .ForMember(dest => dest.Credit, opt => opt.MapFrom(src => src.Credit))
@@ -86,7 +87,7 @@ namespace Module.AutoMapper
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Transaction, TransactionGetDto>();
-                // Add additional mappings if needed for nested properties
+                // For additional mappings if needed for nested properties
                 // Example: cfg.CreateMap<Ledger, LedgerDto>();
             });
 
@@ -100,6 +101,10 @@ namespace Module.AutoMapper
             CreateMap<UpdateUserDto, UserGetDto>();
             CreateMap<UpdateUserDto, UserDto>();
             CreateMap<User, UpdateUserDto>();
+
+            CreateMap<Product, GetDashProductListDto>().ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName));
+            CreateMap<GetDashProductListDto, Product>();
+
 
         }
     }

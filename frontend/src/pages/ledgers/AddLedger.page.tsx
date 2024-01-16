@@ -20,8 +20,8 @@ const AddLedger = () => {
   const [ledger, setLedger] = useState<ICreateLedgerDto>({
     LedgerCode: "",
     LedgerName: "",
-    contact: "",
-    address: "",
+    contact: null,
+    address: null,
     MasterAccount: "",
     ParentId: "",
     isTranGl: false,
@@ -130,11 +130,13 @@ const AddLedger = () => {
               color: darkMode ? "yellow" : "black",
             }}
           >
-            {ledgerData.map((item) => (
-              <MenuItem key={item.id} value={item.id}>
-                {item.ledgerName}
-              </MenuItem>
-            ))}
+            {ledgerData
+              .filter((item) => !item.isTranGl)
+              .map((item) => (
+                <MenuItem key={item.id} value={item.id}>
+                  {item.ledgerName}
+                </MenuItem>
+              ))}
           </Select>
         </FormControl>
         <FormControl fullWidth>

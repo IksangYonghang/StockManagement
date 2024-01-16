@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import moment from "moment";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
 import { Delete, Image, PictureAsPdf } from "@mui/icons-material";
@@ -86,7 +85,6 @@ const column: GridColDef[] = [
     field: "retailPrice",
     headerName: "Retail Price",
     width: 110,
-    
   },
   { field: "categoryName", headerName: "Category Name", width: 150 },
   { field: "companyName", headerName: "Company Name", width: 250 },
