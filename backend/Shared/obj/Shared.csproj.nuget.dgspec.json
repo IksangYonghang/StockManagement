@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\REPOS\\Stock Management\\backend\\Shared\\Shared.csproj": {}
+    "E:\\REPOS\\StockManagement\\backend\\Shared\\Shared.csproj": {}
   },
   "projects": {
-    "E:\\REPOS\\Stock Management\\backend\\Shared\\Shared.csproj": {
+    "E:\\REPOS\\StockManagement\\backend\\Shared\\Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\REPOS\\Stock Management\\backend\\Shared\\Shared.csproj",
+        "projectUniqueName": "E:\\REPOS\\StockManagement\\backend\\Shared\\Shared.csproj",
         "projectName": "Shared",
-        "projectPath": "E:\\REPOS\\Stock Management\\backend\\Shared\\Shared.csproj",
+        "projectPath": "E:\\REPOS\\StockManagement\\backend\\Shared\\Shared.csproj",
         "packagesPath": "C:\\Users\\NITRO\\.nuget\\packages\\",
-        "outputPath": "E:\\REPOS\\Stock Management\\backend\\Shared\\obj\\",
+        "outputPath": "E:\\REPOS\\StockManagement\\backend\\Shared\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\NITRO\\AppData\\Roaming\\NuGet\\NuGet.Config",

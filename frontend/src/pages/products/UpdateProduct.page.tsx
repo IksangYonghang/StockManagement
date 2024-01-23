@@ -151,15 +151,9 @@ const UpdateProduct = () => {
           onChange={(n) =>
             setProduct({ ...product, productName: n.target.value })
           }
-          InputProps={{
-            style: {
-              color: darkMode ? "yellow" : "black",
-            },
-          }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
           InputLabelProps={{
-            style: {
-              color: darkMode ? "#09ee70" : "black",
-            },
+            style: { color: darkMode ? "#f7f5e6" : "#333a56" },
           }}
         />
         <TextField
@@ -171,15 +165,9 @@ const UpdateProduct = () => {
           onChange={(n) =>
             setProduct({ ...product, productDescription: n.target.value })
           }
-          InputProps={{
-            style: {
-              color: darkMode ? "yellow" : "black",
-            },
-          }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
           InputLabelProps={{
-            style: {
-              color: darkMode ? "#09ee70" : "black",
-            },
+            style: { color: darkMode ? "#f7f5e6" : "#333a56" },
           }}
           multiline
         />
@@ -192,15 +180,9 @@ const UpdateProduct = () => {
           onChange={(n) =>
             setProduct({ ...product, markedPrice: n.target.value })
           }
-          InputProps={{
-            style: {
-              color: darkMode ? "yellow" : "black",
-            },
-          }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
           InputLabelProps={{
-            style: {
-              color: darkMode ? "#09ee70" : "black",
-            },
+            style: { color: darkMode ? "#f7f5e6" : "#333a56" },
           }}
         />
         <TextField
@@ -212,15 +194,9 @@ const UpdateProduct = () => {
           onChange={(n) =>
             setProduct({ ...product, costPrice: n.target.value })
           }
-          InputProps={{
-            style: {
-              color: darkMode ? "yellow" : "black",
-            },
-          }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
           InputLabelProps={{
-            style: {
-              color: darkMode ? "#09ee70" : "black",
-            },
+            style: { color: darkMode ? "#f7f5e6" : "#333a56" },
           }}
         />
         <TextField
@@ -232,15 +208,9 @@ const UpdateProduct = () => {
           onChange={(n) =>
             setProduct({ ...product, wholeSalePrice: n.target.value })
           }
-          InputProps={{
-            style: {
-              color: darkMode ? "yellow" : "black",
-            },
-          }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
           InputLabelProps={{
-            style: {
-              color: darkMode ? "#09ee70" : "black",
-            },
+            style: { color: darkMode ? "#f7f5e6" : "#333a56" },
           }}
         />
         <TextField
@@ -252,22 +222,16 @@ const UpdateProduct = () => {
           onChange={(n) =>
             setProduct({ ...product, retailPrice: n.target.value })
           }
-          InputProps={{
-            style: {
-              color: darkMode ? "yellow" : "black",
-            },
-          }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
           InputLabelProps={{
-            style: {
-              color: darkMode ? "#09ee70" : "black",
-            },
+            style: { color: darkMode ? "#f7f5e6" : "#333a56" },
           }}
           multiline
         />
         <FormControl fullWidth>
           <InputLabel
             style={{
-              color: darkMode ? "#09ee70" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
             }}
           >
             Product Size
@@ -279,7 +243,7 @@ const UpdateProduct = () => {
               setProduct({ ...product, productSize: s.target.value })
             }
             style={{
-              color: darkMode ? "yellow" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
             }}
           >
             {productSizeArray.map((item) => (
@@ -292,7 +256,7 @@ const UpdateProduct = () => {
         <FormControl fullWidth>
           <InputLabel
             style={{
-              color: darkMode ? "#09ee70" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
             }}
           >
             Category Name
@@ -304,7 +268,7 @@ const UpdateProduct = () => {
               setProduct({ ...product, categoryId: s.target.value })
             }
             style={{
-              color: darkMode ? "yellow" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
             }}
           >
             {categories.map((item) => (
@@ -317,7 +281,7 @@ const UpdateProduct = () => {
         <FormControl fullWidth>
           <InputLabel
             style={{
-              color: darkMode ? "#09ee70" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
             }}
           >
             Company Name
@@ -329,7 +293,7 @@ const UpdateProduct = () => {
               setProduct({ ...product, companyId: s.target.value })
             }
             style={{
-              color: darkMode ? "yellow" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
             }}
           >
             {companies.map((item) => (
@@ -348,7 +312,7 @@ const UpdateProduct = () => {
               className="view-pdf-link"
               style={{
                 marginRight: "1rem",
-                color: darkMode ? "#09ee70" : "black",
+                color: darkMode ? "#f7f5e6" : "#333a56",
               }}
             >
               Download existing file
@@ -372,8 +336,9 @@ const UpdateProduct = () => {
           <Button
             variant="contained"
             style={{
-              backgroundColor: "rgba(116, 0, 105, 8)",
-              color: "#fff",
+              backgroundColor: darkMode ? "#f7f5e6" : "#333a56",
+              color: darkMode ? "#333a56" : "#f7f5e6",
+              fontWeight: "bold",
             }}
             onClick={handleUpdateProduct}
           >

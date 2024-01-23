@@ -83,8 +83,8 @@ const UpdateLedger = () => {
           variant="outlined"
           value={ledger.ledgerCode}
           onChange={(e) => setLedger({ ...ledger, ledgerCode: e.target.value })}
-          InputProps={{ style: { color: darkMode ? "yellow" : "black" } }}
-          InputLabelProps={{ style: { color: darkMode ? "#09ee70" : "black" } }}
+          InputProps={{ style: { color: darkMode ? "white" : "#333a56" } }}
+          InputLabelProps={{ style: { color: darkMode ? "white" : "#333a56" } }}
         />
         <TextField
           fullWidth
@@ -93,8 +93,8 @@ const UpdateLedger = () => {
           variant="outlined"
           value={ledger.ledgerName}
           onChange={(e) => setLedger({ ...ledger, ledgerName: e.target.value })}
-          InputProps={{ style: { color: darkMode ? "yellow" : "black" } }}
-          InputLabelProps={{ style: { color: darkMode ? "#09ee70" : "black" } }}
+          InputProps={{ style: { color: darkMode ? "white" : "#333a56" } }}
+          InputLabelProps={{ style: { color: darkMode ? "white" : "#333a56" } }}
         />
         <TextField
           fullWidth
@@ -103,8 +103,8 @@ const UpdateLedger = () => {
           variant="outlined"
           value={ledger.contact}
           onChange={(n) => setLedger({ ...ledger, contact: n.target.value })}
-          InputProps={{ style: { color: darkMode ? "yellow" : "black" } }}
-          InputLabelProps={{ style: { color: darkMode ? "#09ee70" : "black" } }}
+          InputProps={{ style: { color: darkMode ? "white" : "#333a56" } }}
+          InputLabelProps={{ style: { color: darkMode ? "white" : "#333a56" } }}
         />
         <TextField
           fullWidth
@@ -113,13 +113,13 @@ const UpdateLedger = () => {
           variant="outlined"
           value={ledger.address}
           onChange={(n) => setLedger({ ...ledger, address: n.target.value })}
-          InputProps={{ style: { color: darkMode ? "yellow" : "black" } }}
-          InputLabelProps={{ style: { color: darkMode ? "#09ee70" : "black" } }}
+          InputProps={{ style: { color: darkMode ? "white" : "#333a56" } }}
+          InputLabelProps={{ style: { color: darkMode ? "white" : "#333a56" } }}
         />
         <FormControl fullWidth>
           <InputLabel
             style={{
-              color: darkMode ? "#09ee70" : "black",
+              color: darkMode ? "white" : "#333a56"
             }}
           >
             Parent Account
@@ -129,7 +129,7 @@ const UpdateLedger = () => {
             value={ledger.parentId}
             onChange={(n) => setLedger({ ...ledger, parentId: n.target.value })}
             style={{
-              color: darkMode ? "yellow" : "black",
+              color: darkMode ? "white" : "#333a56"
             }}
           >
             {ledgerData
@@ -144,7 +144,7 @@ const UpdateLedger = () => {
         <FormControl fullWidth>
           <InputLabel
             style={{
-              color: darkMode ? "#09ee70" : "black",
+              color: darkMode ? "white" : "#333a56"
             }}
           >
             Master Account
@@ -156,7 +156,7 @@ const UpdateLedger = () => {
               setLedger({ ...ledger, masterAccount: e.target.value })
             }
             style={{
-              color: darkMode ? "yellow" : "black",
+              color: darkMode ? "white" : "#333a56"
             }}
           >
             <MenuItem value="Assets">Assets</MenuItem>
@@ -186,8 +186,9 @@ const UpdateLedger = () => {
           <Button
             variant="contained"
             style={{
-              backgroundColor: "rgba(116, 0, 105, 8)",
-              color: "#fff",
+              backgroundColor: darkMode ? "#f7f5e6" : "#333a56",
+                color: darkMode ? "#333a56" : "#f7f5e6",
+                fontWeight: "bold",
             }}
             onClick={handleClickUpdateBtn}
           >

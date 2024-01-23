@@ -117,7 +117,7 @@ const App = () => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
-
+ 
   const { darkMode } = useContext(ThemeContext);
   const appStyles = darkMode ? "app dark" : "app";
 

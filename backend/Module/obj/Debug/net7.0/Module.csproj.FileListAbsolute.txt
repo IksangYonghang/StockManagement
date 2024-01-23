@@ -59,3 +59,19 @@ E:\REPOS\Stock Management\backend\Module\obj\Debug\net7.0\refint\Module.dll
 E:\REPOS\Stock Management\backend\Module\obj\Debug\net7.0\Module.pdb
 E:\REPOS\Stock Management\backend\Module\obj\Debug\net7.0\ref\Module.dll
 E:\REPOS\Stock Management\backend\Module\obj\Debug\net7.0\Module.sourcelink.json
+E:\REPOS\StockManagement\backend\Module\bin\Debug\net7.0\Module.deps.json
+E:\REPOS\StockManagement\backend\Module\bin\Debug\net7.0\Module.dll
+E:\REPOS\StockManagement\backend\Module\bin\Debug\net7.0\Module.pdb
+E:\REPOS\StockManagement\backend\Module\bin\Debug\net7.0\Shared.dll
+E:\REPOS\StockManagement\backend\Module\bin\Debug\net7.0\Shared.pdb
+E:\REPOS\StockManagement\backend\Module\obj\Debug\net7.0\Module.csproj.AssemblyReference.cache
+E:\REPOS\StockManagement\backend\Module\obj\Debug\net7.0\Module.GeneratedMSBuildEditorConfig.editorconfig
+E:\REPOS\StockManagement\backend\Module\obj\Debug\net7.0\Module.AssemblyInfoInputs.cache
+E:\REPOS\StockManagement\backend\Module\obj\Debug\net7.0\Module.AssemblyInfo.cs
+E:\REPOS\StockManagement\backend\Module\obj\Debug\net7.0\Module.csproj.CoreCompileInputs.cache
+E:\REPOS\StockManagement\backend\Module\obj\Debug\net7.0\Module.sourcelink.json
+E:\REPOS\StockManagement\backend\Module\obj\Debug\net7.0\Module.csproj.CopyComplete
+E:\REPOS\StockManagement\backend\Module\obj\Debug\net7.0\Module.dll
+E:\REPOS\StockManagement\backend\Module\obj\Debug\net7.0\refint\Module.dll
+E:\REPOS\StockManagement\backend\Module\obj\Debug\net7.0\Module.pdb
+E:\REPOS\StockManagement\backend\Module\obj\Debug\net7.0\ref\Module.dll

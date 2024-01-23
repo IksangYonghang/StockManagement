@@ -76,7 +76,11 @@ const column: GridColDef[] = [
         <Button
           className="delete-button"
           onClick={() => params.row.onDelete(params.row)}
-          style={{ fontSize: "1rem", fontWeight: "bold" }}
+          style={{
+            fontSize: "1rem",
+            fontWeight: "bold",
+            color: params.row.darkMode ? "#f7f5e6" : "#333a56",
+          }}
           startIcon={<Delete />}
         >
           Delete
@@ -89,9 +93,10 @@ const column: GridColDef[] = [
 interface IUsersGridProps {
   data: IUser[];
   onDelete: (user: IUser) => void;
+  darkMode: boolean;
 }
 
-const UsersGrid = ({ data, onDelete }: IUsersGridProps) => {
+const UsersGrid = ({ data, onDelete, darkMode }: IUsersGridProps) => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [userToDelete, setUserToDelete] = useState<IUser | null>(null);
 
@@ -107,6 +112,7 @@ const UsersGrid = ({ data, onDelete }: IUsersGridProps) => {
           serialNumber: index + 1,
           ...user,
           onDelete: handleDeleteClick,
+          darkMode: darkMode,
         }))}
         columns={column}
         getRowId={(row) => row.id}

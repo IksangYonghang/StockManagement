@@ -25,10 +25,6 @@
   word-wrap: break-word;
 }
 
-.report-table th {
-  background-color: #f2f2f2;
-}
-
 .right-align {
   text-align: justify;
 }
@@ -52,43 +48,51 @@
 
   .form-control {
     width: 160px;
-    height: 30px;
+    height: 45px; //height of date picker box
     text-align: center;
     font-weight: bold;
     font-size: 15px;
+    background-color: #f7f5e6;
+    color: #333a56;
+
+    &.dark-mode {
+      background-color: #333a56;
+      color: #f7f5e6;
+    }
   }
 }
 
 .report-table tr.category-odd {
-  background-color: #f0d0d0;
+  background-color: #f7f5e6;
 }
 
 .report-table tr.category-even {
-  background-color: #ece6e6;
+  background-color: #f5f4ef;
 }
 
 .dark-mode .report-table tr.category-odd {
-  background-color: rgba(88, 3, 105, 0.938);
+  background-color: #333a56;
 }
 
 .dark-mode .report-table tr.category-even {
-  background-color: rgba(130, 37, 151, 0.938);
+  background-color: #404869;
+
 }
 
 .report-table tr.master-odd {
-  background-color: #f0d0d0;
+  background-color: #f7f5e6;
 }
 
 .report-table tr.master-even {
-  background-color: #ece6e6;
+  background-color: #f5f4ef;
 }
 
 .dark-mode .report-table tr.master-odd {
-  background-color: rgba(88, 3, 105, 0.938);
+  background-color: #333a56;
 }
 
 .dark-mode .report-table tr.master-even {
-  background-color: rgba(130, 37, 151, 0.938);
+  background-color: #404869;
 }
 
 .pdf-and-hide {

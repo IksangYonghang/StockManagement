@@ -343,7 +343,7 @@ const EditTransaction = () => {
 
   return (
     <div className="content">
-      <div className="add-transaction">
+      <div className="update-transaction">
         <h2 style={{ marginBottom: "1rem" }}>Edit Transaction </h2>
         <div className="date-picker-wrapper">
           <label
@@ -357,7 +357,7 @@ const EditTransaction = () => {
             Select Date{" "}
           </label>
           <NepaliDatePicker
-            inputClassName="form-control"
+            inputClassName={`form-control ${darkMode? "dark-mode" : ""}`}
             className="nepali-datepicker"
             value={selectedDate}
             onChange={(value) => handleDateChange(value)}
@@ -367,7 +367,7 @@ const EditTransaction = () => {
         <FormControl fullWidth>
           <InputLabel
             style={{
-              color: darkMode ? "#09ee70" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
               fontSize: "14px",
               fontWeight: "bold",
               width: "200px",
@@ -387,7 +387,7 @@ const EditTransaction = () => {
               })
             }
             style={{
-              color: darkMode ? "yellow" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
               fontSize: "14px",
               padding: "-5px -5px",
               fontWeight: "bold",
@@ -406,7 +406,7 @@ const EditTransaction = () => {
         <FormControl fullWidth>
           <InputLabel
             style={{
-              color: darkMode ? "#09ee70" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
               fontSize: "14px",
               fontWeight: "bold",
               width: "200px", // Adjust the width as needed
@@ -426,7 +426,7 @@ const EditTransaction = () => {
               })
             }
             style={{
-              color: darkMode ? "yellow" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
               fontSize: "14px",
               padding: "-5px -5px",
               fontWeight: "bold",
@@ -459,7 +459,7 @@ const EditTransaction = () => {
               }
               InputProps={{
                 style: {
-                  color: darkMode ? "yellow" : "black",
+                  color: darkMode ? "#f7f5e6" : "#333a56",
                   fontSize: "14px",
                   padding: "-5px -5px",
                   fontWeight: "bold",
@@ -467,7 +467,7 @@ const EditTransaction = () => {
               }}
               InputLabelProps={{
                 style: {
-                  color: darkMode ? "#09ee70" : "black",
+                  color: darkMode ? "#f7f5e6" : "#333a56",
                   fontSize: "14px",
                   fontWeight: "bold",
                 },
@@ -497,7 +497,7 @@ const EditTransaction = () => {
                     variant="outlined"
                     InputLabelProps={{
                       style: {
-                        color: darkMode ? "#09ee70" : "black",
+                        color: darkMode ? "#f7f5e6" : "#333a56",
                         fontSize: "14px",
                         fontWeight: "bold",
                       },
@@ -508,7 +508,7 @@ const EditTransaction = () => {
                         ...(
                           params.InputProps as { style?: React.CSSProperties }
                         ).style,
-                        color: darkMode ? "yellow" : "black",
+                        color: darkMode ? "#f7f5e6" : "#333a56",
                         fontSize: "14px",
                         padding: "-5px -5px",
                         fontWeight: "bold",
@@ -542,7 +542,7 @@ const EditTransaction = () => {
                     variant="outlined"
                     InputLabelProps={{
                       style: {
-                        color: darkMode ? "#09ee70" : "black",
+                        color: darkMode ? "#f7f5e6" : "#333a56",
                         fontSize: "14px",
                         fontWeight: "bold",
                         marginLeft: "-4.5rem",
@@ -554,7 +554,7 @@ const EditTransaction = () => {
                         ...(
                           params.InputProps as { style?: React.CSSProperties }
                         ).style,
-                        color: darkMode ? "yellow" : "black",
+                        color: darkMode ? "#f7f5e6" : "#333a56",
                         fontSize: "14px",
                         padding: "-5px -5px",
                         fontWeight: "bold",
@@ -581,7 +581,7 @@ const EditTransaction = () => {
               }
               InputProps={{
                 style: {
-                  color: darkMode ? "yellow" : "black",
+                  color: darkMode ? "#f7f5e6" : "#333a56",
                   fontSize: "14px",
                   padding: "-5px -5px",
                   fontWeight: "bold",
@@ -589,7 +589,7 @@ const EditTransaction = () => {
               }}
               InputLabelProps={{
                 style: {
-                  color: darkMode ? "#09ee70" : "black",
+                  color: darkMode ? "#f7f5e6" : "#333a56",
                   fontSize: "14px",
                   fontWeight: "bold",
                 },
@@ -612,7 +612,7 @@ const EditTransaction = () => {
               }
               InputProps={{
                 style: {
-                  color: darkMode ? "yellow" : "black",
+                  color: darkMode ? "#f7f5e6" : "#333a56",
                   fontSize: "14px",
                   padding: "-5px -5px",
                   fontWeight: "bold",
@@ -620,7 +620,7 @@ const EditTransaction = () => {
               }}
               InputLabelProps={{
                 style: {
-                  color: darkMode ? "#09ee70" : "black",
+                  color: darkMode ? "#f7f5e6" : "#333a56",
                   fontSize: "14px",
                   fontWeight: "bold",
                 },
@@ -642,7 +642,7 @@ const EditTransaction = () => {
               }
               InputProps={{
                 style: {
-                  color: darkMode ? "yellow" : "black",
+                  color: darkMode ? "#f7f5e6" : "#333a56",
                   fontSize: "14px",
                   padding: "-5px -5px",
                   fontWeight: "bold",
@@ -650,7 +650,7 @@ const EditTransaction = () => {
               }}
               InputLabelProps={{
                 style: {
-                  color: darkMode ? "#09ee70" : "black",
+                  color: darkMode ? "#f7f5e6" : "#333a56",
                   fontSize: "14px",
                   fontWeight: "bold",
                 },
@@ -671,7 +671,7 @@ const EditTransaction = () => {
             }
             InputProps={{
               style: {
-                color: darkMode ? "yellow" : "black",
+                color: darkMode ? "#f7f5e6" : "#333a56",
                 fontSize: "14px",
                 padding: "-5px -5px",
                 fontWeight: "bold",
@@ -680,7 +680,7 @@ const EditTransaction = () => {
             }}
             InputLabelProps={{
               style: {
-                color: darkMode ? "#09ee70" : "black",
+                color: darkMode ? "#f7f5e6" : "#333a56",
                 fontSize: "14px",
                 fontWeight: "bold",
               },
@@ -688,7 +688,7 @@ const EditTransaction = () => {
           />
           <AddCircleOutline
             style={{
-              color: darkMode ? "#09ee70" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
               cursor: "pointer",
               marginLeft: "1px",
             }}
@@ -750,8 +750,9 @@ const EditTransaction = () => {
           <Button
             variant="contained"
             style={{
-              backgroundColor: "rgba(116, 0, 105, 8)",
-              color: "#fff",
+              backgroundColor: darkMode ? "#f7f5e6" : "#333a56",
+            color: darkMode ? "#333a56" : "#f7f5e6",
+            fontWeight: "bold",
             }}
             onClick={handleClickSaveBtn}
           >

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "7niP+si8HeEI+Vfgx4QQ9h7jsjG6Wicqoo8KqI4p4PZIcpopJrmGWiJXmbQgCBPrqMJW51RAyNyBHGdwWT5kUg==",
+  "dgSpecHash": "U7QHQZAH5pmGa3NkHXA61y4YX2JE4oAUmDCOK3FY1rPQ5e2cf9RJBYNcifzfYhFC4+kwoQkWq9n9WFq0gecbfQ==",
   "success": true,
-  "projectFilePath": "E:\\REPOS\\Stock Management\\backend\\Shared\\Shared.csproj",
+  "projectFilePath": "E:\\REPOS\\StockManagement\\backend\\Shared\\Shared.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

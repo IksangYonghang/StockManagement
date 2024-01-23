@@ -198,7 +198,7 @@ const LedgerClosingBalance: React.FC = () => {
                 variant="outlined"
                 InputLabelProps={{
                   style: {
-                    color: darkMode ? "#09ee70" : "black",
+                    color: darkMode ? "#f7f5e6" : "#333a56",
                     fontSize: "15px",
                     fontWeight: "bold",
                   },
@@ -208,7 +208,7 @@ const LedgerClosingBalance: React.FC = () => {
                   style: {
                     ...(params.inputProps as { style?: React.CSSProperties })
                       .style,
-                    color: darkMode ? "yellow" : "black",
+                    color: darkMode ? "#f7f5e6" : "#333a56",
                     fontSize: "15px",
                     fontWeight: "bold",
                   },
@@ -230,7 +230,7 @@ const LedgerClosingBalance: React.FC = () => {
                 variant="outlined"
                 InputLabelProps={{
                   style: {
-                    color: darkMode ? "#09ee70" : "black",
+                    color: darkMode ? "#f7f5e6" : "#333a56",
                     fontSize: "15px",
                     fontWeight: "bold",
                   },
@@ -240,7 +240,7 @@ const LedgerClosingBalance: React.FC = () => {
                   style: {
                     ...(params.inputProps as { style?: React.CSSProperties })
                       .style,
-                    color: darkMode ? "yellow" : "black",
+                    color: darkMode ? "#f7f5e6" : "#333a56",
                     fontSize: "15px",
                     fontWeight: "bold",
                   },
@@ -271,7 +271,7 @@ const LedgerClosingBalance: React.FC = () => {
                 variant="outlined"
                 InputLabelProps={{
                   style: {
-                    color: darkMode ? "#09ee70" : "black",
+                    color: darkMode ? "#f7f5e6" : "#333a56",
                     fontSize: "15px",
                     fontWeight: "bold",
                   },
@@ -281,7 +281,7 @@ const LedgerClosingBalance: React.FC = () => {
                   style: {
                     ...(params.inputProps as { style?: React.CSSProperties })
                       .style,
-                    color: darkMode ? "yellow" : "black",
+                    color: darkMode ? "#f7f5e6" : "#333a56",
                     fontSize: "15px",
                     fontWeight: "bold",
                   },
@@ -305,7 +305,7 @@ const LedgerClosingBalance: React.FC = () => {
             value={selectedFromDate}
             onChange={(value) => handleFromDateChange(value)}
             options={{ calenderLocale: "ne", valueLocale: "en" }}
-            inputClassName="form-control"
+            inputClassName={`form-control ${darkMode ? "dark-mode" : ""}`}
             className="nepali-datepicker"
           />
         </div>
@@ -323,7 +323,7 @@ const LedgerClosingBalance: React.FC = () => {
             value={selectedToDate}
             onChange={(value) => handleToDateChange(value)}
             options={{ calenderLocale: "ne", valueLocale: "en" }}
-            inputClassName="form-control"
+            inputClassName={`form-control ${darkMode ? "dark-mode" : ""}`}
             className="nepali-datepicker"
           />
         </div>
@@ -331,10 +331,11 @@ const LedgerClosingBalance: React.FC = () => {
           onClick={handleShowReport}
           variant="contained"
           style={{
-            backgroundColor: "rgba(116, 0, 105, 8)",
-            color: "#fff",
+            backgroundColor:darkMode? "#f7f5e6" : "#333a56",
+            color: darkMode? "#333a56" : "#f7f5e6",
+            fontWeight: "bold",
             marginLeft: "3rem",
-            marginTop: "-2rem",
+            marginTop: "-0.8rem",
             height: "40px",
           }}
         >
@@ -347,7 +348,8 @@ const LedgerClosingBalance: React.FC = () => {
             <table className="report-table">
               <thead
                 style={{
-                  color: darkMode ? "rgba(88, 3, 105, 0.938)" : "black",
+                  color: darkMode ? "#f7f5e6" : "#333a56",
+                  backgroundColor: darkMode ? "#333a56" : "#f7f5e6",
                 }}
               >
                 <tr>
@@ -366,12 +368,10 @@ const LedgerClosingBalance: React.FC = () => {
               </thead>
 
               <tbody
-                style={{
-                  color: darkMode ? "white" : "black",
-                  backgroundColor: darkMode
-                    ? "rgba(88, 3, 105, 0.938)"
-                    : "white",
-                }}
+               style={{
+                color: darkMode ? "#f7f5e6" : "#333a56",
+                backgroundColor: darkMode ? "#333a56" : "#f7f5e6",
+              }}
               >
                 {renderReportRows()}
               </tbody>

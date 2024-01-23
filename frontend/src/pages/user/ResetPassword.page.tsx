@@ -44,8 +44,8 @@ const ResetPassword = () => {
           variant="outlined"
           value={user.userName}
           onChange={(n) => setUser({ ...user, userName: n.target.value })}
-          InputProps={{ style: { color: darkMode ? "yellow" : "black" } }}
-          InputLabelProps={{ style: { color: darkMode ? "#09ee70" : "black" } }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
+          InputLabelProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
         />
         <TextField
           fullWidth
@@ -54,8 +54,8 @@ const ResetPassword = () => {
           variant="outlined"
           value={user.password}
           onChange={(n) => setUser({ ...user, password: n.target.value })}
-          InputProps={{ style: { color: darkMode ? "yellow" : "black" } }}
-          InputLabelProps={{ style: { color: darkMode ? "#09ee70" : "black" } }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
+          InputLabelProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
         />
         <div
           style={{
@@ -67,8 +67,9 @@ const ResetPassword = () => {
           <Button
             variant="contained"
             style={{
-              backgroundColor: "rgba(116, 0, 105, 8)",
-              color: "#fff",
+              backgroundColor: darkMode?"#f7f5e6" : '#333a56',
+              color: darkMode? "#333a56" : "#f7f5e6",
+              fontWeight: "bold"
             }}
             onClick={handleClickSaveBtn}
           >

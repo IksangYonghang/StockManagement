@@ -49,6 +49,7 @@ namespace API.Controllers
                     ProductId = transactionCreateDto.ProductId,
                     InvoiceNumber = transactionCreateDto.InvoiceNumber,
                     Date = transactionCreateDto.Date,
+                    EngDate = transactionCreateDto.EngDate,
                     TransactionDetails = new List<TransactionDetail>() // Initialize the list of transaction details
                 };
 

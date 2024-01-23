@@ -2,47 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToggleButton } from "@mui/material";
 import { Menu, LightMode, DarkMode, Logout } from "@mui/icons-material";
-import NepaliDateConverter from "nepali-date-converter";
 import "./navbar.scss";
 import { ThemeContext } from "../../context/theme.context";
-
-interface DateDisplayProps {
-  style?: React.CSSProperties;
-}
-
-const DateDisplay: React.FC<DateDisplayProps> = ({ style }) => {
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [nepaliDate, setNepaliDate] = useState("");
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const now = new Date();
-      setCurrentDate(now);
-
-      const convertedDate = new NepaliDateConverter(now);
-      const nepaliYear = convertedDate.getYear().toString();
-      const nepaliMonth = (convertedDate.getMonth() + 1)
-        .toString()
-        .padStart(2, "0");
-      const nepaliDay = convertedDate.getDate().toString().padStart(2, "0");
-
-      setNepaliDate(`${nepaliYear}/${nepaliMonth}/${nepaliDay}`);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div
-      style={{
-        color: "white",
-        ...style,
-      }}
-    >
-      {/* <p>Date AD: {currentDate.toLocaleDateString()}</p> */}
-      <p>Date : {nepaliDate}</p>
-    </div>
-  );
-};
 
 interface NavbarProps {
   isLoggedIn: boolean;
@@ -71,12 +32,6 @@ const AuthenticatedNavbar: React.FC<{
   navigate: ReturnType<typeof useNavigate>;
 }> = ({ darkMode, toggleDarkMode, handleLogout }) => {
   const [open, setOpen] = useState<boolean>(false);
-  const [userName, setUserName] = useState<string | null>(null);
-
-  useEffect(() => {
-    const storedUserName = localStorage.getItem("userName");
-    setUserName(storedUserName);
-  }, []);
 
   const ToggleOpenMenu = () => {
     setOpen((prevState) => !prevState);
@@ -85,31 +40,22 @@ const AuthenticatedNavbar: React.FC<{
   const menuStyles = open ? "menu open" : "menu";
 
   return (
-    <div className="navbar">
+    <div
+      className="navbar"
+      style={{ backgroundColor: darkMode ? "#333a56" : "#f7f5e6" }}
+    >
       <div className="brand">
         <span>
           <Link
             to="/"
             style={{
               fontWeight: "bold",
-              color: darkMode ? "goldenrod" : "white",
-              fontSize: "30px",
+              color: darkMode ? "#f7f5e6" : "#333a56",
+              fontSize: "26px",
             }}
           >
             Inventory Management
           </Link>
-        </span>
-      </div>
-      <div className="user">
-        <span
-          style={{
-            /* marginRight: "1rem",*/
-            color: darkMode ? "white" : "goldenrod",
-            fontSize: "16px",
-            fontWeight: "bold",
-          }}
-        >
-          {userName}
         </span>
       </div>
       <div className={menuStyles}>
@@ -118,23 +64,19 @@ const AuthenticatedNavbar: React.FC<{
             <span
               style={{
                 marginRight: "1rem",
-                color: darkMode ? "white" : "goldenrod",
+                color: darkMode ? "#f7f5e6" : "#333a56",
                 fontWeight: "bold",
               }}
             ></span>
-            <DateDisplay
-              style={{
-                color: darkMode ? "white" : "goldenrod",
-                fontWeight: "bold",
-                fontSize: "16px",
-              }}
-            />
           </li>
           {links.map((item) => (
             <li key={item.href} onClick={ToggleOpenMenu}>
               <Link
                 to={item.href}
-                style={{ color: darkMode ? "goldenrod" : "white" }}
+                style={{
+                  color: darkMode ? "#f7f5e6" : "#333a56",
+                  fontSize: "19px",
+                }}
               >
                 {item.label}
               </Link>
@@ -145,7 +87,7 @@ const AuthenticatedNavbar: React.FC<{
       <div className="logout">
         <button
           onClick={handleLogout}
-          style={{ color: darkMode ? "white" : "goldenrod" }}
+          style={{ color: darkMode ? "#f7f5e6" : "#333a56" }}
           title="Log Out"
         >
           <Logout />
@@ -157,7 +99,8 @@ const AuthenticatedNavbar: React.FC<{
           value={"check"}
           selected={darkMode}
           onChange={toggleDarkMode}
-          style={{ color: darkMode ? "yellow" : "red" }}
+          style={{ color: darkMode ? "#f7f5e6" : "#333a56" }}
+          title="Screen Mode"
         >
           {darkMode ? <LightMode /> : <DarkMode />}
         </ToggleButton>
@@ -191,7 +134,7 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, setLoginStatus }) => {
   }, [loggedOut, setLoginStatus, navigate]);
 
   if (!isLoggedIn) {
-    return null; // Render nothing if the user is not logged in
+    return null;
   }
 
   return (

@@ -146,15 +146,9 @@ const AddProduct = () => {
           onChange={(n) =>
             setProduct({ ...product, productName: n.target.value })
           }
-          InputProps={{
-            style: {
-              color: darkMode ? "yellow" : "black",
-            },
-          }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
           InputLabelProps={{
-            style: {
-              color: darkMode ? "#09ee70" : "black",
-            },
+            style: { color: darkMode ? "#f7f5e6" : "#333a56" },
           }}
         />
         <TextField
@@ -166,15 +160,9 @@ const AddProduct = () => {
           onChange={(n) =>
             setProduct({ ...product, productDescription: n.target.value })
           }
-          InputProps={{
-            style: {
-              color: darkMode ? "yellow" : "black",
-            },
-          }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
           InputLabelProps={{
-            style: {
-              color: darkMode ? "#09ee70" : "black",
-            },
+            style: { color: darkMode ? "#f7f5e6" : "#333a56" },
           }}
           multiline
         />
@@ -187,15 +175,9 @@ const AddProduct = () => {
           onChange={(n) =>
             setProduct({ ...product, markedPrice: n.target.value })
           }
-          InputProps={{
-            style: {
-              color: darkMode ? "yellow" : "black",
-            },
-          }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
           InputLabelProps={{
-            style: {
-              color: darkMode ? "#09ee70" : "black",
-            },
+            style: { color: darkMode ? "#f7f5e6" : "#333a56" },
           }}
         />
         <TextField
@@ -207,15 +189,9 @@ const AddProduct = () => {
           onChange={(n) =>
             setProduct({ ...product, costPrice: n.target.value })
           }
-          InputProps={{
-            style: {
-              color: darkMode ? "yellow" : "black",
-            },
-          }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
           InputLabelProps={{
-            style: {
-              color: darkMode ? "#09ee70" : "black",
-            },
+            style: { color: darkMode ? "#f7f5e6" : "#333a56" },
           }}
         />
         <TextField
@@ -227,15 +203,9 @@ const AddProduct = () => {
           onChange={(n) =>
             setProduct({ ...product, wholeSalePrice: n.target.value })
           }
-          InputProps={{
-            style: {
-              color: darkMode ? "yellow" : "black",
-            },
-          }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
           InputLabelProps={{
-            style: {
-              color: darkMode ? "#09ee70" : "black",
-            },
+            style: { color: darkMode ? "#f7f5e6" : "#333a56" },
           }}
         />
         <TextField
@@ -247,22 +217,16 @@ const AddProduct = () => {
           onChange={(n) =>
             setProduct({ ...product, retailPrice: n.target.value })
           }
-          InputProps={{
-            style: {
-              color: darkMode ? "yellow" : "black",
-            },
-          }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
           InputLabelProps={{
-            style: {
-              color: darkMode ? "#09ee70" : "black",
-            },
+            style: { color: darkMode ? "#f7f5e6" : "#333a56" },
           }}
           multiline
         />
         <FormControl fullWidth>
           <InputLabel
             style={{
-              color: darkMode ? "#09ee70" : "black",
+              color: darkMode ? "#f7f5e6" : "333a56",
             }}
           >
             Product Size
@@ -274,7 +238,7 @@ const AddProduct = () => {
               setProduct({ ...product, productSize: s.target.value })
             }
             style={{
-              color: darkMode ? "yellow" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
             }}
           >
             {productSizeArray.map((item) => (
@@ -287,7 +251,7 @@ const AddProduct = () => {
         <FormControl fullWidth>
           <InputLabel
             style={{
-              color: darkMode ? "#09ee70" : "black",
+              color: darkMode ? "#f7f5e6" : "f7f5e6",
             }}
           >
             Category Name
@@ -299,7 +263,7 @@ const AddProduct = () => {
               setProduct({ ...product, categoryId: s.target.value })
             }
             style={{
-              color: darkMode ? "yellow" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
             }}
           >
             {categories.map((item) => (
@@ -312,7 +276,7 @@ const AddProduct = () => {
         <FormControl fullWidth>
           <InputLabel
             style={{
-              color: darkMode ? "#09ee70" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
             }}
           >
             Company Name
@@ -324,7 +288,7 @@ const AddProduct = () => {
               setProduct({ ...product, companyId: s.target.value })
             }
             style={{
-              color: darkMode ? "yellow" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
             }}
           >
             {companies.map((item) => (
@@ -351,8 +315,9 @@ const AddProduct = () => {
           <Button
             variant="contained"
             style={{
-              backgroundColor: "rgba(116, 0, 105, 8)",
-              color: "#fff",
+              backgroundColor: darkMode ? "#f7f5e6" : "#333a56",
+              color: darkMode ? "#333a56" : "#f7f5e6",
+              fontWeight: "bold",
             }}
             onClick={handleClickSaveBtn}
           >

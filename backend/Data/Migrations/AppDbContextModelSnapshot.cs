@@ -158,6 +158,47 @@ namespace Data.Migrations
                     b.ToTable("ledgers", "stock");
                 });
 
+            modelBuilder.Entity("Module.Entities.Office", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("BranchAddress")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("branch_address");
+
+                    b.Property<string>("BranchName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("branch_name");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<bool>("IsHeadOffice")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_head_office");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("phone_number");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("offices", "stock");
+                });
+
             modelBuilder.Entity("Module.Entities.Product", b =>
                 {
                     b.Property<long>("Id")
@@ -255,6 +296,10 @@ namespace Data.Migrations
                     b.Property<decimal?>("Debit")
                         .HasColumnType("numeric")
                         .HasColumnName("debit");
+
+                    b.Property<DateOnly>("EngDate")
+                        .HasColumnType("date")
+                        .HasColumnName("eng_date");
 
                     b.Property<string>("InvoiceNumber")
                         .IsRequired()

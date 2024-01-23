@@ -146,7 +146,7 @@ const StockReport: React.FC = () => {
       const rowClass = rowIndex % 2 === 0 ? "category-even" : "category-odd";
 
       return (
-        <tr key={item.id} className={rowClass}>
+        <tr key={`${item.id}-${index}`} className={rowClass}>
           <td>{index + 1}</td>
           <td>{item.productName}</td>
           <td>{item.categoryName}</td>
@@ -186,7 +186,7 @@ const StockReport: React.FC = () => {
                 variant="outlined"
                 InputLabelProps={{
                   style: {
-                    color: darkMode ? "#09ee70" : "black",
+                    color: darkMode ? "#f7f5e6" : "#333a56",
                     fontSize: "15px",
                     fontWeight: "bold",
                   },
@@ -196,7 +196,7 @@ const StockReport: React.FC = () => {
                   style: {
                     ...(params.inputProps as { style?: React.CSSProperties })
                       .style,
-                    color: darkMode ? "yellow" : "black",
+                    color: darkMode ? "#f7f5e6" : "#333a56",
                     fontSize: "15px",
                     fontWeight: "bold",
                   },
@@ -227,7 +227,7 @@ const StockReport: React.FC = () => {
                 variant="outlined"
                 InputLabelProps={{
                   style: {
-                    color: darkMode ? "#09ee70" : "black",
+                    color: darkMode ? "#f7f5e6" : "#333a56",
                     fontSize: "15px",
                     fontWeight: "bold",
                   },
@@ -237,7 +237,7 @@ const StockReport: React.FC = () => {
                   style: {
                     ...(params.inputProps as { style?: React.CSSProperties })
                       .style,
-                    color: darkMode ? "yellow" : "black",
+                    color: darkMode ? "#f7f5e6" : "#333a56",
                     fontSize: "15px",
                     fontWeight: "bold",
                   },
@@ -261,7 +261,7 @@ const StockReport: React.FC = () => {
             value={selectedFromDate}
             onChange={(value) => handleFromDateChange(value)}
             options={{ calenderLocale: "ne", valueLocale: "en" }}
-            inputClassName="form-control"
+            inputClassName={`form-control ${darkMode ? "dark-mode" : ""}`}
             className="nepali-datepicker"
           />
         </div>
@@ -279,7 +279,7 @@ const StockReport: React.FC = () => {
             value={selectedToDate}
             onChange={(value) => handleToDateChange(value)}
             options={{ calenderLocale: "ne", valueLocale: "en" }}
-            inputClassName="form-control"
+            inputClassName={`form-control ${darkMode ? "dark-mode" : ""}`}
             className="nepali-datepicker"
           />
         </div>
@@ -287,10 +287,11 @@ const StockReport: React.FC = () => {
           onClick={handleShowReport}
           variant="contained"
           style={{
-            backgroundColor: "rgba(116, 0, 105, 8)",
-            color: "#fff",
+            backgroundColor: darkMode ? "#f7f5e6" : "#333a56",
+            color: darkMode ? "#333a56" : "#f7f5e6",
+            fontWeight: "bold",
             marginLeft: "10rem",
-            marginTop: "-2rem",
+            marginTop: "-1rem",
             height: "40px",
           }}
         >
@@ -303,7 +304,8 @@ const StockReport: React.FC = () => {
             <table className="report-table">
               <thead
                 style={{
-                  color: darkMode ? "rgba(88, 3, 105, 0.938)" : "black",
+                  color: darkMode ? "#f7f5e6" : "#333a56",
+                  backgroundColor: darkMode ? "#333a56" : "#f7f5e6",
                 }}
               >
                 <tr>
@@ -329,10 +331,8 @@ const StockReport: React.FC = () => {
 
               <tbody
                 style={{
-                  color: darkMode ? "white" : "black",
-                  backgroundColor: darkMode
-                    ? "rgba(88, 3, 105, 0.938)"
-                    : "white",
+                  color: darkMode ? "#f7f5e6" : "#333a56",
+                  backgroundColor: darkMode ? "#333a56" : "#f7f5e6",
                 }}
               >
                 {renderReportRows()}

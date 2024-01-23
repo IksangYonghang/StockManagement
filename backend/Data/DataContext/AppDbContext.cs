@@ -15,6 +15,7 @@ namespace Data.DataContext
         public DbSet<Category> Categories { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Ledger> Ledgers { get; set; }
+        public DbSet<Office> Offices { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserLogin> UsersLogin { get; set; }
@@ -25,6 +26,7 @@ namespace Data.DataContext
             modelBuilder.Entity<Category>().ToTable("categories", schema: "stock");
             modelBuilder.Entity<Product>().ToTable("products", schema: "stock");
             modelBuilder.Entity<Ledger>().ToTable("ledgers", schema: "stock");
+            modelBuilder.Entity<Office>().ToTable("offices", schema: "stock");
             modelBuilder.Entity<User>().ToTable("users", schema: "stock");
             modelBuilder.Entity<Transaction>().ToTable("transactions", schema: "stock");
             modelBuilder.Entity<UserLogin>().ToTable("userslogin", schema: "stock");
@@ -34,6 +36,7 @@ namespace Data.DataContext
             modelBuilder.ApplyConfiguration(new CaseInsensitiveColumnNameConvention<Category>());
             modelBuilder.ApplyConfiguration(new CaseInsensitiveColumnNameConvention<Product>());
             modelBuilder.ApplyConfiguration(new CaseInsensitiveColumnNameConvention<Ledger>());
+            modelBuilder.ApplyConfiguration(new CaseInsensitiveColumnNameConvention<Office>());
             modelBuilder.ApplyConfiguration(new CaseInsensitiveColumnNameConvention<Transaction>());
             modelBuilder.ApplyConfiguration(new CaseInsensitiveColumnNameConvention<User>());
 

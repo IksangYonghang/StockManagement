@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "85YS/pd5+7CTKNIepFN7pPdiEBBhftoycINbjCbaW4IJP/jKZlnjsM0/T2KVEwsON65gt6gpq57agjB9xAUVnA==",
+  "dgSpecHash": "s4CWPNOUtXWy9AQKRbxDSHYGqjghuvOvVXYQBGqJ4xWHtjOXNUBqFswR3wCoQzh5cOkHle3WW2s7+4sXZTwgAQ==",
   "success": true,
-  "projectFilePath": "E:\\REPOS\\Stock Management\\backend\\Data\\Data.csproj",
+  "projectFilePath": "E:\\REPOS\\StockManagement\\backend\\Data\\Data.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\NITRO\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\NITRO\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

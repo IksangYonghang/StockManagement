@@ -122,7 +122,11 @@ const column: GridColDef[] = [
         <Button
           className="delete-button"
           onClick={() => params.row.onDelete(params.row)}
-          style={{ fontSize: "1rem", fontWeight: "bold" }}
+          style={{
+            fontSize: "1rem",
+            fontWeight: "bold",
+            color: params.row.darkMode ? "#f7f5e6" : "#333a56",
+          }}
           startIcon={<Delete />}
         >
           Delete
@@ -135,9 +139,10 @@ const column: GridColDef[] = [
 interface IProductsGridProps {
   data: IProduct[];
   onDelete: (product: IProduct) => void;
+  darkMode: boolean;
 }
 
-const ProductsGrid = ({ data, onDelete }: IProductsGridProps) => {
+const ProductsGrid = ({ data, onDelete, darkMode }: IProductsGridProps) => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [productToDelete, setProductToDelete] = useState<IProduct | null>(null);
 
@@ -153,6 +158,7 @@ const ProductsGrid = ({ data, onDelete }: IProductsGridProps) => {
           serialNumber: index + 1,
           ...product,
           onDelete: handleDeleteClick,
+          darkMode: darkMode,
         }))}
         columns={column}
         getRowId={(row) => row.id}

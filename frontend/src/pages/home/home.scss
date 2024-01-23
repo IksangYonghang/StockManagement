@@ -2,4 +2,86 @@
 
 .content {
   text-align: justify;
+  position: relative;
+}
+
+.sections-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4rem;
+}
+
+.product-list-section,
+.stock-report-section,
+.frequent-sale-report-section,
+.low-stock-report {
+  flex: 1;
+  margin: 0 36px;
+  width: 45%;
+  font-size: 14px;
+}
+
+.sub-navbar {
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f7f5e6;
+  z-index: 2000;
+  text-align: center;
+  padding: 10px;
+}
+
+.date-display {
+  margin-left: 50px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #333a56;
+  margin-top: 3.5rem;
+  flex-direction: row;
+}
+
+.user-info {
+  margin-left: 600px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #333a56;
+  margin-top: 3.5rem;
+}
+
+.branch {
+  margin-left: 500px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333a56;
+  margin-top: 3.5rem;
+}
+
+.box-with-shadow {
+  box-shadow: 6px 6px 6px 12px #333a56;
+  padding: 20px;
+  background-color: linear-gradient(
+    to bottom,
+    #3aafa9,
+    rgba(58, 175, 169, 0.8)
+  );
+  height: auto;
+}
+
+.box-with-shadow .sections-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6rem;
+}
+
+.dark-mode {
+  background-color: #333a56;
+  color: #f7f5e6;
+}
+
+.dark-mode .box-with-shadow {
+  box-shadow: 6px 6px 6px 12px #f7f5e6;
+  
 }

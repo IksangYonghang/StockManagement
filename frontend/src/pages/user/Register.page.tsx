@@ -199,8 +199,9 @@ const Register = () => {
           <Button
             variant="contained"
             style={{
-              backgroundColor: "rgba(116, 0, 105, 8)",
-              color: "#fff",
+              backgroundColor: darkMode ? "#f7f5e6" : "#333a56",
+              color: darkMode ? "#333a56" : "#f7f5e6",
+              fontWeight: "bold",
             }}
             onClick={handleClickSaveBtn}
           >

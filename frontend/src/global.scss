@@ -8,40 +8,45 @@
   box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
 }
+
 :root {
-  --blue:  rgba(88, 3, 105, 0.938);
-  --bg-color: #fff;
-  --text-color1:  rgba(52, 9, 61, 0.938);
-  --text-color2: #fff;
+  --blue: rgba(88, 3, 105, 0.938);
+  --bg-color: #f7f5e6;
+  --text-color1: #333a56;
+  --text-color2: #333a56;
   --height: 100vh;
 }
 
 a {
   text-decoration: none;
 }
+
 ul {
   list-style: none;
 }
+
 .wrapper {
   width: 100%;
   padding: 5rem;
   min-height: calc(100vh - 60px);
 }
+
 .context {
   @include d-flex(column, flex-start, center);
   gap: 2rem;
 }
+
 .app {
   color: var(--text-color1);
-  background-color: var(--bg-color);
+  background: var(--bg-color);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  transition: all 0.6s ease-in-out;
+  //transition: all 0.1s ease-in-out;
 
   &.dark {
-    --bg-color:  rgba(88, 3, 105, 0.938);
-    --text-color1: #09ee70;
+    --bg-color: #333a56;
+    --text-color1: #f7f5e6;
     --text-color2: #fff;
   }
 }

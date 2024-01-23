@@ -334,11 +334,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\REPOS\\Stock Management\\backend\\Module\\Module.csproj",
+      "projectUniqueName": "E:\\REPOS\\StockManagement\\backend\\Module\\Module.csproj",
       "projectName": "Module",
-      "projectPath": "E:\\REPOS\\Stock Management\\backend\\Module\\Module.csproj",
+      "projectPath": "E:\\REPOS\\StockManagement\\backend\\Module\\Module.csproj",
       "packagesPath": "C:\\Users\\NITRO\\.nuget\\packages\\",
-      "outputPath": "E:\\REPOS\\Stock Management\\backend\\Module\\obj\\",
+      "outputPath": "E:\\REPOS\\StockManagement\\backend\\Module\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\NITRO\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -355,8 +355,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "E:\\REPOS\\Stock Management\\backend\\Shared\\Shared.csproj": {
-              "projectPath": "E:\\REPOS\\Stock Management\\backend\\Shared\\Shared.csproj"
+            "E:\\REPOS\\StockManagement\\backend\\Shared\\Shared.csproj": {
+              "projectPath": "E:\\REPOS\\StockManagement\\backend\\Shared\\Shared.csproj"
             }
           }
         }

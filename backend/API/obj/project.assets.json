@@ -2012,11 +2012,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\REPOS\\Stock Management\\backend\\API\\API.csproj",
+      "projectUniqueName": "E:\\REPOS\\StockManagement\\backend\\API\\API.csproj",
       "projectName": "API",
-      "projectPath": "E:\\REPOS\\Stock Management\\backend\\API\\API.csproj",
+      "projectPath": "E:\\REPOS\\StockManagement\\backend\\API\\API.csproj",
       "packagesPath": "C:\\Users\\NITRO\\.nuget\\packages\\",
-      "outputPath": "E:\\REPOS\\Stock Management\\backend\\API\\obj\\",
+      "outputPath": "E:\\REPOS\\StockManagement\\backend\\API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\NITRO\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -2033,8 +2033,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "E:\\REPOS\\Stock Management\\backend\\Data\\Data.csproj": {
-              "projectPath": "E:\\REPOS\\Stock Management\\backend\\Data\\Data.csproj"
+            "E:\\REPOS\\StockManagement\\backend\\Data\\Data.csproj": {
+              "projectPath": "E:\\REPOS\\StockManagement\\backend\\Data\\Data.csproj"
             }
           }
         }
@@ -2104,6 +2104,26 @@
     }
   },
   "logs": [
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'System.IdentityModel.Tokens.Jwt' 7.0.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52",
+      "libraryId": "System.IdentityModel.Tokens.Jwt",
+      "targetGraphs": [
+        "net7.0"
+      ]
+    },
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'System.IdentityModel.Tokens.Jwt' 7.0.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-8g9c-28fc-mcx2",
+      "libraryId": "System.IdentityModel.Tokens.Jwt",
+      "targetGraphs": [
+        "net7.0"
+      ]
+    },
     {
       "code": "NU1701",
       "level": "Warning",

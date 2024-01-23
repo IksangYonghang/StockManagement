@@ -1226,11 +1226,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\REPOS\\Stock Management\\backend\\Data\\Data.csproj",
+      "projectUniqueName": "E:\\REPOS\\StockManagement\\backend\\Data\\Data.csproj",
       "projectName": "Data",
-      "projectPath": "E:\\REPOS\\Stock Management\\backend\\Data\\Data.csproj",
+      "projectPath": "E:\\REPOS\\StockManagement\\backend\\Data\\Data.csproj",
       "packagesPath": "C:\\Users\\NITRO\\.nuget\\packages\\",
-      "outputPath": "E:\\REPOS\\Stock Management\\backend\\Data\\obj\\",
+      "outputPath": "E:\\REPOS\\StockManagement\\backend\\Data\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\NITRO\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -1247,8 +1247,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "E:\\REPOS\\Stock Management\\backend\\Module\\Module.csproj": {
-              "projectPath": "E:\\REPOS\\Stock Management\\backend\\Module\\Module.csproj"
+            "E:\\REPOS\\StockManagement\\backend\\Module\\Module.csproj": {
+              "projectPath": "E:\\REPOS\\StockManagement\\backend\\Module\\Module.csproj"
             }
           }
         }

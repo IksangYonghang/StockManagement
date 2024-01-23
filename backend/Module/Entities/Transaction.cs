@@ -7,6 +7,7 @@ namespace Module.Entities
 
         public int TransactionId { get; set; }
         public DateOnly Date { get; set; }
+        public DateOnly EngDate { get; set; }
         public string InvoiceNumber { get; set; } = string.Empty;
         public long UserId { get; set; }
         public long? LedgerId { get; set; }

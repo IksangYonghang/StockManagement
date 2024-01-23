@@ -66,8 +66,10 @@ const UpdateCategory = () => {
           onChange={(n) =>
             setCategory({ ...category, categoryName: n.target.value })
           }
-          InputProps={{ style: { color: darkMode ? "yellow" : "black" } }}
-          InputLabelProps={{ style: { color: darkMode ? "#09ee70" : "black" } }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
+          InputLabelProps={{
+            style: { color: darkMode ? "#f7f5e6" : "#333a56" },
+          }}
         />
         <TextField
           fullWidth
@@ -78,8 +80,10 @@ const UpdateCategory = () => {
           onChange={(n) =>
             setCategory({ ...category, description: n.target.value })
           }
-          InputProps={{ style: { color: darkMode ? "yellow" : "black" } }}
-          InputLabelProps={{ style: { color: darkMode ? "#09ee70" : "black" } }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
+          InputLabelProps={{
+            style: { color: darkMode ? "#f7f5e6" : "#333a56" },
+          }}
         />
 
         <div
@@ -99,8 +103,9 @@ const UpdateCategory = () => {
             <Button
               variant="contained"
               style={{
-                backgroundColor: "rgba(116, 0, 105, 8)",
-                color: "#fff",
+                backgroundColor: darkMode ? "#f7f5e6" : "#333a56",
+                color: darkMode ? "#333a56" : "#f7f5e6",
+                fontWeight: "bold",
               }}
               onClick={handleClickUpdateBtn}
             >

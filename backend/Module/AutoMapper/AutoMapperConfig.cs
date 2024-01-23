@@ -81,8 +81,8 @@ namespace Module.AutoMapper
             CreateMap<TransactionGetDto, TransactionCreateDto>();
             CreateMap<TransactionDetail, TransactionGetDto>();
             CreateMap<TransactionDetail, TransactionCreateDto>();
-            CreateMap<TransactionUpdateDto, TransactionGetDto> ();
-            CreateMap<TransactionUpdateDto, Transaction> ();
+            CreateMap<TransactionUpdateDto, TransactionGetDto>();
+            CreateMap<TransactionUpdateDto, Transaction>();
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -102,8 +102,14 @@ namespace Module.AutoMapper
             CreateMap<UpdateUserDto, UserDto>();
             CreateMap<User, UpdateUserDto>();
 
-            CreateMap<Product, GetDashProductListDto>().ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName));
+            CreateMap<Product, GetDashProductListDto>()
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName));
             CreateMap<GetDashProductListDto, Product>();
+            CreateMap<Product, GetFrequentSalesProductDto>()
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName));
+
+            CreateMap<GetOfficeNameDto, Office>();
+            CreateMap<Office, GetOfficeNameDto>();
 
 
         }

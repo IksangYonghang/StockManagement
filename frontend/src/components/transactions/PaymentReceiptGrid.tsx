@@ -72,7 +72,7 @@ const column: GridColDef[] = [
         <Button
           className="delete-button"
           onClick={() => params.row.onDelete(params.row)}
-          style={{ fontSize: "1rem", fontWeight: "bold" }}
+          style={{ fontSize: "1rem", fontWeight: "bold", color: params.row.darkMode? "#f7f5e6" : "#333a56" }}
           startIcon={<Delete />}
         >
           Delete
@@ -85,9 +85,10 @@ const column: GridColDef[] = [
 interface IPaymentReceiptGridProps {
   data: ITransaction[];
   onDelete: (transaction: ITransaction) => void;
+  darkMode: boolean
 }
 
-const PaymentReceiptGrid = ({ data, onDelete }: IPaymentReceiptGridProps) => {
+const PaymentReceiptGrid = ({ data, onDelete, darkMode }: IPaymentReceiptGridProps) => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [transactionToDelete, setTransactionToDelete] =
     useState<ITransaction | null>(null);
@@ -107,6 +108,7 @@ const PaymentReceiptGrid = ({ data, onDelete }: IPaymentReceiptGridProps) => {
           serialNumber: index + 1,
           ...transaction,
           onDelete: handleDeleteClick,
+          darkMode: darkMode
         }))}
         columns={column}
         getRowId={(row) => row.id}

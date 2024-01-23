@@ -8,7 +8,7 @@ import "./categories-grid.scss";
 import { Button } from "@mui/material";
 import ConfirmationDialog from "../../constants/ConfirmationDialog";
 
-const columns: GridColDef[] = [
+const column: GridColDef[] = [
   { field: "serialNumber", headerName: "S. N.", width: 66 },
   { field: "id", headerName: "ID", width: 100 },
   { field: "categoryName", headerName: "Category Name", width: 250 },
@@ -53,7 +53,11 @@ const columns: GridColDef[] = [
         <Button
           className="delete-button"
           onClick={() => params.row.onDelete(params.row)}
-          style={{ fontSize: "1rem", fontWeight: "bold" }}
+          style={{
+            fontSize: "1rem",
+            fontWeight: "bold",
+            color: params.row.darkMode ? "#f7f5e6" : "#333a56",
+          }}
           startIcon={<Delete />}
         >
           Delete
@@ -66,9 +70,10 @@ const columns: GridColDef[] = [
 interface ICategoriesGridProps {
   data: ICategory[];
   onDelete: (category: ICategory) => void;
+  darkMode: boolean;
 }
 
-const CategoriesGrid = ({ data, onDelete }: ICategoriesGridProps) => {
+const CategoriesGrid = ({ data, onDelete, darkMode }: ICategoriesGridProps) => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [categoryToDelete, setCategoryToDelete] = useState<ICategory | null>(
     null
@@ -78,15 +83,18 @@ const CategoriesGrid = ({ data, onDelete }: ICategoriesGridProps) => {
     setCategoryToDelete(category);
     setOpenDeleteDialog(true);
   };
+
+  const rowsWithDarkMode = data.map((category, index) => ({
+    serialNumber: index + 1,
+    ...category,
+    onDelele: handleDeleteClick,
+    darkMode: darkMode,
+  }));
   return (
     <div className="categories-grid" style={{ height: "555px", width: "100%" }}>
       <DataGrid
-        rows={data.map((category, index) => ({
-          serialNumber: index + 1,
-          ...category,
-          onDelete: handleDeleteClick,
-        }))}
-        columns={columns}
+        rows={rowsWithDarkMode}
+        columns={column}
         getRowId={(row) => row.id}
         rowHeight={45}
       />

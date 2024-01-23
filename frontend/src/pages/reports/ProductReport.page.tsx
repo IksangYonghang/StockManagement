@@ -82,7 +82,7 @@ const ProductStockReport: React.FC = () => {
 
   return (
     <>
-      <h1 style={{ marginBottom: "2rem" }}>Product Report</h1>
+      <h1 style={{ marginBottom: "2rem" , fontSize:"25px"}}>Product Report</h1>
       <div className="container">
         <FormControl fullWidth style={{ width: "20%" }}>
           <Autocomplete
@@ -106,7 +106,7 @@ const ProductStockReport: React.FC = () => {
                 variant="outlined"
                 InputLabelProps={{
                   style: {
-                    color: darkMode ? "#09ee70" : "black",
+                    color: darkMode ? "#f7f5e6" : "#333a56",
                     fontSize: "15px",
                     fontWeight: "bold",
                   },
@@ -116,7 +116,7 @@ const ProductStockReport: React.FC = () => {
                   style: {
                     ...(params.InputProps as { style?: React.CSSProperties })
                       .style,
-                    color: darkMode ? "yellow" : "black",
+                    color: darkMode ? "#f7f5e6" : "#333a56",
                     fontSize: "15px",
                     fontWeight: "bold",
                   },
@@ -139,7 +139,7 @@ const ProductStockReport: React.FC = () => {
             value={selectedFromDate}
             onChange={(value) => handleFromDateChange(value)}
             options={{ calenderLocale: "ne", valueLocale: "en" }}
-            inputClassName="form-control"
+            inputClassName={`form-control ${darkMode ? "dark-mode" : ""}`}
             className="nepali-datepicker"
           />
         </div>
@@ -153,23 +153,25 @@ const ProductStockReport: React.FC = () => {
           >
             To Date:{" "}
           </label>
-          <NepaliDatePicker
+          <NepaliDatePicker          
             value={selectedToDate}
             onChange={(value) => handleToDateChange(value)}
             options={{ calenderLocale: "ne", valueLocale: "en" }}
-            inputClassName="form-control"
+            inputClassName={`form-control ${darkMode ? "dark-mode" : ""}`}
             className="nepali-datepicker"
+            
           />
         </div>
         <Button
           onClick={handleShowReport}
           variant="contained"
           style={{
-            backgroundColor: "rgba(116, 0, 105, 8)",
-            color: "#fff",
+            backgroundColor: darkMode ? "#f7f5e6" : "#333a56",
+            color: darkMode ? "#333a56" : "#f7f5e6",
+            fontWeight: "bold",
             marginLeft: "10rem",
-            marginTop: "-2rem",
-            height: "40px"
+            marginTop: "-1rem",
+            height: "40px",
           }}
         >
           Show Report
@@ -195,8 +197,8 @@ const ProductStockReport: React.FC = () => {
             <table className="report-table">
               <thead
                 style={{
-                  color: darkMode ? "rgba(88, 3, 105, 0.938)" : "black",
-                  backgroundColor: darkMode ? "#A6A6A6" : "lightgray",
+                  color: darkMode ? "#f7f5e6" : "#333a56",
+                  backgroundColor: darkMode ? "#333a56" : "#f7f5e6",
                 }}
               >
                 <tr>

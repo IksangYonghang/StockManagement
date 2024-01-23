@@ -132,6 +132,7 @@ export interface ITransaction {
 export interface ITransactionCreateDto {
   userId: number;
   date: string;
+  engDate: string;
   invoiceNumber: string;
   ledgerId: string;
   productId: string;
@@ -226,6 +227,7 @@ export interface IPaymentReceipt {
 export interface IPaymentReceiptCreateDto {
   userId: number;
   date: string;
+  engDate: string;
   invoiceNumber: string;
   ledgerId: string;
   piece: string | null | undefined;
@@ -247,4 +249,39 @@ export interface IDashProductList {
   categoryId: string;
   categoryName: string;
   imageUrl: string;
+}
+
+export interface IDashStockReport {
+  categoryName: string;
+  productName: string;
+  productSize: string;
+  openingStock: string | number;
+  totalPurchased: string | number;
+  totalSold: string | number;
+  currentStock: string | number;
+  totalStockBalance: string | number;
+  stockValue: string | number;
+}
+
+export interface IBranch {
+  combinedOfficeDetails: string;
+}
+
+export interface IDashFrequentlySoldProducts {
+  categoryName: string;
+  productName: string;
+  productSize: string;
+  totalSoldInLast90Days: number;
+}
+
+export interface IDashLowStockReport {
+  categoryName: string;
+  productName: string;
+  productSize: string;
+  openingStock: string | number;
+  totalPurchased: string | number;
+  totalSold: string | number;
+  currentStock: string | number;
+  totalStockBalance: string | number;
+  stockValue: string | number;
 }

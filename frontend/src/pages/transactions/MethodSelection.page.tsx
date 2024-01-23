@@ -60,6 +60,7 @@ const MethodSelectionDialog: React.FC<MethodSelectionDialogProps> = ({
   const [transaction, setTransaction] = useState<IPaymentReceiptCreateDto>({
     userId: 0,
     date: "",
+    engDate: "",
     invoiceNumber: "",
     ledgerId: "",
     productId: "",
@@ -70,9 +71,6 @@ const MethodSelectionDialog: React.FC<MethodSelectionDialogProps> = ({
     credit: "",
     narration: "",
   });
-
- 
-
 
   const [showNarrationField, setShowNarrationField] = useState(false);
 
@@ -117,6 +115,7 @@ const MethodSelectionDialog: React.FC<MethodSelectionDialogProps> = ({
         piece: null,
         productId: null,
         date: selecteDate,
+        
       };
       //console.log("Voucher being passed back to parent :", newVoucher);
 

@@ -63,7 +63,7 @@ const column: GridColDef[] = [
     renderCell: (params) => (
       <div style={{ marginLeft: "3.5rem" }}>
         <Link
-          to={`/transactions/update/${params.row.transactionId}`} 
+          to={`/transactions/update/${params.row.transactionId}`}
           className="action-link"
           style={{ fontSize: "1rem" }}
         >
@@ -81,10 +81,14 @@ const column: GridColDef[] = [
         <Button
           className="delete-button"
           onClick={() => params.row.onDelete(params.row)}
-          style={{ fontSize: "1rem", fontWeight: "bold" }}
+          style={{
+            fontSize: "1rem",
+            fontWeight: "bold",
+            color: params.row.darkMode ? "#f7f5e6" : "#333a56",
+          }}
           startIcon={<Delete />}
         >
-          Delete
+          Delete  
         </Button>
       </div>
     ),
@@ -94,9 +98,14 @@ const column: GridColDef[] = [
 interface ITransactionGridProps {
   data: ITransaction[];
   onDelete: (transaction: ITransaction) => void;
+  darkMode: boolean;
 }
 
-const TransactionsGrid = ({ data, onDelete }: ITransactionGridProps) => {
+const TransactionsGrid = ({
+  data,
+  onDelete,
+  darkMode,
+}: ITransactionGridProps) => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [transactionToDelete, setTransactionToDelete] =
     useState<ITransaction | null>(null);
@@ -116,6 +125,7 @@ const TransactionsGrid = ({ data, onDelete }: ITransactionGridProps) => {
           serialNumber: index + 1,
           ...transaction,
           onDelete: handleDeleteClick,
+          darkMode: darkMode,
         }))}
         columns={column}
         getRowId={(row) => row.id}

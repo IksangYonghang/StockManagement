@@ -81,15 +81,17 @@ const Ledgers = () => {
             fontSize: "0.95rem",
             border: "1px solid #ddd",
             marginBottom: "0.8rem",
-            background: darkMode ? "rgba(88, 3, 105, 0.938)" : "white",
-            color: darkMode ? "yellow" : "black",
+            background: darkMode ? "#333a56" : "#f7f5e6",
+            color: darkMode ? "#f7f5e6" : "#333a56",
           }}
         />
         <Button
           variant="contained"
           color="primary"
           style={{
-            backgroundColor: "rgba(116, 0, 105, 8)",
+            backgroundColor: darkMode ? "#f7f5e6" : "#333a56",
+            color: darkMode ? "#333a56" : "#f7f5e6",
+            fontWeight: "bold",
             marginBottom: "0.9rem",
           }}
           onClick={() => redirect("/ledgers/add")}
@@ -103,7 +105,7 @@ const Ledgers = () => {
       ) : ledgers.length === 0 ? (
         <h1> No Ledgers</h1>
       ) : (
-        <LedgerGrid data={ledgers} onDelete={handleDeleteCompany} />
+        <LedgerGrid data={ledgers} onDelete={handleDeleteCompany} darkMode={darkMode} />
       )}
     </div>
   );

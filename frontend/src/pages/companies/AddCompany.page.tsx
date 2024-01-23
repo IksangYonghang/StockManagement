@@ -58,13 +58,15 @@ const AddCompany = () => {
           onChange={(n) =>
             setCompany({ ...company, companyName: n.target.value })
           }
-          InputProps={{ style: { color: darkMode ? "yellow" : "black" } }}
-          InputLabelProps={{ style: { color: darkMode ? "#09ee70" : "black" } }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
+          InputLabelProps={{
+            style: { color: darkMode ? "#f7f5e6" : "#333a56" },
+          }}
         />
         <FormControl fullWidth>
           <InputLabel
             style={{
-              color: darkMode ? "#09ee70" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
             }}
           >
             Company Size
@@ -76,7 +78,7 @@ const AddCompany = () => {
               setCompany({ ...company, companySize: s.target.value })
             }
             style={{
-              color: darkMode ? "yellow" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
             }}
           >
             <MenuItem value="Small">Small</MenuItem>
@@ -92,11 +94,12 @@ const AddCompany = () => {
           }}
         >
           <Button
-            variant="contained"
-            style={{
-              backgroundColor: "rgba(116, 0, 105, 8)",
-              color: "#fff",
-            }}
+              variant="contained"
+              style={{
+                backgroundColor: darkMode ? "#f7f5e6" : "#333a56",
+                color: darkMode ? "#333a56" : "#f7f5e6",
+                fontWeight: "bold",
+              }}
             onClick={handleClickSaveBtn}
           >
             Save

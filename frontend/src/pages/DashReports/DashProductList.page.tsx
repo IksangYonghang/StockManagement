@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { IDashProductList } from "../../types/global.typing";
 import httpModule from "../../helpers/http.module";
-import "./dash.scss";
 import { baseUrl } from "../../constants/url.constants";
+import "./dash.scss";
 
 interface ProductTableProps {
-  data: IDashProductList[];
+  productdata: IDashProductList[];
 }
 
-const DashProductList: React.FC<ProductTableProps> = ({ data }) => {
+const DashProductList: React.FC<ProductTableProps> = ({ productdata }) => {
   const [productData, setProductData] = useState<IDashProductList[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -49,9 +49,9 @@ const DashProductList: React.FC<ProductTableProps> = ({ data }) => {
       </thead>
       <tbody>
         {productData.map((item: IDashProductList, index: number) => (
-          <tr key={index}>
+          <tr key={index} style={{ height: "58px" }}>
             <td style={{ textAlign: "center" }}>{item.categoryName}</td>
-            <td>{item.productName}</td>
+            <td style={{ textAlign: "center" }}>{item.productName}</td>
             <td style={{ textAlign: "center" }}>{item.productSize}</td>
             <td style={{ textAlign: "right", paddingRight: "10px" }}>
               {item.markedPrice}

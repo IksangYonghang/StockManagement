@@ -2,8 +2,8 @@
 
 .navbar {
   @include d-flex(row, space-between, center);
-  color: white;
-  background-color:  rgba(99, 5, 117, 0.938);
+  color: #333a56;
+  background-color: #f7f5e6;
   width: 100%;
   height: 60px;
   padding: 0 2rem;
@@ -37,7 +37,7 @@
   .toggle {
     margin-left: 0.5rem;
     margin-right: -20px;
-   
+
     cursor: pointer;
     /*
     svg {
@@ -58,7 +58,7 @@
   button {
     background-color: transparent;
     border: none;
-    color: white;
+    color: #333a56;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -75,8 +75,8 @@
     .menu {
       @include d-flex(column, flex-start, center);
 
-      color: #fff;
-      background-color:   rgba(99, 5, 117, 0.938);
+      color: #333a56;
+      background-color: #333a56;
       width: 240px;
       height: 100vh;
       position: fixed;
@@ -95,7 +95,7 @@
         height: 100%;
         li {
           a {
-            color: #fff;
+            color: #333a56;
             cursor: pointer;
           }
         }

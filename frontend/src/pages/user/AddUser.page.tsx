@@ -71,8 +71,8 @@ const AddUser = () => {
           variant="outlined"
           value={user.firstName}
           onChange={(n) => setUser({ ...user, firstName: n.target.value })}
-          InputProps={{ style: { color: darkMode ? "yellow" : "black" } }}
-          InputLabelProps={{ style: { color: darkMode ? "#09ee70" : "black" } }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
+          InputLabelProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
         />
         <TextField
           fullWidth
@@ -81,8 +81,8 @@ const AddUser = () => {
           variant="outlined"
           value={user.middleName}
           onChange={(n) => setUser({ ...user, middleName: n.target.value })}
-          InputProps={{ style: { color: darkMode ? "yellow" : "black" } }}
-          InputLabelProps={{ style: { color: darkMode ? "#09ee70" : "black" } }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
+          InputLabelProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
         />
         <TextField
           fullWidth
@@ -91,13 +91,13 @@ const AddUser = () => {
           variant="outlined"
           value={user.lastName}
           onChange={(n) => setUser({ ...user, lastName: n.target.value })}
-          InputProps={{ style: { color: darkMode ? "yellow" : "black" } }}
-          InputLabelProps={{ style: { color: darkMode ? "#09ee70" : "black" } }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
+          InputLabelProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
         />
         <FormControl fullWidth>
           <InputLabel
             style={{
-              color: darkMode ? "#09ee70" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
             }}
           >
             Gender
@@ -107,7 +107,7 @@ const AddUser = () => {
             value={user.gender}
             onChange={(s) => setUser({ ...user, gender: s.target.value })}
             style={{
-              color: darkMode ? "yellow" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
             }}
           >
             <MenuItem value="Male">Male</MenuItem>
@@ -127,8 +127,8 @@ const AddUser = () => {
           variant="outlined"
           value={user.address}
           onChange={(n) => setUser({ ...user, address: n.target.value })}
-          InputProps={{ style: { color: darkMode ? "yellow" : "black" } }}
-          InputLabelProps={{ style: { color: darkMode ? "#09ee70" : "black" } }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
+          InputLabelProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
         />
         <TextField
           fullWidth
@@ -137,13 +137,13 @@ const AddUser = () => {
           variant="outlined"
           value={user.phone}
           onChange={(n) => setUser({ ...user, phone: n.target.value })}
-          InputProps={{ style: { color: darkMode ? "yellow" : "black" } }}
-          InputLabelProps={{ style: { color: darkMode ? "#09ee70" : "black" } }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
+          InputLabelProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
         />
         <FormControl fullWidth>
           <InputLabel
             style={{
-              color: darkMode ? "#09ee70" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
             }}
           >
             User Type
@@ -153,7 +153,7 @@ const AddUser = () => {
             value={user.userType}
             onChange={(s) => setUser({ ...user, userType: s.target.value })}
             style={{
-              color: darkMode ? "yellow" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
             }}
           >
             <MenuItem value="Admin">Admin</MenuItem>
@@ -167,8 +167,8 @@ const AddUser = () => {
           variant="outlined"
           value={user.email}
           onChange={(n) => setUser({ ...user, email: n.target.value })}
-          InputProps={{ style: { color: darkMode ? "yellow" : "black" } }}
-          InputLabelProps={{ style: { color: darkMode ? "#09ee70" : "black" } }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
+          InputLabelProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
         />
         <TextField
           fullWidth
@@ -177,8 +177,8 @@ const AddUser = () => {
           variant="outlined"
           value={user.userName}
           onChange={(n) => setUser({ ...user, userName: n.target.value })}
-          InputProps={{ style: { color: darkMode ? "yellow" : "black" } }}
-          InputLabelProps={{ style: { color: darkMode ? "#09ee70" : "black" } }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
+          InputLabelProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
         />
         <TextField
           fullWidth
@@ -187,8 +187,8 @@ const AddUser = () => {
           variant="outlined"
           value={user.password}
           onChange={(n) => setUser({ ...user, password: n.target.value })}
-          InputProps={{ style: { color: darkMode ? "yellow" : "black" } }}
-          InputLabelProps={{ style: { color: darkMode ? "#09ee70" : "black" } }}
+          InputProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
+          InputLabelProps={{ style: { color: darkMode ? "#f7f5e6" : "#333a56" } }}
         />
         <div
           style={{
@@ -200,8 +200,9 @@ const AddUser = () => {
           <Button
             variant="contained"
             style={{
-              backgroundColor: "rgba(116, 0, 105, 8)",
-              color: "#fff",
+              backgroundColor: darkMode? "#f7f5e6" : "#333a56",
+              color: darkMode? "#333a56" : "#f7f5e6",
+              fontWeight: "bold"
             }}
             onClick={handleClickSaveBtn}
           >

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "F/hvXQACg1G0u63WelBd+PTJtssZ7vVXPNVF0bXxyCvEHjxgJGPgkFxgWr2wwI2ulln8OuTdfBpmb3WnqJjUsw==",
+  "dgSpecHash": "D1lBiMj93fuwQ/9gHOenqslRywKw8APj8ZMqzJvAroThY2gS4M0cIU/UMOFlg3HXRyIfZUZEB2OBusqVdh8/0A==",
   "success": true,
-  "projectFilePath": "E:\\REPOS\\Stock Management\\backend\\API\\API.csproj",
+  "projectFilePath": "E:\\REPOS\\StockManagement\\backend\\API\\API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\NITRO\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\NITRO\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
@@ -48,6 +48,26 @@
     "C:\\Users\\NITRO\\.nuget\\packages\\system.text.json\\7.0.0\\system.text.json.7.0.0.nupkg.sha512"
   ],
   "logs": [
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'System.IdentityModel.Tokens.Jwt' 7.0.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52",
+      "libraryId": "System.IdentityModel.Tokens.Jwt",
+      "targetGraphs": [
+        "net7.0"
+      ]
+    },
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'System.IdentityModel.Tokens.Jwt' 7.0.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-8g9c-28fc-mcx2",
+      "libraryId": "System.IdentityModel.Tokens.Jwt",
+      "targetGraphs": [
+        "net7.0"
+      ]
+    },
     {
       "code": "NU1701",
       "level": "Warning",

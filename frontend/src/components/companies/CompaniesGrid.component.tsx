@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import moment from "moment";
@@ -77,7 +77,11 @@ const column: GridColDef[] = [
         <Button
           className="delete-button"
           onClick={() => params.row.onDelete(params.row)}
-          style={{ fontSize: "1rem", fontWeight: "bold" }}
+          style={{
+            fontSize: "1rem",
+            fontWeight: "bold",
+            color: params.row.darkMode ? "#f7f5e6" : "#333a56",
+          }}
           startIcon={<Delete />}
         >
           Delete
@@ -90,9 +94,10 @@ const column: GridColDef[] = [
 interface ICompaniesGridProps {
   data: ICompany[];
   onDelete: (company: ICompany) => void;
+  darkMode: boolean;
 }
 
-const CompaniesGrid = ({ data, onDelete }: ICompaniesGridProps) => {
+const CompaniesGrid = ({ data, onDelete, darkMode }: ICompaniesGridProps) => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [companyToDelete, setCompanyToDelete] = useState<ICompany | null>(null);
 
@@ -101,14 +106,17 @@ const CompaniesGrid = ({ data, onDelete }: ICompaniesGridProps) => {
     setOpenDeleteDialog(true);
   };
 
+  const rowsWithDarkMode = data.map((company, index) => ({
+    serialNumber: index + 1,
+    ...company,
+    onDelete: handleDeleteClick,
+    darkMode: darkMode,
+  }));
+
   return (
     <div className="companies-grid" style={{ height: "555px", width: "100%" }}>
       <DataGrid
-        rows={data.map((company, index) => ({
-          serialNumber: index + 1,
-          ...company,
-          onDelete: handleDeleteClick,
-        }))}
+        rows={rowsWithDarkMode}
         columns={column}
         getRowId={(row) => row.id}
         rowHeight={45}

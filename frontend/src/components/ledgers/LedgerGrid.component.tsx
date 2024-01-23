@@ -63,7 +63,11 @@ const column: GridColDef[] = [
         <Button
           className="delete-button"
           onClick={() => params.row.onDelete(params.row)}
-          style={{ fontSize: "1rem", fontWeight: "bold" }}
+          style={{
+            fontSize: "1rem",
+            fontWeight: "bold",
+            color: params.row.darkMode ? "#f7f5e6" : "#333a56",
+          }}
           startIcon={<Delete />}
         >
           Delete
@@ -76,9 +80,10 @@ const column: GridColDef[] = [
 interface ILedgerGridProps {
   data: ILedger[];
   onDelete: (ledger: ILedger) => void;
+  darkMode: boolean;
 }
 
-const LedgerGrid = ({ data, onDelete }: ILedgerGridProps) => {
+const LedgerGrid = ({ data, onDelete, darkMode }: ILedgerGridProps) => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [ledgerToDelete, setLedgerToDelete] = useState<ILedger | null>(null);
 
@@ -94,6 +99,7 @@ const LedgerGrid = ({ data, onDelete }: ILedgerGridProps) => {
           serialNumber: index + 1,
           ...ledger,
           onDelete: handleDeleteClick,
+          darkMode: darkMode,
         }))}
         columns={column}
         getRowId={(row) => row.id}

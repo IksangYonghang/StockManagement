@@ -71,7 +71,9 @@ const LedgerReport: React.FC = () => {
   };
 
   const hideColumnsButton = (
-    <Button onClick={toggleHideForm} variant="contained">
+    <Button onClick={toggleHideForm} variant="contained" style={{ backgroundColor:darkMode? "#f7f5e6" : "#333a56",
+    color: darkMode? "#333a56" : "#f7f5e6",
+    fontWeight: "bold",}}>
       {showHideForm ? "Hide Columns" : "Show Columns"}
     </Button>
   );
@@ -204,7 +206,7 @@ const LedgerReport: React.FC = () => {
                 variant="outlined"
                 InputLabelProps={{
                   style: {
-                    color: darkMode ? "#09ee70" : "black",
+                    color: darkMode ? "#f7f5e6" : "#333a56",
                     fontSize: "15px",
                     fontWeight: "bold",
                   },
@@ -214,7 +216,7 @@ const LedgerReport: React.FC = () => {
                   style: {
                     ...(params.inputProps as { style?: React.CSSProperties })
                       .style,
-                    color: darkMode ? "yellow" : "black",
+                    color: darkMode ? "#f7f5e6" : "#333a56",
                     fontSize: "15px",
                     fontWeight: "bold",
                   },
@@ -237,7 +239,7 @@ const LedgerReport: React.FC = () => {
             value={selectedFromDate}
             onChange={(value) => handleFromDateChange(value)}
             options={{ calenderLocale: "ne", valueLocale: "en" }}
-            inputClassName="form-control"
+            inputClassName={`form-control ${darkMode ? "dark-mode" : ""}`}
             className="nepali-datepicker"
           />
         </div>
@@ -255,7 +257,7 @@ const LedgerReport: React.FC = () => {
             value={selectedToDate}
             onChange={(value) => handleToDateChange(value)}
             options={{ calenderLocale: "ne", valueLocale: "en" }}
-            inputClassName="form-control"
+            inputClassName={`form-control ${darkMode ? "dark-mode" : ""}`}
             className="nepali-datepicker"
           />
         </div>
@@ -263,10 +265,11 @@ const LedgerReport: React.FC = () => {
           onClick={handleShowReport}
           variant="contained"
           style={{
-            backgroundColor: "rgba(116, 0, 105, 8)",
-            color: "#fff",
+            backgroundColor:darkMode? "#f7f5e6" : "#333a56",
+            color: darkMode? "#333a56" : "#f7f5e6",
+            fontWeight: "bold",
             marginLeft: "10rem",
-            marginTop: "-2rem",
+            marginTop: "-1rem",
             height: "40px",
           }}
         >

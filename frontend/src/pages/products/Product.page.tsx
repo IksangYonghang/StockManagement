@@ -82,8 +82,8 @@ const Products = () => {
             fontSize: "0.95rem",
             border: "1px solid #ddd",
             marginBottom: "0.8rem",
-            background: darkMode ? "rgba(88, 3, 105, 0.938)" : "white",
-            color: darkMode ? "yellow" : "black",
+            backgroundColor: darkMode ? "#333a56" : "#f7f5e6",
+            color: darkMode ? "#f7f5e6" : "#333a56",
           }}
         />
 
@@ -91,8 +91,8 @@ const Products = () => {
           variant="contained"
           color="primary"
           style={{
-            backgroundColor: "rgba(116, 0, 105, 8)",
-            color: "#fff",
+            backgroundColor: darkMode ? "#f7f5e6" : "#333a56",
+            color: darkMode ? "#333a56" : "#f7f5e6",
             marginBottom: "0.9rem",
           }}
           onClick={() => redirect("/products/add")}
@@ -106,7 +106,7 @@ const Products = () => {
       ) : products.length === 0 ? (
         <h1> No Products</h1>
       ) : (
-        <ProductsGrid data={products} onDelete={handleDeleteProduct} />
+        <ProductsGrid data={products} onDelete={handleDeleteProduct} darkMode ={darkMode} />
       )}
     </div>
   );

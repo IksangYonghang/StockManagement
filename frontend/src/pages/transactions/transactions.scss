@@ -17,21 +17,30 @@
   .nepali-datepicker {
     width: 300px;
     height: 100px;
-    margin-top: -1.6rem;
+    margin-top: -1.6rem;  
     margin-bottom: -4rem;
     margin-left: 3.5rem;
   }
 
   .form-control {
-    width: 100px;
-    height: 30px;
+    width: 160px;
+    height: 45px; //height of date picker box
     text-align: center;
-    font-size: 16px;
+    font-weight: bold;
+    font-size: 15px;
+    background-color: #f7f5e6;
+    color: #333a56;
+
+    &.dark-mode {
+      background-color: #333a56;
+      color: #f7f5e6;
+    }
   }
 }
 
 .add-transaction,
-.update-transaction {
+.update-transaction,
+.add-paymentreceipt {
   width: 100%;
   margin: 0 auto;
   display: flex;
@@ -76,7 +85,7 @@
   }
 
   th {
-    background-color: #f2f2f2;
+    
     font-weight: bold;
   }
 

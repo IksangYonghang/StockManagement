@@ -21,6 +21,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import "nepali-datepicker-reactjs/dist/index.css";
 import { AddCircleOutline } from "@mui/icons-material";
+import NepaliDateConverter from "nepali-date-converter";
 
 const transactionTypeArray: string[] = [
   "Purchase",
@@ -41,6 +42,7 @@ const AddTransaction = () => {
   const [transaction, setTransaction] = useState<ITransactionCreateDto>({
     userId: 0,
     date: "",
+    engDate: "",
     invoiceNumber: "",
     ledgerId: "",
     productId: "",
@@ -177,6 +179,7 @@ const AddTransaction = () => {
     const transactionToSend: ITransactionCreateDto = {
       userId: parseInt(userId),
       date: formattedDate,
+      engDate: formattedGregorianDateWithHyphen,
       invoiceNumber: "",
       ledgerId: "",
       productId: "",
@@ -191,6 +194,7 @@ const AddTransaction = () => {
     const updatedTransactions = vouchers.map((voucher) => ({
       userId: parseInt(userId),
       date: formattedDate,
+      engDate: formattedGregorianDateWithHyphen,
       invoiceNumber: voucher.invoiceNumber,
       ledgerId: voucher.ledgerId || null,
       productId: voucher.productId || null,
@@ -226,10 +230,14 @@ const AddTransaction = () => {
       "८",
       "९",
     ];
-    return nepaliNumber.replace(/[०-९]/g, (match: string) => {
+    return nepaliNumber.replace(/[१-९]/g, (match: string) => {
       return String(nepaliDigits.indexOf(match));
     });
   };
+
+  const [formattedGregorianDateWithHyphen, setFormattedGregorianDate] =
+    useState<string>("");
+
   const formatToDesiredFormat = (date: string) => {
     const dateParts = date.split("-");
     const formattedDate = `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`;
@@ -238,10 +246,22 @@ const AddTransaction = () => {
 
   const handleDateChange = (value: string) => {
     const englishDate = convertToEnglishDigits(value);
+
     setSelectedDate(englishDate);
+    const gregorianDate = new NepaliDateConverter(englishDate).toJsDate();
+
+    const formattedGregorianDate = gregorianDate.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+
+    const [month, day, year] = formattedGregorianDate.split("/");
+    const formattedGregorianDateWithHyphen = `${year}-${month}-${day}`;
 
     const formattedEnglishDate = formatToDesiredFormat(englishDate);
     setSelectedDate(formattedEnglishDate);
+    setFormattedGregorianDate(formattedGregorianDateWithHyphen);
   };
 
   const handleChange = (field: string, value: string) => {
@@ -291,7 +311,7 @@ const AddTransaction = () => {
             Select Date{" "}
           </label>
           <NepaliDatePicker
-            inputClassName="form-control"
+            inputClassName={`form-control ${darkMode? "dark-mode" : ""}`}
             className="nepali-datepicker"
             value={selectedDate}
             onChange={(value) => handleDateChange(value)}
@@ -301,7 +321,7 @@ const AddTransaction = () => {
         <FormControl fullWidth>
           <InputLabel
             style={{
-              color: darkMode ? "#09ee70" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
               fontSize: "14px",
               fontWeight: "bold",
               width: "200px",
@@ -321,7 +341,7 @@ const AddTransaction = () => {
               })
             }
             style={{
-              color: darkMode ? "yellow" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
               fontSize: "14px",
               padding: "-5px -5px",
               fontWeight: "bold",
@@ -340,7 +360,7 @@ const AddTransaction = () => {
         <FormControl fullWidth>
           <InputLabel
             style={{
-              color: darkMode ? "#09ee70" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
               fontSize: "14px",
               fontWeight: "bold",
               width: "200px", // Adjust the width as needed
@@ -360,7 +380,7 @@ const AddTransaction = () => {
               })
             }
             style={{
-              color: darkMode ? "yellow" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
               fontSize: "14px",
               padding: "-5px -5px",
               fontWeight: "bold",
@@ -393,7 +413,7 @@ const AddTransaction = () => {
               }
               InputProps={{
                 style: {
-                  color: darkMode ? "yellow" : "black",
+                  color: darkMode ? "#f7f5e6" : "#333a56",
                   fontSize: "14px",
                   padding: "-5px -5px",
                   fontWeight: "bold",
@@ -401,7 +421,7 @@ const AddTransaction = () => {
               }}
               InputLabelProps={{
                 style: {
-                  color: darkMode ? "#09ee70" : "black",
+                  color: darkMode ? "#f7f5e6" : "#333a56",
                   fontSize: "14px",
                   fontWeight: "bold",
                 },
@@ -431,7 +451,7 @@ const AddTransaction = () => {
                     variant="outlined"
                     InputLabelProps={{
                       style: {
-                        color: darkMode ? "#09ee70" : "black",
+                        color: darkMode ? "#f7f5e6" : "#333a56",
                         fontSize: "14px",
                         fontWeight: "bold",
                       },
@@ -442,7 +462,7 @@ const AddTransaction = () => {
                         ...(
                           params.InputProps as { style?: React.CSSProperties }
                         ).style,
-                        color: darkMode ? "yellow" : "black",
+                        color: darkMode ? "#f7f5e6" : "#333a56",
                         fontSize: "14px",
                         padding: "-5px -5px",
                         fontWeight: "bold",
@@ -476,7 +496,7 @@ const AddTransaction = () => {
                     variant="outlined"
                     InputLabelProps={{
                       style: {
-                        color: darkMode ? "#09ee70" : "black",
+                        color: darkMode ? "#f7f5e6" : "#333a56",
                         fontSize: "14px",
                         fontWeight: "bold",
                         marginLeft: "-4.5rem",
@@ -488,7 +508,7 @@ const AddTransaction = () => {
                         ...(
                           params.InputProps as { style?: React.CSSProperties }
                         ).style,
-                        color: darkMode ? "yellow" : "black",
+                        color: darkMode ? "#f7f5e6" : "#333a56",
                         fontSize: "14px",
                         padding: "-5px -5px",
                         fontWeight: "bold",
@@ -515,7 +535,7 @@ const AddTransaction = () => {
               }
               InputProps={{
                 style: {
-                  color: darkMode ? "yellow" : "black",
+                  color: darkMode ? "#f7f5e6" : "#333a56",
                   fontSize: "14px",
                   padding: "-5px -5px",
                   fontWeight: "bold",
@@ -523,7 +543,7 @@ const AddTransaction = () => {
               }}
               InputLabelProps={{
                 style: {
-                  color: darkMode ? "#09ee70" : "black",
+                  color: darkMode ? "#f7f5e6" : "#333a56",
                   fontSize: "14px",
                   fontWeight: "bold",
                 },
@@ -546,7 +566,7 @@ const AddTransaction = () => {
               }
               InputProps={{
                 style: {
-                  color: darkMode ? "yellow" : "black",
+                  color: darkMode ? "#f7f5e6" : "#333a56",
                   fontSize: "14px",
                   padding: "-5px -5px",
                   fontWeight: "bold",
@@ -554,7 +574,7 @@ const AddTransaction = () => {
               }}
               InputLabelProps={{
                 style: {
-                  color: darkMode ? "#09ee70" : "black",
+                  color: darkMode ? "#f7f5e6" : "#333a56",
                   fontSize: "14px",
                   fontWeight: "bold",
                 },
@@ -576,7 +596,7 @@ const AddTransaction = () => {
               }
               InputProps={{
                 style: {
-                  color: darkMode ? "yellow" : "black",
+                  color: darkMode ? "#f7f5e6" : "#333a56",
                   fontSize: "14px",
                   padding: "-5px -5px",
                   fontWeight: "bold",
@@ -584,7 +604,7 @@ const AddTransaction = () => {
               }}
               InputLabelProps={{
                 style: {
-                  color: darkMode ? "#09ee70" : "black",
+                  color: darkMode ? "#f7f5e6" : "#333a56",
                   fontSize: "14px",
                   fontWeight: "bold",
                 },
@@ -605,7 +625,7 @@ const AddTransaction = () => {
             }
             InputProps={{
               style: {
-                color: darkMode ? "yellow" : "black",
+                color: darkMode ? "#f7f5e6" : "#333a56",
                 fontSize: "14px",
                 padding: "-5px -5px",
                 fontWeight: "bold",
@@ -614,7 +634,7 @@ const AddTransaction = () => {
             }}
             InputLabelProps={{
               style: {
-                color: darkMode ? "#09ee70" : "black",
+                color: darkMode ? "#f7f5e6" : "#333a56",
                 fontSize: "14px",
                 fontWeight: "bold",
               },
@@ -622,7 +642,7 @@ const AddTransaction = () => {
           />
           <AddCircleOutline
             style={{
-              color: darkMode ? "#09ee70" : "black",
+              color: darkMode ? "#f7f5e6" : "#333a56",
               cursor: "pointer",
               marginLeft: "1px",
             }}
@@ -634,7 +654,7 @@ const AddTransaction = () => {
         )}
         {vouchers.length > 0 && (
           <table className="voucher-table">
-            <thead>
+            <thead >
               <tr>
                 <th>Transaction Type</th>
                 <th>Transaction Method</th>
@@ -686,8 +706,9 @@ const AddTransaction = () => {
           <Button
             variant="contained"
             style={{
-              backgroundColor: "rgba(116, 0, 105, 8)",
-              color: "#fff",
+              backgroundColor:darkMode? "#f7f5e6" : "#333a56",
+            color: darkMode? "#333a56" : "#f7f5e6",
+            fontWeight: "bold",
             }}
             onClick={handleClickSaveBtn}
           >
