@@ -68,7 +68,7 @@ const Home = () => {
                 icon={faBarChart}
                 style={{ marginRight: "5px" }}
               />
-              Frequent Sale in Last 90 Days
+              Frequently Sold Product in Last 90 Days
             </h3>
             {isFrequentSaleVisible && (
               <DashFrequentSaleProucts frequentsaledata={frequentSaleData} />

@@ -295,6 +295,8 @@ const AddTransaction = () => {
     setShowVoucherHeader(updatedVouchers.length > 0);
   };
 
+  const ledgerSelected = transaction.ledgerId !== "";
+
   return (
     <div className="content">
       <div className="add-transaction">
@@ -311,7 +313,7 @@ const AddTransaction = () => {
             Select Date{" "}
           </label>
           <NepaliDatePicker
-            inputClassName={`form-control ${darkMode? "dark-mode" : ""}`}
+            inputClassName={`form-control ${darkMode ? "dark-mode" : ""}`}
             className="nepali-datepicker"
             value={selectedDate}
             onChange={(value) => handleDateChange(value)}
@@ -476,7 +478,7 @@ const AddTransaction = () => {
 
             <FormControl fullWidth style={{ width: "25%" }}>
               <Autocomplete
-                options={products}
+                options={ledgerSelected ? [] : products}
                 getOptionLabel={(product) => product.productName}
                 value={
                   products.find(
@@ -503,7 +505,9 @@ const AddTransaction = () => {
                       },
                     }}
                     InputProps={{
-                      ...(params.InputProps as { style?: React.CSSProperties }),
+                      ...(params.InputProps as {
+                        style?: React.CSSProperties;
+                      }),
                       style: {
                         ...(
                           params.InputProps as { style?: React.CSSProperties }
@@ -512,8 +516,8 @@ const AddTransaction = () => {
                         fontSize: "14px",
                         padding: "-5px -5px",
                         fontWeight: "bold",
-                        width: "calc(139% )", // Adjust width here
-                        marginLeft: "-70px", // Add margin to separate from the previous field
+                        width: "calc(139% )",
+                        marginLeft: "-70px",
                       },
                     }}
                   />
@@ -549,7 +553,7 @@ const AddTransaction = () => {
                 },
               }}
               style={{ width: "15%" }}
-              disabled={!transaction.productId} // Disable if productId is not selected
+              disabled={!transaction.productId} // Disabled this field if productId is not selected
             />
 
             <TextField
@@ -654,7 +658,7 @@ const AddTransaction = () => {
         )}
         {vouchers.length > 0 && (
           <table className="voucher-table">
-            <thead >
+            <thead>
               <tr>
                 <th>Transaction Type</th>
                 <th>Transaction Method</th>
@@ -706,9 +710,9 @@ const AddTransaction = () => {
           <Button
             variant="contained"
             style={{
-              backgroundColor:darkMode? "#f7f5e6" : "#333a56",
-            color: darkMode? "#333a56" : "#f7f5e6",
-            fontWeight: "bold",
+              backgroundColor: darkMode ? "#f7f5e6" : "#333a56",
+              color: darkMode ? "#333a56" : "#f7f5e6",
+              fontWeight: "bold",
             }}
             onClick={handleClickSaveBtn}
           >

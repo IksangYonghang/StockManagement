@@ -42,6 +42,7 @@ import StockReport from "./pages/reports/StockReport.page";
 import AddPaymentReceipt from "./pages/transactions/AddPaymentReceipt.page";
 import PaymentReceipt from "./pages/transactions/PaymentReceipt.page";
 import LedgerClosingBalance from "./pages/reports/LedgerClosingBalance.page";
+import NavbarTest from "./components/navbar/NavbarTest.";
 
 interface MainContentProps {
   isLoggedIn: boolean;

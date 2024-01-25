@@ -75,7 +75,7 @@ const AuthenticatedNavbar: React.FC<{
                 to={item.href}
                 style={{
                   color: darkMode ? "#f7f5e6" : "#333a56",
-                  fontSize: "19px",
+                  fontSize: "18px",
                 }}
               >
                 {item.label}
