@@ -136,7 +136,7 @@ const DailySummary: React.FC = () => {
           />
         </FormControl>
         <div>
-          <label> Check for Duration? </label>
+          <label style={{ fontWeight: "bold" }}> Differential ? </label>
           <input
             type="checkbox"
             checked={isDuration}

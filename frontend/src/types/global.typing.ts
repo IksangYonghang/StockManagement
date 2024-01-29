@@ -291,8 +291,13 @@ export interface IDashLowStockReport {
   stockValue: string | number;
 }
 
-
 export interface IDailySummary {
+  title: string;
+  debit?: number;
+  credit?: number;
+}
+
+export interface ITrialBalnce {
   title: string;
   debit?: number;
   credit?: number;

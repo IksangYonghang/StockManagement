@@ -1,0 +1,118 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  tbody {
+    tr:hover {
+      background-color: lightgray;
+      cursor: pointer;
+    }
+  }
+}
+
+.report-table th,
+.report-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+.right-align {
+  text-align: justify;
+}
+
+.report-container {
+  margin-top: 5rem;
+}
+
+.date-picker-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 180px;
+  margin-left: 3rem;
+
+  .nepali-datepicker {
+    width: 300px;
+    height: 100px;
+    font-weight: bold;
+  }
+
+  .form-control {
+    width: 160px;
+    height: 45px; //height of date picker box
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+    background-color: #f7f5e6;
+    color: #333a56;
+
+    &.dark-mode {
+      background-color: #333a56;
+      color: #f7f5e6;
+    }
+  }
+}
+
+.report-table tr.category-odd {
+  background-color: #f7f5e6;
+}
+
+.report-table tr.category-even {
+  background-color: #f5f4ef;
+}
+
+.dark-mode .report-table tr.category-odd {
+  background-color: #333a56;
+}
+
+.dark-mode .report-table tr.category-even {
+  background-color: #404869;
+
+}
+
+.report-table tr.master-odd {
+  background-color: #f7f5e6;
+}
+
+.report-table tr.master-even {
+  background-color: #f5f4ef;
+}
+
+.dark-mode .report-table tr.master-odd {
+  background-color: #333a56;
+}
+
+.dark-mode .report-table tr.master-even {
+  background-color: #404869;
+}
+
+.pdf-and-hide {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .button-group {
+    margin-bottom: -1.5rem;
+    display: flex;
+    gap: 20px;
+    margin-left: 92rem;
+    margin-top: 0.5rem;
+  }
+}
+.pdf-and-hide > * {
+  margin-left: 60px;
+}
+
+.hide-columns {
+  display: flex;
+  align-items: center;
+}
