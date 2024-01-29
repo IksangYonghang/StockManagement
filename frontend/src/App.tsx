@@ -38,11 +38,11 @@ import LogoutOnClose from "./pages/user/LogoutOnClose";
 import EditTransaction from "./pages/transactions/EditTransaction.page";
 import LedgerReport from "./pages/reports/LedgerReport.page";
 import StockReport from "./pages/reports/StockReport.page";
-
 import AddPaymentReceipt from "./pages/transactions/AddPaymentReceipt.page";
 import PaymentReceipt from "./pages/transactions/PaymentReceipt.page";
 import LedgerClosingBalance from "./pages/reports/LedgerClosingBalance.page";
-import NavbarTest from "./components/navbar/NavbarTest.";
+
+import DailySummary from "./pages/reports/DailySummary.page";
 
 interface MainContentProps {
   isLoggedIn: boolean;
@@ -104,6 +104,7 @@ const MainContent: React.FC<MainContentProps> = ({
             <Route path="/productReport" element={<ProductStockReport />} />
             <Route path="/ledgerReport" element={<LedgerReport />} />
             <Route path="/stockReport" element={<StockReport />} />
+            <Route path="/dailySummary" element={<DailySummary />} />
             <Route path="/lcb" element={<LedgerClosingBalance />} />
           </>
         )}
@@ -118,7 +119,7 @@ const App = () => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
- 
+
   const { darkMode } = useContext(ThemeContext);
   const appStyles = darkMode ? "app dark" : "app";
 

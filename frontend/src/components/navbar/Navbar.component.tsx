@@ -18,6 +18,7 @@ const links: { href: string; label: string }[] = [
   { href: "/productReport", label: "Product Report" },
   { href: "/stockReport", label: "Stock Report" },
   { href: "/ledgerReport", label: "Ledger Report" },
+  { href: "/dailySummary", label: "Daily Summary" },
   { href: "/lcb", label: "Ledger Closing Balance" },
   { href: "/transactions", label: "Transactions" },
   { href: "/pr", label: "P & R" },

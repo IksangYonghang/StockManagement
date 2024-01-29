@@ -15,6 +15,7 @@ import { baseUrl } from "../../constants/url.constants";
 import {
   ICategory,
   ICompany,
+  ILedger,
   IUpdateProductDto,
 } from "../../types/global.typing";
 
@@ -31,6 +32,8 @@ const UpdateProduct = () => {
   const { darkMode } = useContext(ThemeContext);
   const { id } = useParams();
   const [product, setProduct] = useState<IUpdateProductDto>({
+    ledgerId: "",
+    ledgerName: "",
     productName: "",
     productDescription: "",
     productSize: "",
@@ -44,20 +47,40 @@ const UpdateProduct = () => {
     companyName: "",
   });
 
+  const [ledgers, setLedgers] = useState<ILedger[]>([]);
+  const [filteredLedgers, setFilteredLedgers] = useState<ILedger[]>([]);
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [companies, setCompanies] = useState<ICompany[]>([]);
-  const [existingImgUrl, setExistingImgUrl] = useState(""); // Store the URL of the existing Img file
+  const [existingImgUrl, setExistingImgUrl] = useState("");
   const [imgFile, setImgFile] = useState<File | null>();
   const redirect = useNavigate();
+
+  useEffect(() => {
+    httpModule
+      .get<ILedger[]>("/Ledger/Get")
+      .then((res) => {
+        setLedgers(res.data);
+
+        const assetLedgers = res.data.filter(
+          (ledger) => ledger.masterAccount === "Assets"
+        );
+        setFilteredLedgers(assetLedgers);
+      })
+      .catch((err) => {
+        alert("Error while fetching ledgers");
+        console.log(err);
+      });
+  }, []);
 
   useEffect(() => {
     httpModule
       .get(`/Product/GetById?id=${id}`)
       .then((response) => {
         const productData = response.data;
+
         setProduct({ ...productData });
 
-        // Set the URL of the existing PDF file
+        // Setting the URL of the existing PDF file
         setExistingImgUrl(productData.imageUrl);
       })
       .catch((error) => {
@@ -114,13 +137,18 @@ const UpdateProduct = () => {
     updatedProductFormData.append("retailPrice", product.retailPrice);
     updatedProductFormData.append("categoryId", product.categoryId);
     updatedProductFormData.append("companyId", product.companyId);
+    updatedProductFormData.append("ledgerId", product.ledgerId);
+    updatedProductFormData.append(
+      "ledgerName",
+      ledgers.find((led) => led.id === product.ledgerId)?.ledgerName ?? ""
+    );
     updatedProductFormData.append(
       "companyName",
       companies.find((comp) => comp.id === product.companyId)?.companyName ?? ""
     );
     updatedProductFormData.append(
       "categoryName",
-      categories.find((comp) => comp.id === product.categoryId)?.categoryName ??
+      categories.find((cat) => cat.id === product.categoryId)?.categoryName ??
         ""
     );
     if (imgFile) {
@@ -142,6 +170,31 @@ const UpdateProduct = () => {
     <div className="content">
       <div className="update-product">
         <h2>Update Product</h2>
+        <FormControl fullWidth>
+          <InputLabel
+            style={{
+              color: darkMode ? "#f7f5e6" : "#333a56",
+            }}
+          >
+            Ledger Name
+          </InputLabel>
+          <Select
+            label="Ledger Name"
+            value={product.ledgerId}
+            onChange={(s) =>
+              setProduct({ ...product, ledgerId: s.target.value })
+            }
+            style={{
+              color: darkMode ? "#f7f5e6" : "#333a56",
+            }}
+          >
+            {filteredLedgers.map((item) => (
+              <MenuItem key={item.id} value={item.id}>
+                {item.ledgerName}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <TextField
           fullWidth
           autoComplete="off"

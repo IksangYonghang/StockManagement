@@ -4,7 +4,7 @@ import NepaliDateConverter from "nepali-date-converter";
 import "./home.scss";
 import { IBranch } from "../../types/global.typing";
 import httpModule from "../../helpers/http.module";
-import { colors } from "@mui/material";
+
 interface SubNavBarProps {
   userName: string | null;
 }
@@ -79,6 +79,7 @@ const SubNavBar: React.FC<SubNavBarProps> = ({}) => {
     try {
       const response = await httpModule.get<IBranch[]>("/Dash/GetOfficeNames");
       setBranchName(response.data[0] || null);
+      //console.log("Branch Name :", response.data)
     } catch (error) {
       console.error("Error fetching branch name:", error);
     } finally {

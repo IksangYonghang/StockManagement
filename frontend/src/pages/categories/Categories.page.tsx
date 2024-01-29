@@ -92,6 +92,8 @@ const Categories = () => {
                 backgroundColor: darkMode ? "#f7f5e6" : "#333a56",
                 color: darkMode ? "#333a56" : "#f7f5e6",
                 fontWeight: "bold",
+                padding: "12px",
+                marginBottom: "6px"
               }}
           onClick={() => navigate("/categories/add")}
           startIcon={<Add />}

@@ -336,7 +336,7 @@ const LedgerClosingBalance: React.FC = () => {
             fontWeight: "bold",
             marginLeft: "3rem",
             marginTop: "-0.8rem",
-            height: "40px",
+            height: "46px",
           }}
         >
           Show Report

@@ -82,7 +82,7 @@ const ProductStockReport: React.FC = () => {
 
   return (
     <>
-      <h1 style={{ marginBottom: "2rem" , fontSize:"25px"}}>Product Report</h1>
+      <h1 style={{ marginBottom: "2rem", fontSize: "22px" }}>Product Report</h1>
       <div className="container">
         <FormControl fullWidth style={{ width: "20%" }}>
           <Autocomplete
@@ -153,13 +153,12 @@ const ProductStockReport: React.FC = () => {
           >
             To Date:{" "}
           </label>
-          <NepaliDatePicker          
+          <NepaliDatePicker
             value={selectedToDate}
             onChange={(value) => handleToDateChange(value)}
             options={{ calenderLocale: "ne", valueLocale: "en" }}
             inputClassName={`form-control ${darkMode ? "dark-mode" : ""}`}
             className="nepali-datepicker"
-            
           />
         </div>
         <Button
@@ -170,8 +169,8 @@ const ProductStockReport: React.FC = () => {
             color: darkMode ? "#333a56" : "#f7f5e6",
             fontWeight: "bold",
             marginLeft: "10rem",
-            marginTop: "-1rem",
-            height: "40px",
+            marginTop: "-0.8rem",
+            height: "46px",
           }}
         >
           Show Report

@@ -229,6 +229,10 @@ namespace Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("image_url");
 
+                    b.Property<long>("LedgerId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("ledger_id");
+
                     b.Property<decimal>("MarkedPrice")
                         .HasColumnType("numeric")
                         .HasColumnName("marked_price");
@@ -268,6 +272,8 @@ namespace Data.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("LedgerId");
 
                     b.ToTable("products", "stock");
                 });
@@ -531,9 +537,17 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Module.Entities.Ledger", "Ledger")
+                        .WithMany("Products")
+                        .HasForeignKey("LedgerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
 
                     b.Navigation("Company");
+
+                    b.Navigation("Ledger");
                 });
 
             modelBuilder.Entity("Module.Entities.Transaction", b =>
@@ -580,6 +594,11 @@ namespace Data.Migrations
                 });
 
             modelBuilder.Entity("Module.Entities.Company", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Module.Entities.Ledger", b =>
                 {
                     b.Navigation("Products");
                 });

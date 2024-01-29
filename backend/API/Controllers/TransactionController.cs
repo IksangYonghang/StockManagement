@@ -124,9 +124,14 @@ namespace API.Controllers
             {
                 NotFound("No transactions found");
             }
-            var convertedTransactions = _mapper.Map<List<TransactionGetDto>>(transactions);
-            return Ok(transactions);
+
+            var convertedTransactions = transactions
+                .Select(transaction => _mapper.Map<TransactionGetDto>(transaction))
+                .ToList();
+
+            return Ok(convertedTransactions);
         }
+
 
         [HttpPut("Update")]
         public async Task<ActionResult<TransactionGetDto>> UpdateTransactions(List<TransactionUpdateDto> transactionUpdateDtos)

@@ -27,6 +27,7 @@ namespace Module.AutoMapper
 
             CreateMap<ProductCreateDto, Product>();
             CreateMap<Product, ProductGetDto>()
+                .ForMember(dest => dest.LedgerName, opt => opt.MapFrom((src => src.Ledger.LedgerName)))
                 .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Company.CompanyName))
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName));
             CreateMap<ProductUpdateDto, Product>();

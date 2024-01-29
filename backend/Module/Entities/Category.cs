@@ -15,5 +15,6 @@ namespace Module.Entities
 
         //Relations
         public List<Product> Products { get; set; }
+       
     }
 }

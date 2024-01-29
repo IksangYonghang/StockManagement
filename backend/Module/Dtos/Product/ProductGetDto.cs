@@ -22,6 +22,8 @@ namespace Module.Dtos.Candidate
         public string CategoryName { get; set; }
         public long CompanyId { get; set; }
         public string CompanyName { get; set; }
+        public long LedgerId { get; set; }
+        public string LedgerName { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

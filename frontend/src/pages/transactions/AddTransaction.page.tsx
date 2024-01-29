@@ -38,7 +38,6 @@ const transactionMethodArray: string[] = [
 
 const AddTransaction = () => {
   const { darkMode } = useContext(ThemeContext);
-  const [transactions, setTransactions] = useState<ITransaction[]>([]);
   const [transaction, setTransaction] = useState<ITransactionCreateDto>({
     userId: 0,
     date: "",
@@ -64,6 +63,39 @@ const AddTransaction = () => {
   const [transactionsToSend, setTransactionsToSend] = useState<
     ITransactionCreateDto[]
   >([]);
+
+  const calculateAmount = (quantity: string, costPrice: number) => {
+    const parsedQuantity = parseFloat(quantity);
+    if (!isNaN(parsedQuantity)) {
+      return (parsedQuantity * costPrice).toFixed(2);
+    }
+    return "0.00";
+  };
+
+  const handlePieceChange = (value: string) => {
+    const selectedProduct = products.find(
+      (product) => product.id === transaction.productId
+    );
+
+    if (selectedProduct) {
+      const parsedValue = parseFloat(value);
+      const costPrice = parseFloat(selectedProduct.costPrice); // Convert costPrice to a number
+
+      if (!isNaN(parsedValue) && !isNaN(costPrice)) {
+        const amount = calculateAmount(parsedValue.toString(), costPrice);
+
+        // Set either debit or credit based on transaction type
+        const updatedTransaction: ITransactionCreateDto = {
+          ...transaction,
+          piece: value,
+          [transaction.transactionType === "Purchase" ? "debit" : "credit"]:
+            amount,
+        };
+
+        setTransaction(updatedTransaction);
+      }
+    }
+  };
 
   const addVoucherRow = () => {
     const selectedLedger = ledgers.find(
@@ -190,22 +222,35 @@ const AddTransaction = () => {
       credit: creditTotal.toString(),
       narration: "",
     };
+    // console.log("TransactionToSend", transactionToSend);
 
-    const updatedTransactions = vouchers.map((voucher) => ({
-      userId: parseInt(userId),
-      date: formattedDate,
-      engDate: formattedGregorianDateWithHyphen,
-      invoiceNumber: voucher.invoiceNumber,
-      ledgerId: voucher.ledgerId || null,
-      productId: voucher.productId || null,
-      piece: voucher.quantity || null,
-      transactionType: voucher.transactionType,
-      transactionMethod: voucher.transactionMethod,
-      debit: voucher.debit || "0",
-      credit: voucher.credit || "0",
-      narration: voucher.narration,
-    }));
-    console.log("Transactions to send:", updatedTransactions);
+    const updatedTransactions = vouchers.map((voucher) => {
+      const selectedProduct = products.find(
+        (product) => product.id === voucher.productId
+      );
+      const selectedLedger = ledgers.find(
+        (ledger) => ledger.id === voucher.ledgerId
+      );
+
+      return {
+        userId: parseInt(userId),
+        date: formattedDate,
+        engDate: formattedGregorianDateWithHyphen,
+        invoiceNumber: voucher.invoiceNumber,
+        ledgerId:
+          voucher.ledgerId ||
+          (selectedProduct ? selectedProduct.ledgerId : null),
+        productId: voucher.productId || null,
+        piece: voucher.quantity || null,
+        transactionType: voucher.transactionType,
+        transactionMethod: voucher.transactionMethod,
+        debit: voucher.debit || "0",
+        credit: voucher.credit || "0",
+        narration: voucher.narration,
+      };
+    });
+
+    //console.log("Transactions to send:", updatedTransactions);
     setTransactionsToSend(updatedTransactions);
     httpModule
       .post("/Transaction/Create", updatedTransactions)
@@ -262,13 +307,6 @@ const AddTransaction = () => {
     const formattedEnglishDate = formatToDesiredFormat(englishDate);
     setSelectedDate(formattedEnglishDate);
     setFormattedGregorianDate(formattedGregorianDateWithHyphen);
-  };
-
-  const handleChange = (field: string, value: string) => {
-    setTransaction({
-      ...transaction,
-      [field]: value,
-    });
   };
 
   const [showVoucherHeader, setShowVoucherHeader] = useState(false);
@@ -531,12 +569,7 @@ const AddTransaction = () => {
               label="Piece"
               variant="outlined"
               value={transaction.piece}
-              onChange={(n) =>
-                setTransaction({
-                  ...transaction,
-                  piece: n.target.value,
-                })
-              }
+              onChange={(n) => handlePieceChange(n.target.value)}
               InputProps={{
                 style: {
                   color: darkMode ? "#f7f5e6" : "#333a56",
@@ -584,6 +617,7 @@ const AddTransaction = () => {
                 },
               }}
               style={{ width: "25%" }}
+              disabled={!!transaction.credit}
             />
 
             <TextField
@@ -614,6 +648,7 @@ const AddTransaction = () => {
                 },
               }}
               style={{ width: "25%" }}
+              disabled={!!transaction.debit}
             />
           </div>
         </div>
@@ -653,53 +688,62 @@ const AddTransaction = () => {
             onClick={addVoucherRow}
           />
         </div>
-        {showVoucherHeader && (
-          <h3 style={{ marginTop: "1rem", textAlign: "center" }}>Voucher</h3>
+        {Array.isArray(vouchers) && vouchers.length > 0 && (
+          <div>
+            {showVoucherHeader && (
+              <h3 style={{ marginTop: "1rem", textAlign: "center" }}>
+                Voucher
+              </h3>
+            )}
+            {vouchers.length > 0 && (
+              <table className="voucher-table">
+                <thead>
+                  <tr>
+                    <th>Transaction Type</th>
+                    <th>Transaction Method</th>
+                    <th>Product Name</th>
+                    <th>Ledger Name</th>
+                    <th>Quantity</th>
+                    <th>Debit</th>
+                    <th>Credit</th>
+                    <th>Narration</th>
+                    <th>Delete?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {vouchers.map((voucher, index) => (
+                    <tr key={index}>
+                      <td>{voucher.transactionType}</td>
+                      <td>{voucher.transactionMethod}</td>
+                      <td>
+                        {voucher.productName ? voucher.productName : "N/A"}
+                      </td>
+                      <td>{voucher.ledgerName ? voucher.ledgerName : "N/A"}</td>
+                      <td>{voucher.quantity}</td>
+                      <td>{voucher.debit}</td>
+                      <td>{voucher.credit}</td>
+                      <td>{voucher.narration}</td>
+                      <td>
+                        <button onClick={() => handleDeleteRow(index)}>
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                  <tr>
+                    <td colSpan={5} style={{ fontWeight: "bold" }}>
+                      Total
+                    </td>
+                    <td style={{ fontWeight: "bold" }}>{totalDebit}</td>
+                    <td style={{ fontWeight: "bold" }}>{totalCredit}</td>
+                    <td colSpan={5}></td>
+                  </tr>
+                </tbody>
+              </table>
+            )}
+          </div>
         )}
-        {vouchers.length > 0 && (
-          <table className="voucher-table">
-            <thead>
-              <tr>
-                <th>Transaction Type</th>
-                <th>Transaction Method</th>
-                <th>Product Name</th>
-                <th>Ledger Name</th>
-                <th>Quantity</th>
-                <th>Debit</th>
-                <th>Credit</th>
-                <th>Narration</th>
-                <th>Delete?</th>
-              </tr>
-            </thead>
-            <tbody>
-              {vouchers.map((voucher, index) => (
-                <tr key={index}>
-                  <td>{voucher.transactionType}</td>
-                  <td>{voucher.transactionMethod}</td>
-                  <td>{voucher.productName ? voucher.productName : "N/A"}</td>
-                  <td>{voucher.ledgerName ? voucher.ledgerName : "N/A"}</td>
-                  <td>{voucher.quantity}</td>
-                  <td>{voucher.debit}</td>
-                  <td>{voucher.credit}</td>
-                  <td>{voucher.narration}</td>
-                  <td>
-                    <button onClick={() => handleDeleteRow(index)}>
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              <tr>
-                <td colSpan={5} style={{ fontWeight: "bold" }}>
-                  Total
-                </td>
-                <td style={{ fontWeight: "bold" }}>{totalDebit}</td>
-                <td style={{ fontWeight: "bold" }}>{totalCredit}</td>
-                <td colSpan={5}></td>
-              </tr>
-            </tbody>
-          </table>
-        )}
+
         <div
           style={{
             display: "flex",

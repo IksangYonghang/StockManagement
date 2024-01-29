@@ -19,5 +19,7 @@ namespace Module.Entities
         public MasterAccount? MasterAccount { get; set; }
         public bool IsTranGl { get; set; } = false;
         public int Level { get; set; }
+
+        public List<Product> Products { get; set; }
     }
 }

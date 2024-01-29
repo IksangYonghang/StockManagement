@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Module.Entities
@@ -22,6 +23,9 @@ namespace Module.Entities
         //Relations
         public long CategoryId { get; set; }
         public Category Category { get; set; }
+
+        public long LedgerId { get; set; }
+        public Ledger Ledger { get; set; }
 
         public long CompanyId { get; set; }
         public Company Company { get; set; }

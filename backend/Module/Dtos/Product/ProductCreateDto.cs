@@ -10,6 +10,7 @@ namespace Module.Dtos.Candidate
 {
     public class ProductCreateDto
     {
+        public long LedgerId { get; set; }
         public string ProductName { get; set; }
         public string? ProductDescription { get; set; }
         public ProductSize ProductSize { get; set; }

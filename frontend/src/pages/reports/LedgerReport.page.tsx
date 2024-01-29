@@ -71,9 +71,15 @@ const LedgerReport: React.FC = () => {
   };
 
   const hideColumnsButton = (
-    <Button onClick={toggleHideForm} variant="contained" style={{ backgroundColor:darkMode? "#f7f5e6" : "#333a56",
-    color: darkMode? "#333a56" : "#f7f5e6",
-    fontWeight: "bold",}}>
+    <Button
+      onClick={toggleHideForm}
+      variant="contained"
+      style={{
+        backgroundColor: darkMode ? "#f7f5e6" : "#333a56",
+        color: darkMode ? "#333a56" : "#f7f5e6",
+        fontWeight: "bold",
+      }}
+    >
       {showHideForm ? "Hide Columns" : "Show Columns"}
     </Button>
   );
@@ -265,12 +271,12 @@ const LedgerReport: React.FC = () => {
           onClick={handleShowReport}
           variant="contained"
           style={{
-            backgroundColor:darkMode? "#f7f5e6" : "#333a56",
-            color: darkMode? "#333a56" : "#f7f5e6",
+            backgroundColor: darkMode ? "#f7f5e6" : "#333a56",
+            color: darkMode ? "#333a56" : "#f7f5e6",
             fontWeight: "bold",
             marginLeft: "10rem",
-            marginTop: "-1rem",
-            height: "40px",
+            marginTop: "-0.8rem",
+            height: "46px",
           }}
         >
           Show Report

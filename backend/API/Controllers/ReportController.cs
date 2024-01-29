@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Module.Dtos.Reports;
 using Shared.Enums;
 using Module.Entities;
+using NepaliDateConverter.Helper;
 
 namespace API.Controllers
 {
@@ -609,13 +610,13 @@ namespace API.Controllers
 
                     decimal openingBalance = 0;
                     decimal totalCurrent = 0;
-                  
+
 
                     if (isLiabilities)
                     {
                         openingBalance = _dbContext.Transactions
                          .Where(t => t.LedgerId == ledger.Id && t.Date < fromDateOnly)
-                         .ToList() 
+                         .ToList()
                          .Sum(transaction =>
                          {
                              if (transaction.TransactionType == TransactionType.Purchase || transaction.TransactionType == TransactionType.Receipt)
@@ -626,7 +627,7 @@ namespace API.Controllers
                              {
                                  return -transaction.Debit ?? 0;
                              }
-                             return 0; 
+                             return 0;
                          });
 
                         totalCurrent = _dbContext.Transactions
@@ -644,7 +645,7 @@ namespace API.Controllers
                              }
                              return 0;
                          });
-                       
+
                     }
                     else if (isAssets)
                     {
@@ -702,7 +703,7 @@ namespace API.Controllers
                             .Where(t => t.LedgerId == ledger.Id && t.Date >= fromDateOnly && t.Date <= toDateOnly && t.TransactionType == TransactionType.Purchase)
                             .Sum(t => t.Piece) ?? 0;
 
-                       
+
                     }
 
                     var parentLedger = _dbContext.Ledgers.FirstOrDefault(c => c.Id == ledger.ParentId);
@@ -716,7 +717,7 @@ namespace API.Controllers
                         LedgerId = ledger.Id,
                         LedgerName = ledger.LedgerName,
                         OpeningBal = openingBalance,
-                        TotalCurrent = totalCurrent,                        
+                        TotalCurrent = totalCurrent,
                         Balance = openingBalance + totalCurrent,
                     };
                     report.Add(reportDto);
@@ -729,5 +730,96 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("GetDailySummary")]
+        public async Task<Dictionary<string, Dictionary<long, DailySummaryDto>>> GetDailySummary([FromQuery]List<long> userIds, bool isDuration, DateOnly fromDate, DateOnly toDate)
+        {
+            if (!isDuration)
+            {
+                fromDate = toDate;
+            }
+
+            var dailySummaryQuery = _dbContext.Transactions
+                .Where(ds => ds.Date >= fromDate && ds.Date <= toDate);
+
+            if (userIds != null && userIds.Any())
+            {
+                dailySummaryQuery = dailySummaryQuery.Where(ds => userIds.Contains(ds.UserId));
+            }
+            try
+            {
+                var dailySummaries = await dailySummaryQuery.ToListAsync();
+
+                var aggregateBalancesByAccountType = new Dictionary<string, Dictionary<long, DailySummaryDto>>();
+
+                foreach (var dailySummary in dailySummaries)
+                {
+                    var ledgerId = dailySummary.LedgerId ?? 0;
+
+                    var ledger = await _dbContext.Ledgers.FirstOrDefaultAsync(l => l.Id == ledgerId);
+
+
+                    if (ledger != null)
+                    {
+                        var masterAccount = ledger.MasterAccount.ToString();
+
+                        aggregateBalancesByAccountType.TryGetValue(masterAccount, out var aggregateBalances);
+
+                        if (aggregateBalances == null)
+                        {
+                            aggregateBalances = new Dictionary<long, DailySummaryDto>();
+                            aggregateBalancesByAccountType[masterAccount] = aggregateBalances;
+                        }
+
+                        if (!aggregateBalances.ContainsKey(ledgerId))
+                        {
+                            var dailySummaryDto = new DailySummaryDto
+                            {
+                                Title = $"({dailySummary.Ledger.LedgerCode}) {dailySummary.Ledger.LedgerName}",
+                                Debit = 0,
+                                Credit = 0
+                            };
+                            aggregateBalances.Add(ledgerId, dailySummaryDto);
+                        }
+
+                        var existingBalance = aggregateBalances[ledgerId];
+
+                        if (dailySummary.Ledger.MasterAccount == MasterAccount.Assets || dailySummary.Ledger.MasterAccount == MasterAccount.Expenses)
+                        {
+
+                            existingBalance.Debit += dailySummary.Debit ?? 0;
+                            existingBalance.Credit += dailySummary.Credit ?? 0;
+                        }
+                        else if (dailySummary.Ledger.MasterAccount == MasterAccount.Incomes || dailySummary.Ledger.MasterAccount == MasterAccount.Liabilities)
+                        {
+
+                            existingBalance.Debit += dailySummary.Debit ?? 0;
+                            existingBalance.Credit += dailySummary.Credit ?? 0;
+                        }
+
+                        aggregateBalances[ledgerId] = existingBalance;
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("Warning: dailySummary.Ledger is null for LedgerId " + ledgerId);
+                  
+                    }
+
+                }
+
+                return aggregateBalancesByAccountType;
+            }
+
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex);
+                throw;
+            }
+
+
+        }
+
     }
+
 }

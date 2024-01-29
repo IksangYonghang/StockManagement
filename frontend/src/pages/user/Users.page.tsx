@@ -89,10 +89,11 @@ const Users = () => {
           variant="contained"
           color="primary"
           style={{
-            backgroundColor: darkMode? "#f7f5e6" : "#333a56",
-            color: darkMode? "#333a56" : "#f7f5e6",
+            backgroundColor: darkMode ? "#f7f5e6" : "#333a56",
+            color: darkMode ? "#333a56" : "#f7f5e6",
             fontWeight: "bold",
-            marginBottom: "0.9rem",
+            padding: "12px",
+            marginBottom: "6px",
           }}
           onClick={() => redirect("/users/add")}
           startIcon={<Add />}
@@ -105,7 +106,11 @@ const Users = () => {
       ) : users.length === 0 ? (
         <h1> No User</h1>
       ) : (
-        <UsersGrid data={users} onDelete={handleDeleteUser} darkMode={darkMode}/>
+        <UsersGrid
+          data={users}
+          onDelete={handleDeleteUser}
+          darkMode={darkMode}
+        />
       )}
     </div>
   );

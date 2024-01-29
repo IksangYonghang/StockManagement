@@ -111,7 +111,8 @@ const PaymentReceipt = () => {
             backgroundColor: darkMode ? "#f7f5e6" : "#333a56",
             color: darkMode ? "#333a56" : "#f7f5e6",
             fontWeight: "bold",
-            marginBottom: "0.9rem",
+            padding: "12px",
+            marginBottom: "6px",
           }}
           onClick={() => redirect("/pr/add")}
           startIcon={<Add />}
@@ -126,7 +127,8 @@ const PaymentReceipt = () => {
       ) : (
         <PaymentReceiptGrid
           data={filteredTransactions}
-          onDelete={handleDeleteTransaction} darkMode ={darkMode}
+          onDelete={handleDeleteTransaction}
+          darkMode={darkMode}
         />
       )}
     </div>

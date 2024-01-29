@@ -15,6 +15,7 @@ import {
   ICategory,
   ICompany,
   ICreateProductDto,
+  ILedger,
 } from "../../types/global.typing";
 
 const productSizeArray: string[] = [
@@ -29,6 +30,8 @@ const productSizeArray: string[] = [
 const AddProduct = () => {
   const { darkMode } = useContext(ThemeContext);
   const [product, setProduct] = useState<ICreateProductDto>({
+    ledgerId: "",
+    ledgerName: "",
     productName: "",
     productDescription: "",
     productSize: "",
@@ -42,12 +45,29 @@ const AddProduct = () => {
     categoryName: "",
   });
 
+  const [ledgers, setLedgers] = useState<ILedger[]>([]);
+  const [filteredLedgers, setFilteredLedgers] = useState<ILedger[]>([]);
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [companies, setCompanies] = useState<ICompany[]>([]);
   const [imgFile, setImgFile] = useState<File | null>();
   const redirect = useNavigate();
 
-  //Populating Category list from Company Page
+  useEffect(() => {
+    httpModule
+      .get<ILedger[]>("/Ledger/Get")
+      .then((response) => {
+        setLedgers(response.data);
+
+        const assetLedgers = response.data.filter(
+          (ledger) => ledger.masterAccount === "Assets"
+        );
+        setFilteredLedgers(assetLedgers);
+      })
+      .catch((err) => {
+        alert("Error while fetching ledger list");
+        console.log(err);
+      });
+  }, []);
 
   useEffect(() => {
     httpModule
@@ -75,6 +95,7 @@ const AddProduct = () => {
 
   const handleClickSaveBtn = () => {
     if (
+      product.ledgerId === "" ||
       product.productName === "" ||
       product.productSize === "" ||
       product.markedPrice === "" ||
@@ -99,6 +120,7 @@ const AddProduct = () => {
       userId: parseInt(userId),
     };
     const newProductFormData = new FormData();
+
     newProductFormData.append("productName", product.productName);
     newProductFormData.append("productDescription", product.productDescription);
     newProductFormData.append("productSize", product.productSize);
@@ -106,20 +128,25 @@ const AddProduct = () => {
     newProductFormData.append("costPrice", product.costPrice);
     newProductFormData.append("wholeSalePrice", product.wholeSalePrice);
     newProductFormData.append("retailPrice", product.retailPrice);
+    newProductFormData.append("ledgerId", product.ledgerId);
     newProductFormData.append("categoryId", product.categoryId);
     newProductFormData.append("companyId", product.companyId);
+    newProductFormData.append(
+      "ledgerName",
+      ledgers.find((led) => led.id === product.ledgerId)?.ledgerName ?? ""
+    );
     newProductFormData.append(
       "companyName",
       companies.find((comp) => comp.id === product.companyId)?.companyName ?? ""
     );
     newProductFormData.append(
       "categoryName",
-      categories.find((comp) => comp.id === product.categoryId)?.categoryName ??
+      categories.find((cat) => cat.id === product.categoryId)?.categoryName ??
         ""
     );
     newProductFormData.append("userId", userId);
 
-    console.log(newProductFormData, product);
+    //console.log(newProductFormData, product);
     if (imgFile) {
       newProductFormData.append("imageFile", imgFile);
     }
@@ -137,6 +164,31 @@ const AddProduct = () => {
     <div className="content">
       <div className="add-product">
         <h2>Add a new product</h2>
+        <FormControl fullWidth>
+          <InputLabel
+            style={{
+              color: darkMode ? "#f7f5e6" : "#333a56",
+            }}
+          >
+            Ledger Name
+          </InputLabel>
+          <Select
+            label="Ledger Name"
+            value={product.ledgerId}
+            onChange={(s) =>
+              setProduct({ ...product, ledgerId: s.target.value })
+            }
+            style={{
+              color: darkMode ? "#f7f5e6" : "#333a56",
+            }}
+          >
+            {filteredLedgers.map((item) => (
+              <MenuItem key={item.id} value={item.id}>
+                {item.ledgerName}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <TextField
           fullWidth
           autoComplete="off"

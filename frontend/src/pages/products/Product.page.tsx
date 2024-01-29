@@ -93,7 +93,8 @@ const Products = () => {
           style={{
             backgroundColor: darkMode ? "#f7f5e6" : "#333a56",
             color: darkMode ? "#333a56" : "#f7f5e6",
-            marginBottom: "0.9rem",
+            padding: "12px",
+            marginBottom: "6px",
           }}
           onClick={() => redirect("/products/add")}
           startIcon={<Add />}
@@ -106,7 +107,11 @@ const Products = () => {
       ) : products.length === 0 ? (
         <h1> No Products</h1>
       ) : (
-        <ProductsGrid data={products} onDelete={handleDeleteProduct} darkMode ={darkMode} />
+        <ProductsGrid
+          data={products}
+          onDelete={handleDeleteProduct}
+          darkMode={darkMode}
+        />
       )}
     </div>
   );

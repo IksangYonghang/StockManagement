@@ -92,7 +92,8 @@ const Ledgers = () => {
             backgroundColor: darkMode ? "#f7f5e6" : "#333a56",
             color: darkMode ? "#333a56" : "#f7f5e6",
             fontWeight: "bold",
-            marginBottom: "0.9rem",
+            padding: "12px",
+            marginBottom: "6px",
           }}
           onClick={() => redirect("/ledgers/add")}
           startIcon={<Add />}
@@ -105,7 +106,11 @@ const Ledgers = () => {
       ) : ledgers.length === 0 ? (
         <h1> No Ledgers</h1>
       ) : (
-        <LedgerGrid data={ledgers} onDelete={handleDeleteCompany} darkMode={darkMode} />
+        <LedgerGrid
+          data={ledgers}
+          onDelete={handleDeleteCompany}
+          darkMode={darkMode}
+        />
       )}
     </div>
   );

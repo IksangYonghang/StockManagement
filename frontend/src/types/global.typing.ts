@@ -37,6 +37,7 @@ export interface IUpdateCategoryDto {
 
 export interface IProduct {
   id: string;
+  ledgerId: string;
   productName: string;
   productDescription: string;
   productSize: string;
@@ -51,6 +52,8 @@ export interface IProduct {
   companyName: string;
 }
 export interface ICreateProductDto {
+  ledgerId: string;
+  ledgerName: string;
   productName: string;
   productDescription: string;
   productSize: string;
@@ -65,6 +68,8 @@ export interface ICreateProductDto {
 }
 
 export interface IUpdateProductDto {
+  ledgerId: string;
+  ledgerName: string;
   productName: string;
   productDescription: string;
   productSize: string;
@@ -134,7 +139,7 @@ export interface ITransactionCreateDto {
   date: string;
   engDate: string;
   invoiceNumber: string;
-  ledgerId: string;
+  ledgerId: string | null;
   productId: string;
   piece: string;
   transactionType: string;
@@ -284,4 +289,11 @@ export interface IDashLowStockReport {
   currentStock: string | number;
   totalStockBalance: string | number;
   stockValue: string | number;
+}
+
+
+export interface IDailySummary {
+  title: string;
+  debit?: number;
+  credit?: number;
 }
