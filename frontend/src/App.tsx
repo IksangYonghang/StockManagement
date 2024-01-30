@@ -45,6 +45,7 @@ import LedgerClosingBalance from "./pages/reports/LedgerClosingBalance.page";
 import DailySummary from "./pages/reports/DailySummary.page";
 import TrialBalance from "./pages/finalaccounts/TrialBalance.page";
 import ProfitLoss from "./pages/finalaccounts/ProfitLoss.page";
+import BalanceSheet from "./pages/finalaccounts/BalanceSheet.page";
 
 interface MainContentProps {
   isLoggedIn: boolean;
@@ -109,6 +110,7 @@ const MainContent: React.FC<MainContentProps> = ({
             <Route path="/dailySummary" element={<DailySummary />} />
             <Route path="/trialBalance" element={<TrialBalance />} />
             <Route path="/profitLoss" element={<ProfitLoss />} />
+            <Route path="/balanceSheet" element={<BalanceSheet />} />
             <Route path="/lcb" element={<LedgerClosingBalance />} />
           </>
         )}

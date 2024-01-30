@@ -21,6 +21,7 @@ const links: { href: string; label: string }[] = [
   { href: "/dailySummary", label: "DS R" },
   { href: "/trialBalance", label: "TB" },
   { href: "/profitLoss", label: "PL" },
+  { href: "/balanceSheet", label: "BS" },
   { href: "/lcb", label: "LCB R" },
   { href: "/transactions", label: "Transactions" },
   { href: "/pr", label: "P & R" },

@@ -303,8 +303,13 @@ export interface ITrialBalnce {
   credit?: number;
 }
 
-
 export interface IProfiLoss {
+  title: string;
+  debit?: number;
+  credit?: number;
+}
+
+export interface IBalanceSheet {
   title: string;
   debit?: number;
   credit?: number;

@@ -31,14 +31,12 @@ namespace API.Controllers
             {
                 fromDate = toDate;
 
-                trialBalanceQuery = _dbContext.Transactions
-                    .Where(tb => tb.EngDate <= fromDate);
+                trialBalanceQuery = _dbContext.Transactions.Where(tb => tb.EngDate <= fromDate);
             }
             else
             {
 
-                trialBalanceQuery = _dbContext.Transactions
-                    .Where(tb => tb.EngDate >= fromDate && tb.EngDate <= toDate);
+                trialBalanceQuery = _dbContext.Transactions.Where(tb => tb.EngDate >= fromDate && tb.EngDate <= toDate);
             }
 
             try
@@ -158,7 +156,7 @@ namespace API.Controllers
 
                     {
 
-                        if(ledger.MasterAccount == MasterAccount.Expenses || ledger.MasterAccount== MasterAccount.Incomes)
+                        if (ledger.MasterAccount == MasterAccount.Expenses || ledger.MasterAccount == MasterAccount.Incomes)
                         {
                             var masterAccount = ledger.MasterAccount.ToString();
 
@@ -217,6 +215,101 @@ namespace API.Controllers
                     else
                     {
                         Console.WriteLine("Warning: ProfitLoss Ledger is null for LedgerId" + ledgerId);
+                    }
+                }
+                return aggregateBalanceByAccountType;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw ex;
+            }
+        }
+
+        [HttpGet("GetBalanceSheet")]
+        public async Task<Dictionary<string, Dictionary<long, BalanceSheetDto>>> GetBalanceSheet(bool isDuration, DateOnly fromDate, DateOnly toDate)
+        {
+            IQueryable<Transaction> balanceSheetQuery;
+            if (!isDuration)
+            {
+                fromDate = toDate;
+                balanceSheetQuery = _dbContext.Transactions.Where(bs => bs.EngDate <= fromDate);
+            }
+            else
+            {
+                balanceSheetQuery = _dbContext.Transactions.Where(bs => bs.EngDate >= fromDate && bs.EngDate <= toDate);
+            }
+            try
+            {
+                var balanceSheets = await balanceSheetQuery.ToListAsync();
+                var aggregateBalanceByAccountType = new Dictionary<string, Dictionary<long, BalanceSheetDto>>();
+
+                foreach (var balanceSheet in balanceSheets)
+                {
+                    var ledgerId = balanceSheet.LedgerId ?? 0;
+                    var ledger = await _dbContext.Ledgers.FirstOrDefaultAsync(l => l.Id == ledgerId);
+
+                    if (ledger != null)
+                    {
+                        if (ledger.MasterAccount == MasterAccount.Assets || ledger.MasterAccount == MasterAccount.Liabilities)
+                        {
+                            var masterAccount = ledger.MasterAccount.ToString();
+                            var ledgerTransactionsBeforeFromDate = await _dbContext.Transactions.Where(bs => bs.LedgerId == ledgerId && bs.EngDate < fromDate).ToListAsync();
+
+                            var initialBalancce = 0m;
+
+                            if (balanceSheet.Ledger.MasterAccount == MasterAccount.Assets)
+                            {
+                                initialBalancce = ledgerTransactionsBeforeFromDate.Sum(bs => bs.Debit ?? 0) - ledgerTransactionsBeforeFromDate.Sum(bs => bs.Credit ?? 0);
+                            }
+                            if (balanceSheet.Ledger.MasterAccount == MasterAccount.Liabilities)
+                            {
+                                initialBalancce = ledgerTransactionsBeforeFromDate.Sum(bs => bs.Credit ?? 0) - ledgerTransactionsBeforeFromDate.Sum(bs => bs.Debit ?? 0);
+                            }
+
+                            aggregateBalanceByAccountType.TryGetValue(masterAccount, out var aggregateBalance);
+
+                            if (aggregateBalance == null)
+                            {
+                                aggregateBalance = new Dictionary<long, BalanceSheetDto>();
+                                aggregateBalanceByAccountType[masterAccount] = aggregateBalance;
+                            }
+                            if (!aggregateBalance.ContainsKey(ledgerId))
+                            {
+                                var balanceSheetDto = new BalanceSheetDto
+                                {
+                                    Title = $"({balanceSheet.Ledger.LedgerCode}){balanceSheet.Ledger.LedgerName}",
+                                    Debit = 0,
+                                    Credit = 0,
+                                };
+                                aggregateBalance.Add(ledgerId, balanceSheetDto);
+                            }
+                            var existingBalance = aggregateBalance[ledgerId];
+                            if (balanceSheet.Ledger.MasterAccount == MasterAccount.Assets)
+                            {
+                                if (balanceSheet.Credit > 0)
+                                {
+                                    existingBalance.Debit -= balanceSheet.Credit ?? 0;
+                                }
+                                existingBalance.Debit += balanceSheet.Debit ?? 0;
+                            }
+                            if(balanceSheet.Ledger.MasterAccount==MasterAccount.Liabilities)
+                            {
+                                if(balanceSheet.Debit > 0)
+                                {
+                                    existingBalance.Credit -= balanceSheet.Debit ?? 0;
+                                }
+                                existingBalance.Credit += balanceSheet.Credit ?? 0;
+                            }
+                            aggregateBalance[ledgerId] = existingBalance;
+
+                        }
+
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("Warning: Balancesheet Ledger is null for LedgerId" + ledgerId);
                     }
                 }
                 return aggregateBalanceByAccountType;
