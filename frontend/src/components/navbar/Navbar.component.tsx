@@ -20,6 +20,7 @@ const links: { href: string; label: string }[] = [
   { href: "/ledgerReport", label: "Ledger R" },
   { href: "/dailySummary", label: "DS R" },
   { href: "/trialBalance", label: "TB" },
+  { href: "/profitLoss", label: "PL" },
   { href: "/lcb", label: "LCB R" },
   { href: "/transactions", label: "Transactions" },
   { href: "/pr", label: "P & R" },

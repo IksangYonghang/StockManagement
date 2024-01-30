@@ -142,9 +142,9 @@ const TrialBalance: React.FC = () => {
             <table className="report-table">
               <thead>
                 <tr>
-                  <th>TITLE</th>
-                  <th>DEBIT</th>
-                  <th>CREDIT</th>
+                  <th style={{textAlign:"center"}}>PARTICULARS</th>
+                  <th style={{textAlign: "center"}}>DEBIT</th>
+                  <th style={{textAlign: "center"}}>CREDIT</th>
                 </tr>
               </thead>
               <tbody>
@@ -158,16 +158,16 @@ const TrialBalance: React.FC = () => {
                     {Object.keys(report[category]).map((id) => (
                       <tr key={id}>
                         <td>{report[category][id].title}</td>
-                        <td>{report[category][id].debit || 0}</td>
-                        <td>{report[category][id].credit || 0}</td>
+                        <td style={{textAlign:"right"}}>{report[category][id].debit || 0}</td>
+                        <td style={{textAlign: "right"}}>{report[category][id].credit || 0}</td>
                       </tr>
                     ))}
                   </React.Fragment>
                 ))}
 
                 <tr style={{ fontWeight: "bold" }}>
-                  <td>Total</td>
-                  <td>
+                  <td style={{textAlign: "center"}}>Total</td>
+                  <td style={{textAlign: "right"}}>
                     {Object.keys(report).reduce(
                       (totalDebit: number, category: string) =>
                         totalDebit +
@@ -183,7 +183,7 @@ const TrialBalance: React.FC = () => {
                       0
                     )}
                   </td>
-                  <td>
+                  <td style={{textAlign: "right"}}>
                     {Object.keys(report).reduce(
                       (totalCredit: number, category: string) =>
                         totalCredit +

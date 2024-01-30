@@ -127,7 +127,7 @@ namespace API.Controllers
 
         }
 
-        [HttpGet("GetProfitAndLoss")]
+        [HttpGet("GetProfitLoss")]
         public async Task<Dictionary<string, Dictionary<long, ProfitAndLossDto>>> GetProfitLoss(bool isDuration, DateOnly fromDate, DateOnly toDate)
         {
             IQueryable<Transaction> profitLossQuery;
