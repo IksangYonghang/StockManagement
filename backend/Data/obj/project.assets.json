@@ -351,15 +351,6 @@
           "lib/netstandard2.0/Mono.TextTemplating.dll": {}
         }
       },
-      "NepaliDateConverter/1.0.6": {
-        "type": "package",
-        "compile": {
-          "lib/NepaliDateConverter.dll": {}
-        },
-        "runtime": {
-          "lib/NepaliDateConverter.dll": {}
-        }
-      },
       "Npgsql/7.0.6": {
         "type": "package",
         "dependencies": {
@@ -1023,18 +1014,6 @@
         "mono.texttemplating.nuspec"
       ]
     },
-    "NepaliDateConverter/1.0.6": {
-      "sha512": "DXxb+hWxruQMkbcM2AppcHNCWKx+xvs6bDqX8a6oi2RNeA4M09XTyyJ4qWUH2YocFnwoRNBLhqc7mNx49nsaUQ==",
-      "type": "package",
-      "path": "nepalidateconverter/1.0.6",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/NepaliDateConverter.dll",
-        "nepalidateconverter.1.0.6.nupkg.sha512",
-        "nepalidateconverter.nuspec"
-      ]
-    },
     "Npgsql/7.0.6": {
       "sha512": "TAqvwRnm3NJ0QvN7cvu6geJkbI0XPzGVRElVY5hF4gsgA+BnE12x6GM1TLhdeq+7ZKvvo3BD8jXKnXmr3tvdEw==",
       "type": "package",
@@ -1216,7 +1195,6 @@
       "Microsoft.EntityFrameworkCore >= 7.0.11",
       "Microsoft.EntityFrameworkCore.Tools >= 7.0.11",
       "Module >= 1.0.0",
-      "NepaliDateConverter >= 1.0.6",
       "Npgsql.EntityFrameworkCore.PostgreSQL >= 7.0.11"
     ]
   },
@@ -1273,10 +1251,6 @@
             "target": "Package",
             "version": "[7.0.11, )"
           },
-          "NepaliDateConverter": {
-            "target": "Package",
-            "version": "[1.0.6, )"
-          },
           "Npgsql.EntityFrameworkCore.PostgreSQL": {
             "target": "Package",
             "version": "[7.0.11, )"
@@ -1301,17 +1275,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1701",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'NepaliDateConverter 1.0.6' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net7.0'. This package may not be fully compatible with your project.",
-      "libraryId": "NepaliDateConverter",
-      "targetGraphs": [
-        "net7.0"
-      ]
-    }
-  ]
+  }
 }

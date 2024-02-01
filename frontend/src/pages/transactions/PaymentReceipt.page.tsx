@@ -1,12 +1,11 @@
 import { useState, useEffect, useContext } from "react";
 import "./transactions.scss";
-import { IProduct, ITransaction } from "../../types/global.typing";
+import { ITransaction } from "../../types/global.typing";
 import httpModule from "../../helpers/http.module";
 import { Button, CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Add } from "@mui/icons-material";
 import { ThemeContext } from "../../context/theme.context";
-import TransactionsGrid from "../../components/transactions/TransactionGrid.component";
 import PaymentReceiptGrid from "../../components/transactions/PaymentReceiptGrid";
 
 const PaymentReceipt = () => {
@@ -46,7 +45,7 @@ const PaymentReceipt = () => {
 
   const handleDeleteTransaction = (transactionToDelete: ITransaction) => {
     const { transactionId } = transactionToDelete;
-    httpModule;
+
     httpModule
       .delete(`/Transaction/transactionId?transactionId=${transactionId}`)
 
@@ -60,7 +59,7 @@ const PaymentReceipt = () => {
     if (val === "") {
       fetchTransactions();
     } else {
-      setTransactions((tran) =>
+      setFilteredTransactions((tran) =>
         tran.filter((transaction) =>
           transaction.product?.productName
             ?.toLowerCase()
@@ -75,9 +74,9 @@ const PaymentReceipt = () => {
     setSearchQuery(value);
 
     if (value === "") {
-      fetchTransactions(); // Load all products when the input is empty
+      fetchTransactions(); // Load all transactions when the input is empty
     } else {
-      handleSearch(value); // Search products based on the input
+      handleSearch(value); // Search transactions based on the input
     }
   };
 

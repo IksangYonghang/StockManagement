@@ -27,7 +27,7 @@ const LogoutOnClose: React.FC<LogoutOnCloseProps> = ({
   };
 
   const handleVisibilityChange = () => {
-    console.log("Visibility change detected");
+    // console.log("Visibility change detected");
     // Check visibility state and perform logout if needed
   };
 

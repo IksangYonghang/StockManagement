@@ -80,22 +80,33 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
+app.UseCors(options =>
+{
+    var allowedOrigins = Environment.GetEnvironmentVariable("CORS_ALLOWED_ORIGINS") ?? "http://localhost:89";
+
+    options.WithOrigins(allowedOrigins)
+           .AllowAnyHeader()
+           .AllowAnyMethod()
+           .AllowCredentials();
+});
+
+
+
+
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
+app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseCors(options =>
-{
-    options
-    .AllowAnyHeader()
-    .AllowAnyMethod()
-    .AllowAnyOrigin();
-});
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+
+
 
 app.UseAuthentication();
 app.UseAuthorization();

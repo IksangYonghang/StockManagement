@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "s4CWPNOUtXWy9AQKRbxDSHYGqjghuvOvVXYQBGqJ4xWHtjOXNUBqFswR3wCoQzh5cOkHle3WW2s7+4sXZTwgAQ==",
+  "dgSpecHash": "somvxAdhE4oYXMUlIDegL6mRVGgbEmkn+fbAwz8l+c/VCFc0NfXvPHIrDKQ5pVVU/htN8a3ktS7dRLb0rlbCYw==",
   "success": true,
   "projectFilePath": "E:\\REPOS\\StockManagement\\backend\\Data\\Data.csproj",
   "expectedPackageFiles": [
@@ -25,23 +25,11 @@
     "C:\\Users\\NITRO\\.nuget\\packages\\microsoft.extensions.options\\7.0.0\\microsoft.extensions.options.7.0.0.nupkg.sha512",
     "C:\\Users\\NITRO\\.nuget\\packages\\microsoft.extensions.primitives\\7.0.0\\microsoft.extensions.primitives.7.0.0.nupkg.sha512",
     "C:\\Users\\NITRO\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
-    "C:\\Users\\NITRO\\.nuget\\packages\\nepalidateconverter\\1.0.6\\nepalidateconverter.1.0.6.nupkg.sha512",
     "C:\\Users\\NITRO\\.nuget\\packages\\npgsql\\7.0.6\\npgsql.7.0.6.nupkg.sha512",
     "C:\\Users\\NITRO\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\7.0.11\\npgsql.entityframeworkcore.postgresql.7.0.11.nupkg.sha512",
     "C:\\Users\\NITRO\\.nuget\\packages\\system.codedom\\4.4.0\\system.codedom.4.4.0.nupkg.sha512",
     "C:\\Users\\NITRO\\.nuget\\packages\\system.text.encodings.web\\7.0.0\\system.text.encodings.web.7.0.0.nupkg.sha512",
     "C:\\Users\\NITRO\\.nuget\\packages\\system.text.json\\7.0.0\\system.text.json.7.0.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1701",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'NepaliDateConverter 1.0.6' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net7.0'. This package may not be fully compatible with your project.",
-      "libraryId": "NepaliDateConverter",
-      "targetGraphs": [
-        "net7.0"
-      ]
-    }
-  ]
+  "logs": []
 }

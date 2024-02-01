@@ -1,0 +1,10 @@
+E:\REPOS\StockManagement\backend\Module\bin\Release\net7.0\publish\Module.dll
+E:\REPOS\StockManagement\backend\Module\bin\Release\net7.0\publish\Module.deps.json
+E:\REPOS\StockManagement\backend\Module\bin\Release\net7.0\publish\Module.pdb
+E:\REPOS\StockManagement\backend\Module\bin\Release\net7.0\publish\AutoMapper.dll
+E:\REPOS\StockManagement\backend\Module\bin\Release\net7.0\publish\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+E:\REPOS\StockManagement\backend\Module\bin\Release\net7.0\publish\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+E:\REPOS\StockManagement\backend\Module\bin\Release\net7.0\publish\Microsoft.Extensions.Options.dll
+E:\REPOS\StockManagement\backend\Module\bin\Release\net7.0\publish\Microsoft.Extensions.Primitives.dll
+E:\REPOS\StockManagement\backend\Module\bin\Release\net7.0\publish\Shared.dll
+E:\REPOS\StockManagement\backend\Module\bin\Release\net7.0\publish\Shared.pdb

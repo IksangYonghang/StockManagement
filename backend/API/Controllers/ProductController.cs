@@ -37,6 +37,14 @@ namespace API.Controllers
             var imageUrl = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Documents", "Images", imageUrl);
 
+            var directoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Documents", "Images");
+
+            // Check if the directory exists, create it if not
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
                 await imageFile.CopyToAsync(stream);

@@ -54,10 +54,6 @@
               "target": "Package",
               "version": "[7.0.11, )"
             },
-            "NepaliDateConverter": {
-              "target": "Package",
-              "version": "[1.0.6, )"
-            },
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
               "version": "[7.0.11, )"
