@@ -1,0 +1,39 @@
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #333a56;
+}
+
+tbody tr.total-row td {
+  border-top: 1px solid #333a56; /* Border at the top of the total row */
+  border-bottom: 1px solid #333a56; /* Border at the bottom of the total row */
+  margin-top: 10px;
+}
+
+.vat-bill-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-section {
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.form-section > * {
+  margin-right: 20px;
+  margin-bottom: 10px;
+}
+
+.form-section > :not(:last-child) {
+  margin-right: 20px;
+}
+
+.form-section > :last-child {
+  margin-right: 0;
+  margin-bottom: 10px;
+}

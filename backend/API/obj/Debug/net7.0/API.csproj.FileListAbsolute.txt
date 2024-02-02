@@ -298,3 +298,4 @@ E:\REPOS\StockManagement\backend\API\bin\Debug\net7.0\Documents\Images\e0484015-
 E:\REPOS\StockManagement\backend\API\bin\Debug\net7.0\Documents\Images\e1d03250-e71f-46a2-b11c-0286f35b00b6.png
 E:\REPOS\StockManagement\backend\API\bin\Debug\net7.0\Documents\Images\e86ce86c-bd42-4ff0-ac4c-6ac648cdcb44.jpg
 E:\REPOS\StockManagement\backend\API\bin\Debug\net7.0\Documents\Images\eb71cd67-fb56-4a18-a03b-a52cf2577452.jpg
+E:\REPOS\StockManagement\backend\API\bin\Debug\net7.0\Documents\Images\273d7308-4de3-4641-b047-0d34ff67b57a.png

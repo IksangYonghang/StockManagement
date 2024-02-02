@@ -41,11 +41,11 @@ import StockReport from "./pages/reports/StockReport.page";
 import AddPaymentReceipt from "./pages/transactions/AddPaymentReceipt.page";
 import PaymentReceipt from "./pages/transactions/PaymentReceipt.page";
 import LedgerClosingBalance from "./pages/reports/LedgerClosingBalance.page";
-
 import DailySummary from "./pages/reports/DailySummary.page";
 import TrialBalance from "./pages/finalaccounts/TrialBalance.page";
 import ProfitLoss from "./pages/finalaccounts/ProfitLoss.page";
 import BalanceSheet from "./pages/finalaccounts/BalanceSheet.page";
+import VatBill from "./pages/vatbill/VatBill.page";
 
 interface MainContentProps {
   isLoggedIn: boolean;
@@ -95,10 +95,10 @@ const MainContent: React.FC<MainContentProps> = ({
             />
             <Route path="/pr" element={<PaymentReceipt />} />
             <Route path="/pr/add" element={<AddPaymentReceipt />} />
+            <Route path="/vb" element={<VatBill/>}/>
             <Route path="/products" element={<Products />} />
             <Route path="/products/add" element={<AddProduct />} />
             <Route path="/products/update/:id" element={<UpdateProduct />} />
-
             <Route path="/users" element={<Users />} />
             <Route path="/users/add" element={<AddUser />} />
             <Route path="users/update/:id" element={<UpdateUser />} />

@@ -80,14 +80,26 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
+
 app.UseCors(options =>
 {
-    var allowedOrigins = Environment.GetEnvironmentVariable("CORS_ALLOWED_ORIGINS") ?? "http://localhost:89";
+    var allowedOrigins = new[] { "http://localhost:3000", "https://localhost:3000" }; 
 
-    options.WithOrigins(allowedOrigins)
-           .AllowAnyHeader()
-           .AllowAnyMethod()
-           .AllowCredentials();
+    if (app.Environment.IsDevelopment())
+    {
+        options.WithOrigins(allowedOrigins)
+               .AllowAnyHeader()
+               .AllowAnyMethod()
+               .AllowCredentials();
+    }
+    else
+    {
+        // Allow only specific origin(s) in production
+        options.WithOrigins("http://localhost:89")
+               .AllowAnyHeader()
+               .AllowAnyMethod()
+               .AllowCredentials();
+    }
 });
 
 

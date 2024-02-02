@@ -10,6 +10,8 @@ namespace Module.Entities
     {
         public string BranchName { get; set; }
         public string BranchAddress { get; set; }
+        public string RegistrationNumber { get; set; }
+        public string PanVatNumber { get; set; }
         public string PhoneNumber { get; set; }
         public bool IsHeadOffice { get; set; }
     }

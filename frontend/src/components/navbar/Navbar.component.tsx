@@ -25,6 +25,7 @@ const links: { href: string; label: string }[] = [
   { href: "/lcb", label: "LCB R" },
   { href: "/transactions", label: "Transactions" },
   { href: "/pr", label: "P & R" },
+  { href: "/vb", label: "VatBill" },
   { href: "/users", label: "Users" },
   { href: "/contact", label: "Contact" },
 ];

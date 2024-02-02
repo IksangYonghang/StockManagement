@@ -7,6 +7,7 @@ using Module.Dtos.Job;
 using Module.Dtos.LedgerDto;
 using Module.Dtos.Transaction;
 using Module.Dtos.User;
+using Module.Dtos.Vat;
 using Module.Entities;
 using System.Diagnostics;
 
@@ -112,6 +113,11 @@ namespace Module.AutoMapper
             CreateMap<GetOfficeNameDto, Office>();
             CreateMap<Office, GetOfficeNameDto>();
 
+            CreateMap<VatBill, VatGetDto>();
+            CreateMap<VatGetDto, VatBill>()
+                .ForMember(dest => dest.ProductName, opt=>opt.MapFrom(src => src.Product.ProductName));
+
+            CreateMap<Office, PanVatGetDto>();
 
         }
     }

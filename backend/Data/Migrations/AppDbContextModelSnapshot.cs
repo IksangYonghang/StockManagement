@@ -185,10 +185,20 @@ namespace Data.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_head_office");
 
+                    b.Property<string>("PanVatNumber")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("pan_vat_number");
+
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("phone_number");
+
+                    b.Property<string>("RegistrationNumber")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("registration_number");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -512,6 +522,104 @@ namespace Data.Migrations
                     b.ToTable("userslogin", "stock");
                 });
 
+            modelBuilder.Entity("Module.Entities.VatBill", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("amount");
+
+                    b.Property<string>("BillNumber")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("bill_number");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("CustomerAddress")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("customer_address");
+
+                    b.Property<string>("CustomerContact")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("customer_contact");
+
+                    b.Property<string>("CustomerName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("customer_name");
+
+                    b.Property<string>("CustomerVatPan")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("customer_vat_pan");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date")
+                        .HasColumnName("date");
+
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("discount");
+
+                    b.Property<DateOnly>("EngDate")
+                        .HasColumnType("date")
+                        .HasColumnName("eng_date");
+
+                    b.Property<decimal>("NetAmount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("net_amount");
+
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("product_id");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("product_name");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("quantity");
+
+                    b.Property<decimal>("Rate")
+                        .HasColumnType("numeric")
+                        .HasColumnName("rate");
+
+                    b.Property<int>("Size")
+                        .HasColumnType("integer")
+                        .HasColumnName("size");
+
+                    b.Property<decimal>("TaxableAmount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("taxable_amount");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<decimal>("VatRate")
+                        .HasColumnType("numeric")
+                        .HasColumnName("vat_rate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("vatbills", "bill");
+                });
+
             modelBuilder.Entity("Module.Entities.Company", b =>
                 {
                     b.HasOne("Module.Entities.User", "User")
@@ -586,6 +694,17 @@ namespace Data.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("Transaction");
+                });
+
+            modelBuilder.Entity("Module.Entities.VatBill", b =>
+                {
+                    b.HasOne("Module.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Module.Entities.Category", b =>

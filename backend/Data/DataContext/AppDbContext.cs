@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Module.Entities;
+using System.Reflection.Metadata.Ecma335;
 using System.Text.RegularExpressions;
 
 namespace Data.DataContext
@@ -19,6 +20,7 @@ namespace Data.DataContext
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserLogin> UsersLogin { get; set; }
+        public DbSet<VatBill> VatBills { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,6 +32,7 @@ namespace Data.DataContext
             modelBuilder.Entity<User>().ToTable("users", schema: "stock");
             modelBuilder.Entity<Transaction>().ToTable("transactions", schema: "stock");
             modelBuilder.Entity<UserLogin>().ToTable("userslogin", schema: "stock");
+            modelBuilder.Entity<VatBill>().ToTable("vatbills", schema: "bill");
 
 
             modelBuilder.ApplyConfiguration(new CaseInsensitiveColumnNameConvention<Company>());
@@ -39,6 +42,7 @@ namespace Data.DataContext
             modelBuilder.ApplyConfiguration(new CaseInsensitiveColumnNameConvention<Office>());
             modelBuilder.ApplyConfiguration(new CaseInsensitiveColumnNameConvention<Transaction>());
             modelBuilder.ApplyConfiguration(new CaseInsensitiveColumnNameConvention<User>());
+            modelBuilder.ApplyConfiguration(new CaseInsensitiveColumnNameConvention<VatBill>());
 
             // Fluent API for relationships          
 

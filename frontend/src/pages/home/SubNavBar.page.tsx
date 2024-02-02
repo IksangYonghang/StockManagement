@@ -79,7 +79,7 @@ const SubNavBar: React.FC<SubNavBarProps> = ({}) => {
     try {
       const response = await httpModule.get<IBranch[]>("/Dash/GetOfficeNames");
       setBranchName(response.data[0] || null);
-      //console.log("Branch Name :", response.data)
+      console.log("Branch Name :", response.data)
     } catch (error) {
       console.error("Error fetching branch name:", error);
     } finally {
