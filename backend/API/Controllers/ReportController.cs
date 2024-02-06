@@ -243,15 +243,13 @@ namespace API.Controllers
                     return BadRequest("Ledger not found");
                 }
 
-                var isLiabilities = ledger.MasterAccount == MasterAccount.Liabilities;
-                var isAssetss = ledger.MasterAccount == MasterAccount.Assets;
-                var isIncomes = ledger.MasterAccount == MasterAccount.Incomes;
-                var isExpenses = ledger.MasterAccount == MasterAccount.Expenses;
+                var isLiabilitiesOrIncomes = ledger.MasterAccount == MasterAccount.Liabilities || ledger.MasterAccount == MasterAccount.Incomes;
+                var isAssetsOrExpenses = ledger.MasterAccount == MasterAccount.Assets || ledger.MasterAccount == MasterAccount.Expenses;
 
                 var ledgerName = ledger.LedgerName;
                 var report = new List<LedgerReportDto>();
 
-                if (isLiabilities)
+                if (isLiabilitiesOrIncomes)
                 {
                     var prevTransactions = _dbContext.Transactions.Where(t => t.LedgerId == ledgerId && t.Date < fromDateOnly).ToList();
 
@@ -316,13 +314,13 @@ namespace API.Controllers
                             Credit = transaction.Credit,
                             Debit = transaction.Debit,
                             Narration = transaction.Narration,
-                            Balance = currentBal + openingBal,
+                            Balance = currentBal,
                             UserName = transactionUserName,
                         };
                         report.Add(reportDto);
                     }
                 }
-                else if (isAssetss)
+                else if (isAssetsOrExpenses)
                 {
                     var prevTransactions = _dbContext.Transactions.Where(t => t.LedgerId == ledgerId && t.Date < fromDateOnly).ToList();
 
@@ -388,153 +386,7 @@ namespace API.Controllers
                             Credit = transaction.Credit,
                             Debit = transaction.Debit,
                             Narration = transaction.Narration,
-                            Balance = currentBal + openingBal,
-                            UserName = transactionUserName,
-                        };
-                        report.Add(reportDto);
-                    }
-
-                }
-                else if (isIncomes)
-                {
-                    var prevTransactions = _dbContext.Transactions.Where(t => t.LedgerId == ledgerId && t.Date < fromDateOnly).ToList();
-
-                    decimal openingBal = 0;
-
-                    foreach (var transaction in prevTransactions)
-                    {
-                        if (transaction.TransactionType == TransactionType.Payment)
-                        {
-                            openingBal -= transaction.Debit ?? 0;
-                        }
-                        else if (transaction.TransactionType == TransactionType.Receipt)
-                        {
-                            openingBal += transaction.Credit ?? 0;
-                        }
-                    }
-
-                    var transactions = _dbContext.Transactions.Where(t => t.LedgerId == ledgerId && t.Date >= fromDateOnly && t.Date <= toDateOnly)
-                        .OrderBy(t => t.Date)
-                        .ThenBy(t => t.TransactionId).ToList();
-
-
-
-                    if (openingBal != 0)
-                    {
-                        var openingBalReportDto = new LedgerReportDto
-                        {
-                            LedgerId = ledgerId,
-                            LedgerName = ledgerName,
-                            TransactionId = 0,
-                            TransactionType = "OpeningBalance",
-                            Date = fromDateOnly,
-                            Credit = 0,
-                            Debit = 0,
-                            Narration = "Balance b/d",
-                            Balance = openingBal,
-                        };
-                        report.Add(openingBalReportDto);
-                    }
-
-                    decimal currentBal = openingBal;
-
-                    foreach (var transaction in transactions)
-                    {
-                        if (transaction.TransactionType == TransactionType.Payment)
-                        {
-                            openingBal -= transaction.Debit ?? 0;
-                        }
-                        else if (transaction.TransactionType == TransactionType.Receipt)
-                        {
-                            openingBal += transaction.Credit ?? 0;
-                        }
-                        var transactionUserName = _dbContext.Users.Where(u => u.Id == transaction.UserId).Select(u => u.UserName).FirstOrDefault();
-
-                        var reportDto = new LedgerReportDto
-                        {
-                            LedgerId = ledgerId,
-                            LedgerName = ledgerName,
-                            TransactionId = transaction.TransactionId,
-                            InvoiceNumber = transaction.InvoiceNumber,
-                            TransactionType = transaction.TransactionType.ToString(),
-                            Date = transaction.Date,
-                            Credit = transaction.Credit,
-                            Debit = transaction.Debit,
-                            Narration = transaction.Narration,
-                            Balance = currentBal + openingBal,
-                            UserName = transactionUserName,
-                        };
-                        report.Add(reportDto);
-                    }
-
-                }
-                else
-                {
-                    var prevTransactions = _dbContext.Transactions.Where(t => t.LedgerId == ledgerId && t.Date < fromDateOnly).ToList();
-
-                    decimal openingBal = 0;
-
-                    foreach (var transaction in prevTransactions)
-                    {
-                        if (transaction.TransactionType == TransactionType.Payment)
-                        {
-                            openingBal += transaction.Debit ?? 0;
-                        }
-                        else if (transaction.TransactionType == TransactionType.Receipt)
-                        {
-                            openingBal -= transaction.Credit ?? 0;
-                        }
-                    }
-
-                    var transactions = _dbContext.Transactions.Where(t => t.LedgerId == ledgerId && t.Date >= fromDateOnly && t.Date <= toDateOnly)
-                        .OrderBy(t => t.Date)
-                        .ThenBy(t => t.TransactionId).ToList();
-
-
-
-                    if (openingBal != 0)
-                    {
-                        var openingBalReportDto = new LedgerReportDto
-                        {
-                            LedgerId = ledgerId,
-                            LedgerName = ledgerName,
-                            TransactionId = 0,
-                            TransactionType = "OpeningBalance",
-                            Date = fromDateOnly,
-                            Credit = 0,
-                            Debit = 0,
-                            Narration = "Balance b/d",
-                            Balance = openingBal,
-                        };
-                        report.Add(openingBalReportDto);
-                    }
-
-                    decimal currentBal = openingBal;
-
-                    foreach (var transaction in transactions)
-                    {
-                        if (transaction.TransactionType == TransactionType.Payment)
-                        {
-                            openingBal += transaction.Debit ?? 0;
-                        }
-                        else if (transaction.TransactionType == TransactionType.Receipt)
-                        {
-                            openingBal -= transaction.Credit ?? 0;
-                        }
-                        var transactionUserName = _dbContext.Users.Where(u => u.Id == transaction.UserId).Select(u => u.UserName).FirstOrDefault();
-
-                        var reportDto = new LedgerReportDto
-                        {
-                            LedgerId = ledgerId,
-                            LedgerName = ledgerName,
-                            TransactionId = transaction.TransactionId,
-                            InvoiceNumber = transaction.InvoiceNumber,
-                            TransactionType = transaction.TransactionType.ToString(),
-                            Date = transaction.Date,
-                            Credit = transaction.Credit,
-                            Debit = transaction.Debit,
-                            Narration = transaction.Narration,
-                            Balance = currentBal + openingBal,
+                            Balance = currentBal,
                             UserName = transactionUserName,
                         };
                         report.Add(reportDto);

@@ -20,12 +20,12 @@ interface IPanVat {
 }
 
 enum ProductSize {
-  Quarter,
-  Half,
-  Full,
-  CAN,
-  Small,
-  Big,
+  Quarter = "Quarter",
+  Half = "Half",
+  Full = "Full",
+  CAN = "CAN",
+  Small = "Small",
+  Big = "Big",
 }
 
 const VatBill = () => {
@@ -120,7 +120,7 @@ const VatBill = () => {
 
   const vatPercentage = 13;
   const vatAmount = (totalAmount * vatPercentage) / 100;
-  const netAmount = totalAmount - vatAmount;
+  const netAmount = totalAmount + vatAmount;
   const amountInWords = amountToWords(netAmount);
 
   //console.log("netAmount:", netAmount);
@@ -392,8 +392,18 @@ const VatBill = () => {
                 </td>
                 <td style={{ fontWeight: "bold" }}>
                   <div>
-                    <div>{amountInWords}</div>
-                    <div>0</div>
+                    <div
+                      style={{
+                        marginLeft: "-76rem",
+                        marginTop: "-0.5rem",
+                        maxWidth: "30rem",
+                      }}
+                    >
+                      {amountInWords}
+                    </div>
+                    <div
+                      style={{ marginLeft: "1rem", marginTop: "-2rem" }}
+                    ></div>
                   </div>
                 </td>
               </tr>

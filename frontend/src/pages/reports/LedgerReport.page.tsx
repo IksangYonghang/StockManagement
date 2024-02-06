@@ -3,28 +3,22 @@ import { ILedger } from "../../types/global.typing";
 import { ThemeContext } from "../../context/theme.context";
 import httpModule from "../../helpers/http.module";
 import "./reports.scss";
-import {
-  Autocomplete,
-  Button,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  TextField,
-} from "@mui/material";
+import { Autocomplete, Button, FormControl, TextField } from "@mui/material";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import { useReactToPrint } from "react-to-print";
 import PrintIcon from "@mui/icons-material/Print";
+import HideColumnsDialog from "./HideColumn";
 
-type ColumnNames =
-  | "date"
-  | "transactionId"
-  | "transactionType"
-  | "invoiceNumber"
-  | "debit"
-  | "credit"
-  | "narration"
-  | "balance"
-  | "userName";
+export type ColumnNames =
+  | "Date"
+  | "Transaction Id"
+  | "Transaction Type"
+  | "Invoice Number"
+  | "Debit"
+  | "Credit"
+  | "Narration"
+  | "Balance"
+  | "User Name";
 
 const LedgerReport: React.FC = () => {
   const [selectedLedger, setSelectedLedger] = useState<string>("");
@@ -39,40 +33,15 @@ const LedgerReport: React.FC = () => {
   );
   const componentPDF = useRef<HTMLDivElement>(null);
   const [tableLoaded, setTableLoaded] = useState(false);
-  const [showHideForm, setShowHideForm] = useState(false);
+  const [openHideColumnsDialog, setOpenHideColumnsDialog] = useState(false);
 
-  const toggleHideForm = () => {
-    setShowHideForm(!showHideForm);
-  };
-
-  const renderHideForm = () => {
-    return (
-      <div className="hide-columns">
-        <form>
-          <label>Hide Columns:</label>
-          <FormControl component="fieldset">
-            {dropdownColumns.map((column, index) => (
-              <FormControlLabel
-                key={index}
-                control={
-                  <Checkbox
-                    checked={!column.visible}
-                    onChange={() => toggleDropdownColumn(column.name)}
-                    name={column.name}
-                  />
-                }
-                label={column.name}
-              />
-            ))}
-          </FormControl>
-        </form>
-      </div>
-    );
+  const toggleHideColumnsDialog = () => {
+    setOpenHideColumnsDialog(!openHideColumnsDialog);
   };
 
   const hideColumnsButton = (
     <Button
-      onClick={toggleHideForm}
+      onClick={toggleHideColumnsDialog}
       variant="contained"
       style={{
         backgroundColor: darkMode ? "#f7f5e6" : "#333a56",
@@ -80,7 +49,7 @@ const LedgerReport: React.FC = () => {
         fontWeight: "bold",
       }}
     >
-      {showHideForm ? "Hide Columns" : "Show Columns"}
+      {openHideColumnsDialog ? "Columns being hidden" : "Hide Columns?"}
     </Button>
   );
 
@@ -89,14 +58,15 @@ const LedgerReport: React.FC = () => {
     visible: boolean;
   };
   const initialColumns: ColumnConfig[] = [
-    { name: "date", visible: true },
-    { name: "transactionId", visible: true },
-    { name: "transactionType", visible: true },
-    { name: "invoiceNumber", visible: true },
-    { name: "debit", visible: true },
-    { name: "credit", visible: true },
-    { name: "narration", visible: true },
-    { name: "userName", visible: true },
+    { name: "Date", visible: true },
+    { name: "Transaction Id", visible: true },
+    { name: "Transaction Type", visible: true },
+    { name: "Invoice Number", visible: true },
+    { name: "Debit", visible: true },
+    { name: "Credit", visible: true },
+    { name: "Balance", visible: true },
+    { name: "Narration", visible: true },
+    { name: "User Name", visible: true },
   ];
 
   const [dropdownColumns, setDropdownColumns] =
@@ -166,7 +136,7 @@ const LedgerReport: React.FC = () => {
         ...item,
         SN: index + 1,
       }));
-
+      console.log(response.data);
       setReport(modifiedReport);
       setFetchedLedgerName(
         modifiedReport.length > 0 ? modifiedReport[0].ledgerName : null
@@ -310,14 +280,26 @@ const LedgerReport: React.FC = () => {
                 </Button>
                 {hideColumnsButton}
               </div>
-              {showHideForm && renderHideForm()}
+              {openHideColumnsDialog && (
+                <HideColumnsDialog
+                  open={openHideColumnsDialog}
+                  columns={dropdownColumns}
+                  toggleColumnVisibility={toggleDropdownColumn}
+                  onClose={toggleHideColumnsDialog}
+                />
+              )}
             </div>
           )}
 
           <div className="report-container">
             <div ref={componentPDF} style={{ width: "100%" }}>
               <table className="report-table">
-                <thead>
+                <thead
+                  style={{
+                    color: darkMode ? "#f7f5e6" : "#333a56",
+                    backgroundColor: darkMode ? "#333a56" : "#f7f5e6",
+                  }}
+                >
                   <tr>
                     <th>
                       <span>SN</span>
@@ -338,7 +320,27 @@ const LedgerReport: React.FC = () => {
                       {dropdownColumns.map(
                         (column, colIndex) =>
                           column.visible && (
-                            <td key={colIndex}>{item[column.name]}</td>
+                            <td key={colIndex}>
+                              {column.name === "Date"
+                                ? item.date
+                                : column.name === "Transaction Id"
+                                ? item.transactionId
+                                : column.name === "Transaction Type"
+                                ? item.transactionType
+                                : column.name === "Invoice Number"
+                                ? item.invoiceNumber
+                                : column.name === "Debit"
+                                ? item.debit
+                                : column.name === "Credit"
+                                ? item.credit
+                                : column.name === "Narration"
+                                ? item.narration
+                                : column.name === "Balance"
+                                ? item.balance
+                                : column.name === "User Name"
+                                ? item.userName
+                                : ""}
+                            </td>
                           )
                       )}
                     </tr>
