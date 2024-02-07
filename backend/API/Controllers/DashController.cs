@@ -25,7 +25,7 @@ namespace API.Controllers
 
 
         [HttpGet("GetOfficeNames")]
-        public async Task<ActionResult<List<GetOfficeNameDto>>> GetOfficeList()
+        public async Task<ActionResult<List<GetOfficeNameDto>>> GetOfficeNames()
         {
             var offices = await _dbContext.Offices.ToListAsync();
 
@@ -34,12 +34,30 @@ namespace API.Controllers
                 return NoContent();
             }
 
-            var combinedOfficeDetails = offices.Select(office => new GetOfficeNameDto
+            var fullName = offices.Select(office => new GetOfficeNameDto
             {
-                CombinedOfficeDetails = $"{office.BranchName}, {office.BranchAddress}"
+                FullName = $"{office.BranchName}"
             }).ToList();
 
-            return Ok(combinedOfficeDetails);
+            return Ok(fullName);
+        }
+
+        [HttpGet("GetOfficeAddress")]
+        public async Task<ActionResult<List<GetOfficeAddressDto>>> GetOfficeAddress()
+        {
+            var address = await _dbContext.Offices.ToListAsync();
+
+            if (address == null || !address.Any())
+            {
+                return NoContent();
+            }
+
+            var fullAddress = address.Select(office => new GetOfficeAddressDto
+            {
+                FullAddress = $"{office.BranchAddress}"
+            }).ToList();
+
+            return Ok(fullAddress);
         }
 
 

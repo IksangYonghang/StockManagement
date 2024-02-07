@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import httpModule from "../../helpers/http.module";
 import { ThemeContext } from "../../context/theme.context";
-import { IBranch, IProduct } from "../../types/global.typing";
+import { IBranch, IBranchAddress, IProduct } from "../../types/global.typing";
 
 import "./vatbill.scss";
 import amountToWords from "../../helpers/numberToWords";
@@ -31,6 +31,9 @@ enum ProductSize {
 const VatBill = () => {
   const [vatNumber, setVatNumber] = useState<IPanVat | string>("");
   const [branchName, setBranchName] = useState<IBranch | null>(null);
+  const [branchAddress, setBranchAddress] = useState<IBranchAddress | null>(
+    null
+  );
   const [loading, setLoading] = useState<boolean>(false);
   const [date, setDate] = useState("");
   const [billNumber, setBillNumber] = useState("");
@@ -83,6 +86,23 @@ const VatBill = () => {
       //console.log("Branch Name :", response.data);
     } catch (error) {
       console.error("Error fetching branch name:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchBranchAddress();
+  }, []);
+  const fetchBranchAddress = async () => {
+    setLoading(true);
+    try {
+      const response = await httpModule.get<IBranchAddress[]>(
+        "/Dash/GetOfficeAddress"
+      );
+      setBranchAddress(response.data[0] || null);
+      //console.log("Branch Address :", response.data);
+    } catch (error) {
+      console.error("Error fetching branch address:", error);
     } finally {
       setLoading(false);
     }
@@ -264,10 +284,13 @@ const VatBill = () => {
       {showTable && (
         <div>
           <h2 style={{ textAlign: "center", marginBottom: "10px" }}>
-            {branchName
-              ? `${branchName.combinedOfficeDetails}`
-              : "VAT or PAN BILL TEMPLATE"}
+            {branchName ? `${branchName.fullName}` : "VAT or PAN BILL TEMPLATE"}
           </h2>
+          <h3 style={{ textAlign: "center", marginBottom: "10px" }}>
+            {branchAddress
+              ? `${branchAddress.fullAddress}`
+              : "VAT or PAN BILL TEMPLATE"}
+          </h3>
           <h4 style={{ textAlign: "center", marginBottom: "40px" }}>
             {typeof vatNumber === "object"
               ? `VAT Number: ${vatNumber.panVatNumber}`
@@ -466,7 +489,7 @@ const VatBill = () => {
               <p>
                 For:{" "}
                 {branchName
-                  ? `${branchName.combinedOfficeDetails}`
+                  ? `${branchName.fullName}`
                   : "VAT or PAN BILL TEMPLATE"}
               </p>
             </div>

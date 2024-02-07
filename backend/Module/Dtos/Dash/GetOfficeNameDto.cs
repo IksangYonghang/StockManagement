@@ -8,7 +8,12 @@ namespace Module.Dtos.Dash
 {
     public class GetOfficeNameDto
     {
-        public string CombinedOfficeDetails { get; set; }
+        public string FullName { get; set; }
 
+    }
+
+    public class GetOfficeAddressDto
+    {
+        public string FullAddress { get; set; }
     }
 }

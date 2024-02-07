@@ -13,22 +13,29 @@ const LogoutOnClose: React.FC<LogoutOnCloseProps> = ({
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    console.log("Logging out...");
+    //console.log("Logging out...");
     localStorage.removeItem("isLoggedIn");
     setLoginStatus(false);
-    // Perform any other necessary logout operations
   };
 
   const handleBeforeUnload = (event: BeforeUnloadEvent) => {
     console.log("Before unload event triggered");
-    // Check conditions for logout and perform logout if needed
-    // Remember, certain actions may not be allowed here due to browser restrictions
-    // Add appropriate logic based on the openTabs array or other conditions
   };
 
   const handleVisibilityChange = () => {
-    // console.log("Visibility change detected");
-    // Check visibility state and perform logout if needed
+    if (document.visibilityState === "hidden") {
+      // This tab has become hidden, indicating the user switched to another tab or closed the browser
+      // Check if all tabs are hidden
+      if (!document.hidden) {
+        // At least one tab is still visible
+        // Update a value in localStorage to indicate that at least one tab is still open
+        localStorage.setItem("appTabOpen", "true");
+      } else {
+        // All tabs are hidden, indicating that the user has closed all tabs related to the application
+        // Perform logout
+        handleLogout();
+      }
+    }
   };
 
   useEffect(() => {
@@ -37,11 +44,12 @@ const LogoutOnClose: React.FC<LogoutOnCloseProps> = ({
       setLoginStatus(true); // Update React state if the user was logged in
     }
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
+    // Add event listener for visibility change
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
+    // Cleanup function
     return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
+      // Remove event listener when component unmounts
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [setLoginStatus]);

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { ThemeContext } from "../../context/theme.context";
 import NepaliDateConverter from "nepali-date-converter";
 import "./home.scss";
-import { IBranch } from "../../types/global.typing";
+import { IBranch, IBranchAddress } from "../../types/global.typing";
 import httpModule from "../../helpers/http.module";
 
 interface SubNavBarProps {
@@ -58,6 +58,7 @@ const SubNavBar: React.FC<SubNavBarProps> = ({}) => {
   const [branchName, setBranchName] = useState<IBranch | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [userName, setUserName] = useState<string | null>(null);
+  const [branchAddress, setBranchAddress] = useState<IBranchAddress[]>([]);
 
   useEffect(() => {
     fetchBranchName();
@@ -74,12 +75,24 @@ const SubNavBar: React.FC<SubNavBarProps> = ({}) => {
     fetchUserName();
   }, []);
 
+  useEffect(() => {
+    httpModule
+      .get<IBranchAddress[]>("/Dash/GetOfficeAddress")
+      .then((response) => {
+        setBranchAddress(response.data || null);
+        //console.log("Full Branch Address", response.data);
+      })
+      .catch((error) => {
+        alert("Error while fetching branch address");
+        console.log(error);
+      });
+  }, []);
   const fetchBranchName = async () => {
     setLoading(true);
     try {
       const response = await httpModule.get<IBranch[]>("/Dash/GetOfficeNames");
       setBranchName(response.data[0] || null);
-      console.log("Branch Name :", response.data)
+      //console.log("Full Branch Name :", response.data);
     } catch (error) {
       console.error("Error fetching branch name:", error);
     } finally {
@@ -102,7 +115,10 @@ const SubNavBar: React.FC<SubNavBarProps> = ({}) => {
         className="branch"
         style={{ color: darkMode ? "#f7f5e6" : "#333a56" }}
       >
-        {branchName ? branchName.combinedOfficeDetails : "Loading..."}
+        {branchName ? branchName.fullName : "Loading..."},
+        {branchAddress && branchAddress.length > 0
+          ? branchAddress[0].fullAddress
+          : "Loading..."}
       </div>
       <div
         className="user-info"

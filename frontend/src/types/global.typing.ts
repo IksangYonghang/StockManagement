@@ -269,7 +269,10 @@ export interface IDashStockReport {
 }
 
 export interface IBranch {
-  combinedOfficeDetails: string;
+  fullName: string;
+}
+export interface IBranchAddress {
+  fullAddress: string;
 }
 
 export interface IDashFrequentlySoldProducts {

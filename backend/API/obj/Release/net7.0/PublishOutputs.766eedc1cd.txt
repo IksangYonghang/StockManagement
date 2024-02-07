@@ -6,6 +6,7 @@ E:\REPOS\StockManagement\backend\API\obj\Release\net7.0\PubTmp\Out\Documents\Ima
 E:\REPOS\StockManagement\backend\API\obj\Release\net7.0\PubTmp\Out\Documents\Images\1c310b26-4990-4e6e-8d08-6a00f1219a75.jpg
 E:\REPOS\StockManagement\backend\API\obj\Release\net7.0\PubTmp\Out\Documents\Images\1e3cc2f7-c464-4fe7-841e-b2f7a056d15f.jpg
 E:\REPOS\StockManagement\backend\API\obj\Release\net7.0\PubTmp\Out\Documents\Images\1ebcf4cb-e2ae-42a8-bfd7-c378d632b7dc.jpg
+E:\REPOS\StockManagement\backend\API\obj\Release\net7.0\PubTmp\Out\Documents\Images\273d7308-4de3-4641-b047-0d34ff67b57a.png
 E:\REPOS\StockManagement\backend\API\obj\Release\net7.0\PubTmp\Out\Documents\Images\42e54f00-9691-47df-bfe5-fbbd0f164933.jpg
 E:\REPOS\StockManagement\backend\API\obj\Release\net7.0\PubTmp\Out\Documents\Images\43837b24-4b63-46cc-8c28-b773836cbca2.jpg
 E:\REPOS\StockManagement\backend\API\obj\Release\net7.0\PubTmp\Out\Documents\Images\50248c02-5df9-4002-affc-fcd4af26ff53.png
