@@ -1,13 +1,8 @@
 ﻿using AutoMapper;
-using Data.DataContext;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Module.Dtos.User;
 using Module.Entities;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using Module.IRepositories;
 
 namespace API.Controllers
 {
@@ -15,122 +10,61 @@ namespace API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly AppDbContext _dbContext;
-        private readonly IConfiguration _configuration;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public UserController(AppDbContext dbContext, IConfiguration configuration, IMapper mapper)
+        public UserController(IUserRepository userRepository, IMapper mapper)
         {
-            _dbContext = dbContext;
-            _configuration = configuration;
+            _userRepository = userRepository;
             _mapper = mapper;
         }
 
         [HttpPost("CreateUser")]
-        public async Task<ActionResult<User>> CreateUser(UserDto request)
+        public async Task<ActionResult<UserDto>> CreateUser(UserDto request)
         {
-            var existingUser = await _dbContext.Users.FirstOrDefaultAsync(n => n.Email == request.Email || n.UserName == request.UserName);
-            if (existingUser != null)
+            try
             {
-                return Conflict("User already exists");
+                var user = await _userRepository.CreateUser(request);
+                return Ok(user);
             }
-            string passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
-
-            User user = new User
+            catch (InvalidOperationException ex)
             {
-                FirstName = request.FirstName ?? "",
-                MiddleName = request.MiddleName ?? "",
-                LastName = request.LastName ?? "",
-                Gender = request.Gender,
-                Address = request.Address ?? "",
-                Phone = request.Phone ?? "",
-                UserType = request.UserType,
-                Email = request.Email ?? "",
-                UserName = request.UserName ?? "",
-                PasswordHash = passwordHash,
-                UserId = request.UserId,
-                
-            };
-
-            _dbContext.Users.Add(user);
-            _dbContext.SaveChanges();
-            return Ok(user);
+                return Conflict(ex.Message);
+            }
         }
 
         [HttpPost("Login")]
-        public ActionResult<string> Login(LoginDto request)
+        public async Task<ActionResult<string>> Login(LoginDto request)
         {
-            User user = _dbContext.Users.FirstOrDefault(u => u.UserName == request.UserName);
-
-            if (user == null)
+            try
             {
-                return NotFound("User not found");
+                var token = await _userRepository.Login(request);
+                return Ok(token);
             }
-
-            if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+            catch (InvalidOperationException ex)
             {
-                return BadRequest("Wrong password");
+                return BadRequest(ex.Message);
             }
-
-            var tokenKey = _configuration.GetSection("AppSettings:Token").Value;
-
-            if (tokenKey == null)
-            {
-
-                return StatusCode(500, "Token key not found");
-            }
-
-            var key = Encoding.UTF8.GetBytes(tokenKey);
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[]
-                {
-                     new Claim(ClaimTypes.NameIdentifier, user.UserName)
-
-                 }),
-                Expires = DateTime.UtcNow.AddMinutes(5),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
-
-            UserLogin userLogin = new UserLogin
-            {
-                UserId = user.Id,
-                LogInDT = DateTime.UtcNow,
-            };
-            _dbContext.UsersLogin.Add(userLogin);
-            _dbContext.SaveChanges();
-
-
-            return Ok(tokenString);
         }
 
         [HttpPut("UpdatePassword/{username}")]
         public async Task<IActionResult> UpdatePassword(string username, UpdatePasswordDto newPassword)
         {
-            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == username);
-
-            if (user == null)
+            try
             {
-                return NotFound("User not found");
+                await _userRepository.UpdatePassword(username, newPassword);
+                return Ok("Password updated successfully");
             }
-
-            string newPasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword.Password);
-
-            user.PasswordHash = newPasswordHash;
-            await _dbContext.SaveChangesAsync();
-
-            return Ok("Password updated successfully");
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpGet("Get")]
         public async Task<ActionResult<IEnumerable<UserGetDto>>> GetUsers()
         {
-            var users = await _dbContext.Users.ToListAsync();
+            var users = await _userRepository.GetUsers();
             var convertedUsers = _mapper.Map<List<UserGetDto>>(users);
             return Ok(convertedUsers);
         }
@@ -138,94 +72,45 @@ namespace API.Controllers
         [HttpGet("GetById")]
         public async Task<ActionResult<UserGetDto>> GetUser(long id)
         {
-            var user = _dbContext.Users.FirstOrDefault(u => u.Id == id);
-            var convertedUser = _mapper.Map<UserGetDto>(user);
-            return Ok(convertedUser);
+            try
+            {
+                var user = await _userRepository.GetUser(id);
+                var convertedUser = _mapper.Map<UserGetDto>(user);
+                return Ok(convertedUser);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpDelete]
         public async Task<ActionResult> DeleteUser(long id)
         {
-            var userToDelete = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
-            if (userToDelete == null)
+            try
             {
-                return NotFound("User to delete does not exist");
+                await _userRepository.DeleteUser(id);
+                return Ok("User deleted");
             }
-
-            var userInTransaction = await _dbContext.Transactions.AnyAsync(u => u.UserId == id);
-            if (userInTransaction)
+            catch (InvalidOperationException ex)
             {
-                return BadRequest("Cannot delete user as its id is present in transaction table.");
+                return NotFound(ex.Message);
             }
-            _dbContext.Users.Remove(userToDelete);
-            _dbContext.SaveChanges();
-            return Ok("User deleted");
         }
 
         [HttpPut("Update")]
         public async Task<ActionResult<UserGetDto>> EditUser(UpdateUserDto updateUserDto, long id)
         {
-            var userToUpdate = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
-
-            if (userToUpdate == null)
-            {
-                return NotFound("User to be updated not found");
-            }
-
-            if (!string.IsNullOrEmpty(updateUserDto.FirstName))
-            {
-                userToUpdate.FirstName = updateUserDto.FirstName;
-            }
-
-            if (!string.IsNullOrEmpty(updateUserDto.MiddleName))
-            {
-                userToUpdate.MiddleName = updateUserDto.MiddleName;
-            }
-
-            if (!string.IsNullOrEmpty(updateUserDto.LastName))
-            {
-                userToUpdate.LastName = updateUserDto.LastName;
-            }
-            if (updateUserDto.Gender != null)
-            {
-                userToUpdate.Gender = updateUserDto.Gender;
-            }
-
-            if (!string.IsNullOrEmpty(updateUserDto.Phone))
-            {
-                userToUpdate.Phone = updateUserDto.Phone;
-            }
-
-            if (!string.IsNullOrEmpty(updateUserDto.Address))
-            {
-                userToUpdate.Address = updateUserDto.Address;
-            }
-            if (!string.IsNullOrEmpty(updateUserDto.Email))
-            {
-                userToUpdate.Email = updateUserDto.Email;
-            }
-
-
-            // Check if a new password is provided and hash it
-            if (!string.IsNullOrEmpty(updateUserDto.Password))
-            {
-                // Hash the new password
-                string newPasswordHash = BCrypt.Net.BCrypt.HashPassword(updateUserDto.Password);
-
-
-                userToUpdate.PasswordHash = newPasswordHash;
-            }
-            userToUpdate.UpdatedAt = DateTime.UtcNow;
-
             try
             {
-                await _dbContext.SaveChangesAsync();
-
-
-                var convertedUser = _mapper.Map<UserGetDto>(userToUpdate);
-                return Ok(convertedUser);
+                var updatedUser = await _userRepository.EditUser(updateUserDto, id);
+                return Ok(updatedUser);
             }
-            catch (DbUpdateException ex)
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception)
             {
                 return StatusCode(500, "Failed to update user. Please try again later.");
             }
@@ -234,15 +119,15 @@ namespace API.Controllers
         [HttpGet("GetByUsername")]
         public async Task<ActionResult<User>> GetUserByUsername(string username)
         {
-            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == username);
-
-            if (user == null)
+            try
             {
-                return NotFound("User not found");
+                var user = await _userRepository.GetUserByUsername(username);
+                return Ok(user);
             }
-
-            return Ok(user);
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
-
     }
 }

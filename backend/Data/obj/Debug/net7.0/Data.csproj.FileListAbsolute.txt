@@ -89,9 +89,9 @@ E:\REPOS\StockManagement\backend\Data\obj\Debug\net7.0\Data.AssemblyInfoInputs.c
 E:\REPOS\StockManagement\backend\Data\obj\Debug\net7.0\Data.AssemblyInfo.cs
 E:\REPOS\StockManagement\backend\Data\obj\Debug\net7.0\Data.csproj.CoreCompileInputs.cache
 E:\REPOS\StockManagement\backend\Data\obj\Debug\net7.0\Data.sourcelink.json
-E:\REPOS\StockManagement\backend\Data\obj\Debug\net7.0\Data.csproj.CopyComplete
 E:\REPOS\StockManagement\backend\Data\obj\Debug\net7.0\Data.dll
 E:\REPOS\StockManagement\backend\Data\obj\Debug\net7.0\refint\Data.dll
 E:\REPOS\StockManagement\backend\Data\obj\Debug\net7.0\Data.pdb
 E:\REPOS\StockManagement\backend\Data\obj\Debug\net7.0\Data.genruntimeconfig.cache
 E:\REPOS\StockManagement\backend\Data\obj\Debug\net7.0\ref\Data.dll
+E:\REPOS\StockManagement\backend\Data\obj\Debug\net7.0\Data.csproj.Up2Date

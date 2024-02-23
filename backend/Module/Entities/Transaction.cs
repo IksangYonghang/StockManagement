@@ -20,6 +20,7 @@ namespace Module.Entities
         public decimal? Debit { get; set; }
         public decimal? Credit { get; set; }
         public string? Narration { get; set; }
+        public bool IsOpeningBal { get; set; } = false;
         public virtual ICollection<TransactionDetail> TransactionDetails { get; set; }
     }
 

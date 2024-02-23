@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>E:\Stock Management Publish\published backend</_PublishTargetUrl>
-    <History>True|2024-02-07T04:56:57.5582081Z;</History>
+    <History>True|2024-02-10T07:19:59.4249386Z;True|2024-02-10T13:04:56.9703500+05:45;False|2024-02-10T13:04:39.6504732+05:45;True|2024-02-07T10:41:57.5582081+05:45;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>

@@ -70,8 +70,8 @@ E:\REPOS\StockManagement\backend\Module\obj\Debug\net7.0\Module.AssemblyInfoInpu
 E:\REPOS\StockManagement\backend\Module\obj\Debug\net7.0\Module.AssemblyInfo.cs
 E:\REPOS\StockManagement\backend\Module\obj\Debug\net7.0\Module.csproj.CoreCompileInputs.cache
 E:\REPOS\StockManagement\backend\Module\obj\Debug\net7.0\Module.sourcelink.json
-E:\REPOS\StockManagement\backend\Module\obj\Debug\net7.0\Module.csproj.CopyComplete
 E:\REPOS\StockManagement\backend\Module\obj\Debug\net7.0\Module.dll
 E:\REPOS\StockManagement\backend\Module\obj\Debug\net7.0\refint\Module.dll
 E:\REPOS\StockManagement\backend\Module\obj\Debug\net7.0\Module.pdb
 E:\REPOS\StockManagement\backend\Module\obj\Debug\net7.0\ref\Module.dll
+E:\REPOS\StockManagement\backend\Module\obj\Debug\net7.0\Module.csproj.Up2Date

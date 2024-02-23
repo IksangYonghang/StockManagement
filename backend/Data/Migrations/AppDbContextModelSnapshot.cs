@@ -322,6 +322,10 @@ namespace Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("invoice_number");
 
+                    b.Property<bool>("IsOpeningBal")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_opening_bal");
+
                     b.Property<long?>("LedgerId")
                         .HasColumnType("bigint")
                         .HasColumnName("ledger_id");

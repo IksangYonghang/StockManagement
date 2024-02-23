@@ -269,7 +269,6 @@ E:\REPOS\StockManagement\backend\API\obj\Debug\net7.0\staticwebassets\msbuild.bu
 E:\REPOS\StockManagement\backend\API\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.API.props
 E:\REPOS\StockManagement\backend\API\obj\Debug\net7.0\staticwebassets.pack.json
 E:\REPOS\StockManagement\backend\API\obj\Debug\net7.0\scopedcss\bundle\API.styles.css
-E:\REPOS\StockManagement\backend\API\obj\Debug\net7.0\API.csproj.CopyComplete
 E:\REPOS\StockManagement\backend\API\obj\Debug\net7.0\API.dll
 E:\REPOS\StockManagement\backend\API\obj\Debug\net7.0\refint\API.dll
 E:\REPOS\StockManagement\backend\API\obj\Debug\net7.0\API.pdb
@@ -299,3 +298,4 @@ E:\REPOS\StockManagement\backend\API\bin\Debug\net7.0\Documents\Images\e1d03250-
 E:\REPOS\StockManagement\backend\API\bin\Debug\net7.0\Documents\Images\e86ce86c-bd42-4ff0-ac4c-6ac648cdcb44.jpg
 E:\REPOS\StockManagement\backend\API\bin\Debug\net7.0\Documents\Images\eb71cd67-fb56-4a18-a03b-a52cf2577452.jpg
 E:\REPOS\StockManagement\backend\API\bin\Debug\net7.0\Documents\Images\273d7308-4de3-4641-b047-0d34ff67b57a.png
+E:\REPOS\StockManagement\backend\API\obj\Debug\net7.0\API.csproj.Up2Date
